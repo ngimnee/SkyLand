@@ -13,6 +13,8 @@ public class UserDTO extends AbstractDTO {
     private List<RoleDTO> roles = new ArrayList<>();
     private String roleName;
     private String roleCode;
+    private List<Long> orderIds;
+    private List<String> orderCodes;
     private Map<String,String> roleDTOs = new HashMap<>();
 
     public String getUserName() {
@@ -77,5 +79,21 @@ public class UserDTO extends AbstractDTO {
 
     public void setRoleDTOs(Map<String, String> roleDTOs) {
         this.roleDTOs = roleDTOs;
+    }
+
+    public List<Long> getOrderIds() {
+        return orderIds;
+    }
+
+    public void setOrderIds(List<Long> orderIds) {
+        this.orderIds = orderIds;
+    }
+
+    public List<String> getOrderCodes() {
+        return orderCodes;
+    }
+
+    public void setOrderCodes(List<String> orderCodes) {
+        this.orderCodes = orderCodes;
     }
 }

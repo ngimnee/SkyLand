@@ -17,6 +17,7 @@ import com.ngimnee.service.CustomerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -92,6 +93,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findById(Long id) {
-        return null;
+        CustomerEntity customerEntity = customerRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Customer not found!"));
+        CustomerDTO customerDTO = modelMapper.map(customerEntity, CustomerDTO.class);
+
+        return customerDTO;
     }
 }

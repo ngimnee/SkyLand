@@ -1,13 +1,18 @@
 package com.ngimnee.model.dto;
 
+import java.util.List;
+
 public class CustomerDTO extends AbstractDTO{
-    private String name;
+    private String fullName;
     private String managementStaff;
     private String customerPhone;
     private String email;
     private String demand;
     private String status;
     private String companyName;
+    private Integer isActive;
+    private List<Long> orderIds;
+    private List<String> orderCodes;
 
     public String getCompanyName() {
         return companyName;
@@ -17,12 +22,12 @@ public class CustomerDTO extends AbstractDTO{
         this.companyName = companyName;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getManagementStaff() {
@@ -65,4 +70,27 @@ public class CustomerDTO extends AbstractDTO{
         this.status = status;
     }
 
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
+    }
+
+    public List<Long> getOrderIds() {
+        return orderIds;
+    }
+
+    public void setOrderIds(List<Long> orderIds) {
+        this.orderIds = orderIds;
+    }
+
+    public List<String> getOrderCodes() {
+        return orderCodes;
+    }
+
+    public void setOrderCodes(List<String> orderCodes) {
+        this.orderCodes = orderCodes;
+    }
 }

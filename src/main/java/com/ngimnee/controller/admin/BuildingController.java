@@ -2,7 +2,7 @@ package com.ngimnee.controller.admin;
 
 import com.ngimnee.enums.City;
 import com.ngimnee.enums.District;
-import com.ngimnee.enums.StatusOrder;
+import com.ngimnee.enums.StatusBuilding;
 import com.ngimnee.enums.TypeCode;
 import com.ngimnee.model.dto.BuildingDTO;
 import com.ngimnee.model.request.BuildingSearchRequest;
@@ -37,7 +37,7 @@ public class BuildingController {
         mav.addObject("buildingSearch", buildingSearchRequest);
 
         mav.addObject("listStaff", userService.getStaffs());
-        mav.addObject("status", StatusOrder.getStatus());
+        mav.addObject("status", StatusBuilding.getStatus());
         mav.addObject("city", City.getCity());
         if (buildingSearchRequest.getCity() != null && !buildingSearchRequest.getCity().isEmpty()) {
             BuildingDTO dto = new BuildingDTO();
@@ -82,8 +82,7 @@ public class BuildingController {
     }
 
     @GetMapping(value = "/admin/building/edit/{id}")
-    public ModelAndView editBuilding(@PathVariable("id") Long id,
-                                         HttpServletRequest request) {
+    public ModelAndView editBuilding(@PathVariable("id") Long id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/building/edit");
         BuildingDTO buildingDTO = buildingService.findById(id);
         mav.addObject("editBuilding", buildingDTO);

@@ -54,22 +54,22 @@ public class BuildingEntity extends BaseEntity {
     private String rentPriceDescription;
 
     @Column(name = "servicefee")
-    private Long serviceFee;
+    private String serviceFee;
 
     @Column(name = "carfee")
-    private Long carFee;
+    private String carFee;
 
     @Column(name = "motofee")
-    private Long motoFee;
+    private String motoFee;
 
     @Column(name = "overtimefee")
-    private Long overtimeFee;
+    private String overtimeFee;
 
     @Column(name = "waterfee")
-    private Long waterFee;
+    private String waterFee;
 
     @Column(name = "electricityfee")
-    private Long electricityFee;
+    private String electricityFee;
 
     @Column(name = "deposit")
     private Long deposit;
@@ -112,6 +112,11 @@ public class BuildingEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "building",  fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<RentAreaEntity> rentAreas = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "orderid")
+    private OrderEntity order;
+
 
     @Override
     public Long getId() {
@@ -235,51 +240,51 @@ public class BuildingEntity extends BaseEntity {
         this.rentPriceDescription = rentPriceDescription;
     }
 
-    public Long getServiceFee() {
+    public String getServiceFee() {
         return serviceFee;
     }
 
-    public void setServiceFee(Long serviceFee) {
+    public void setServiceFee(String serviceFee) {
         this.serviceFee = serviceFee;
     }
 
-    public Long getCarFee() {
+    public String getCarFee() {
         return carFee;
     }
 
-    public void setCarFee(Long carFee) {
+    public void setCarFee(String carFee) {
         this.carFee = carFee;
     }
 
-    public Long getMotoFee() {
+    public String getMotoFee() {
         return motoFee;
     }
 
-    public void setMotoFee(Long motoFee) {
+    public void setMotoFee(String motoFee) {
         this.motoFee = motoFee;
     }
 
-    public Long getOvertimeFee() {
+    public String getOvertimeFee() {
         return overtimeFee;
     }
 
-    public void setOvertimeFee(Long overtimeFee) {
+    public void setOvertimeFee(String overtimeFee) {
         this.overtimeFee = overtimeFee;
     }
 
-    public Long getWaterFee() {
+    public String getWaterFee() {
         return waterFee;
     }
 
-    public void setWaterFee(Long waterFee) {
+    public void setWaterFee(String waterFee) {
         this.waterFee = waterFee;
     }
 
-    public Long getElectricityFee() {
+    public String getElectricityFee() {
         return electricityFee;
     }
 
-    public void setElectricityFee(Long electricityFee) {
+    public void setElectricityFee(String electricityFee) {
         this.electricityFee = electricityFee;
     }
 
@@ -385,5 +390,13 @@ public class BuildingEntity extends BaseEntity {
 
     public void setRentAreas(List<RentAreaEntity> rentAreas) {
         this.rentAreas = rentAreas;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 }

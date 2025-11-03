@@ -29,7 +29,7 @@ public class CustomerController {
     public ModelAndView customerPage(@ModelAttribute CustomerSearchRequest customerSearchRequest,
                                      HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/customer/list");
-        mav.addObject("customerSeach", customerSearchRequest);
+        mav.addObject("customerSearch", customerSearchRequest);
 
         mav.addObject("listStaff", userService.getStaffs());
 
