@@ -54,15 +54,21 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3 align-items-center">
-                                    <label class="col-xl-2 col-form-label">Trạng thái</label>
+                                    <label class="col-xl-2 col-form-label">Nhu cầu</label>
+                                    <div class="col-xl-10">
+                                        <form:input class="form-control" path="demand" />
+                                    </div>
+                                </div>
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-xl-2 col-form-label">Tình trạng</label>
                                     <div class="col-xl-10">
                                         <form:input class="form-control" path="status" />
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-success flex-fill" id="btnUpdateCustomer">
-                                        <i class="bi bi-building-add"></i> Cập nhật tòa nhà
+                                    <button type="submit" class="btn btn-success flex-fill" id="btnAddOrUpdateCustomer">
+                                        <i class="bi bi-building-add"></i> Cập nhật khách hàng
                                     </button>
                                     <button type="button" class="btn btn-danger flex-fill" id="btnCancel">
                                         Hủy
@@ -79,6 +85,58 @@
     </div>
 
     <script>
+        $('#btnAddOrUpdateCustomer').click(function(e) {
+            e.preventDefault();
+            if (!validateRequiredFields()) return;
+
+            var data = {};
+
+            $.each($('#form-edit').serializeArray(), function(i, v) {
+                data[v.name] = v.value;
+            });
+            addOrUpdateCustomer(data);
+
+            function addOrUpdateCustomer() {
+                $.ajax({
+                    type: "POST",
+                    url: "${customerAPI}",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(respond) {
+                        window.location.href = "<c:url value='/admin/customer?message=success' />";
+                    },
+                    error: function(respond) {
+                        console.log("Failed");
+                        window.location.href = "<c:url value='/admin/customer?message=error' />";
+                        console.log(respond);
+                    }
+                });
+            }
+        });
+
+        function validateRequiredFields() {
+            const requiredFields = [
+                { name: 'fullName', label: 'Họ tên' },
+                { name: 'customerPhone', label: 'SĐT' }
+            ];
+
+            let isValid = true;
+
+            // Xóa hết lỗi cũ trước
+            $('.is-invalid').removeClass('is-invalid');
+
+            // Kiểm tra từng trường
+            requiredFields.forEach(f => {
+                let val = $('[name="' + f.name + '"]').val()?.trim();
+                if (!val) {
+                    $('[name="' + f.name + '"]').addClass('is-invalid');
+                    isValid = false;
+                }
+            });
+
+            return isValid; // true nếu hợp lệ, false nếu có lỗi
+        }
 
         $('#btnCancel').click(function() {
             window.location.href = "${customerURL}";

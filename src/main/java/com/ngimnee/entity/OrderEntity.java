@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @Getter
 @Setter
 public class OrderEntity extends BaseEntity {
@@ -43,7 +43,7 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "status")
     private String status = "DANG_XU_LY";
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<BuildingEntity> buildings = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)

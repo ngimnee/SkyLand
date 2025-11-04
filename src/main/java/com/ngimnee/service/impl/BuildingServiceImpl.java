@@ -102,20 +102,21 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public BuildingDTO addOrUpdateBuilding(BuildingDTO buildingDTO) {
-        BuildingEntity buildingEntity = buildingConverter.toEntity(buildingDTO);
+        BuildingEntity building;
 
-        Long buildingId = buildingDTO.getId();
-        if(buildingId != null) {
-            BuildingEntity building = buildingRepository.findById(buildingId)
+        if(buildingDTO.getId() != null) {
+            building = buildingRepository.findById(buildingDTO.getId())
                     .orElseThrow(() -> new NotFoundException("Building not found!"));
-            buildingEntity.setUsers(building.getUsers());
-            buildingEntity.setImage(building.getImage());
 
+            buildingConverter.updateEntityFromDTO(buildingDTO, building);
+        }
+        else {
+            building = buildingConverter.toEntity(buildingDTO);
         }
 
-        saveThumbnail(buildingDTO, buildingEntity);
-        buildingRepository.save(buildingEntity);
-        return buildingDTO;
+        saveThumbnail(buildingDTO, building);
+        BuildingEntity result = buildingRepository.save(building);
+        return buildingConverter.toBuildingDTO(result);
     }
 
     private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {

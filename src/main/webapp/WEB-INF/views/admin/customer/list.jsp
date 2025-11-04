@@ -99,20 +99,24 @@
                                 defaultsort="2" defaultorder="ascending">
 
                         <!-- Cột dữ liệu -->
-                        <display:column property="id" title="ID" headerClass="text-center" />
                         <display:column property="fullName" title="Họ và tên" headerClass="text-center" />
                         <display:column property="phone" title="SĐT" headerClass="text-center" />
                         <display:column property="email" title="Email" headerClass="text-center" />
-                        <display:column title="Trạng thái" headerClass="text-center" class="text-center">
-                            <c:choose>
-                                <c:when test="${customer.isActive == 1}">
-                                    <span>Hoạt động</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span>Ngưng hoạt động</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </display:column>
+                        <display:column property="companyName" title="Công ty" headerClass="text-center" />
+                        <display:column property="demand" title="Yêu cầu" headerClass="text-center" />
+                        <display:column property="status" title="Tình trạng" headerClass="text-center" />
+<%--                        <security:authorize access="hasRole('MANAGER')">--%>
+<%--                            <display:column title="Trạng thái" headerClass="text-center" class="text-center">--%>
+<%--                                <c:choose>--%>
+<%--                                    <c:when test="${customer.isActive == 1}">--%>
+<%--                                        <span>Hoạt động</span>--%>
+<%--                                    </c:when>--%>
+<%--                                    <c:otherwise>--%>
+<%--                                        <span>Ngưng hoạt động</span>--%>
+<%--                                    </c:otherwise>--%>
+<%--                                </c:choose>--%>
+<%--                            </display:column>--%>
+<%--                        </security:authorize>--%>
 
 
                         <!-- Cột thao tác -->

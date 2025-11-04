@@ -19,11 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private ModelMapper modelMapper;
@@ -35,7 +37,6 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerSearchBuilderConverter customerSearchBuilderConverter;
     @Autowired
     private CustomerConverter customerConverter;
-
 
     @Override
     public ResponseDTO listStaffs(Long customerId) {
@@ -79,7 +80,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public AssignmentCustomerDTO addAssignment(AssignmentCustomerDTO assignmentCustomerDTO) {
-        return null;
+        CustomerEntity customerEntity = customerRepository.findById(assignmentCustomerDTO.getCustomerId()).get();
+        List<UserEntity> staffs = userRepository.findByIdIn(assignmentCustomerDTO.getStaffs());
+        customerEntity.setUsers(staffs);
+        customerRepository.save(customerEntity);
+        return assignmentCustomerDTO;
     }
 
     @Override
@@ -98,5 +103,27 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerDTO customerDTO = modelMapper.map(customerEntity, CustomerDTO.class);
 
         return customerDTO;
+    }
+
+    @Override
+    public CustomerDTO addOrUpdateCustomer(CustomerDTO customerDTO) {
+        CustomerEntity customerEntity;
+
+        Long cusomerId = customerDTO.getId();
+        if(cusomerId != null){
+            customerEntity = customerRepository.findById(cusomerId)
+                    .orElseThrow(() -> new NotFoundException("Customer not found!"));
+            customerConverter.updateEntityFromDTO(customerDTO, customerEntity);
+        } else {
+            customerEntity = customerConverter.toCustomerEntity(customerDTO);
+        }
+
+        customerRepository.save(customerEntity);
+        return customerDTO;
+    }
+
+    @Override
+    public CustomerDTO deleteCustomers(Long[] ids) {
+        return null;
     }
 }

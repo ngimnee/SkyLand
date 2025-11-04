@@ -74,7 +74,7 @@
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-xl-2 col-form-label">Kết cấu</label>
                                     <div class="col-xl-10">
-                                        <form:input class="form-control" path="structure" required="true" />
+                                        <form:input class="form-control" path="structure" />
                                     </div>
                                 </div>
                                 <div class="row mb-3 align-items-center">
@@ -102,13 +102,13 @@
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-xl-2 col-form-label">Hướng</label>
                                     <div class="col-xl-10">
-                                        <form:input type="text" class="form-control" path="direction" required="true" />
+                                        <form:input type="text" class="form-control" path="direction" />
                                     </div>
                                 </div>
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-xl-2 col-form-label">Hạng</label>
                                     <div class="col-xl-10">
-                                        <form:input class="form-control" path="level" required="true" />
+                                        <form:input class="form-control" path="level" />
                                     </div>
                                 </div>
                                 <div class="row mb-3 align-items-center">
@@ -223,12 +223,29 @@
                                         <form:input class="form-control" path="note" />
                                     </div>
                                 </div>
+<%--                                <div class="row mb-3 align-items-center">--%>
+<%--                                    <label for="avatar" class="col-xl-2 col-form-label">Hình đại diện</label>--%>
+<%--                                    <div class="col-xl-10">--%>
+<%--                                        <form:input class="form-control" path="avatar" id="uploadImage" accept="image/*" />--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
                                 <div class="row mb-3 align-items-center">
                                     <label for="avatar" class="col-xl-2 col-form-label">Hình đại diện</label>
+
                                     <div class="col-xl-10">
-                                        <form:input class="form-control" path="avatar" id="uploadImage" accept="image/*" />
+                                        <input class="form-control" type="file" id="uploadImage" name="imageFile" />
+
+<%--                                        <c:if test="${not empty editBuilding.image}">--%>
+<%--                                            <c:set var="imagePath" value="/repository/${editBuilding.image}" />--%>
+<%--                                            <img src="${imagePath}" id="viewImage" width="300" height="300" style="margin-top: 20px;">--%>
+<%--                                        </c:if>--%>
+
+<%--                                        <c:if test="${empty editBuilding.image}">--%>
+<%--                                            <img src="/admin/image/default.png" id="viewImage" width="300" height="300" style="margin-top: 20px;">--%>
+<%--                                        </c:if>--%>
                                     </div>
                                 </div>
+
 
                                 <div class="d-flex gap-2">
                                     <c:if test="${empty editBuilding.id}">
@@ -272,7 +289,8 @@
             }
         }
 
-        $('#btnAddOrUpdateBuilding').click(function() {
+        $('#btnAddOrUpdateBuilding').click(function(e) {
+            e.preventDefault();
             if (!validateRequiredFields()) return;
 
             var data = {};

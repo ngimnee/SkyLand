@@ -15,5 +15,8 @@ public interface CustomerService {
     AssignmentCustomerDTO addAssignment(AssignmentCustomerDTO assignmentCustomerDTO);
     int countTotalItem(List<CustomerSearchResponse> list);
     CustomerDTO findById(Long id);
+    CustomerDTO addOrUpdateCustomer(CustomerDTO customerDTO);
+    CustomerDTO deleteCustomers(Long[] ids);
+
 
 }

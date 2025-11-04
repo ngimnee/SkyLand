@@ -1,15 +1,28 @@
 package com.ngimnee.config;
 
+import com.ngimnee.entity.BuildingEntity;
+import com.ngimnee.model.dto.BuildingDTO;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "com.ngimnee")
 public class ModelMapperConfig {
+
     @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
+    public ModelMapper modelMapper() {
+        ModelMapper mapper = new ModelMapper();
+
+        mapper.addMappings(new PropertyMap<BuildingDTO, BuildingEntity>() {
+            @Override
+            protected void configure() {
+                skip(destination.getUsers());
+                skip(destination.getOrder());
+                skip(destination.getRentAreas());
+            }
+        });
+
+        return mapper;
     }
 }

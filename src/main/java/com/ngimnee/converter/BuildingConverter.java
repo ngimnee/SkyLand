@@ -1,12 +1,13 @@
 package com.ngimnee.converter;
 
-import com.ngimnee.entity.BuildingEntity;
-import com.ngimnee.entity.RentAreaEntity;
+import com.ngimnee.entity.*;
 import com.ngimnee.enums.City;
 import com.ngimnee.enums.District;
 import com.ngimnee.model.dto.BuildingDTO;
+import com.ngimnee.model.dto.CustomerDTO;
 import com.ngimnee.model.response.BuildingSearchResponse;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.lowagie.text.Image.skip;
 
 @Component
 public class BuildingConverter {
@@ -68,4 +71,17 @@ public class BuildingConverter {
     {
         return String.join(", ", typeCodes);
     }
+
+    public void updateEntityFromDTO(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
+        List<UserEntity> oldUsers = buildingEntity.getUsers();
+        OrderEntity oldOrder = buildingEntity.getOrder();
+
+        modelMapper.getConfiguration().setPropertyCondition(context -> true);
+        modelMapper.map(buildingDTO, buildingEntity);
+
+        // Khôi phục các quan hệ để tránh bị ghi đè null
+        buildingEntity.setUsers(oldUsers);
+        buildingEntity.setOrder(oldOrder);
+    }
+
 }

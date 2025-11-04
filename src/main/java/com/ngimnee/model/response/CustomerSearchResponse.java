@@ -8,6 +8,8 @@ public class CustomerSearchResponse extends AbstractDTO {
     private String email;
     private String companyName;
     private Integer isActive;
+    private String demand;
+    private String status;
     private String createdDate;
 
     public String getFullName() {
@@ -48,6 +50,22 @@ public class CustomerSearchResponse extends AbstractDTO {
 
     public void setIsActive(Integer isActive) {
         this.isActive = isActive;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDemand() {
+        return demand;
+    }
+
+    public void setDemand(String demand) {
+        this.demand = demand;
     }
 
     public void setCreatedDate(String createdDate) {

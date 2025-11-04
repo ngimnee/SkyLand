@@ -7,6 +7,8 @@ public class CustomerSearchRequest extends AbstractDTO {
     private String phone;
     private String email;
     private String companyName;
+    private String demand;
+    private String status;
     private Integer isActive;
     private Long staffId;
 
@@ -56,5 +58,21 @@ public class CustomerSearchRequest extends AbstractDTO {
 
     public void setStaffId(Long staffId) {
         this.staffId = staffId;
+    }
+
+    public String getDemand() {
+        return demand;
+    }
+
+    public void setDemand(String demand) {
+        this.demand = demand;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

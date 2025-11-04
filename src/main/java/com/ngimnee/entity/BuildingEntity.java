@@ -392,11 +392,11 @@ public class BuildingEntity extends BaseEntity {
         this.rentAreas = rentAreas;
     }
 
-    public List<OrderEntity> getOrders() {
-        return orders;
+    public OrderEntity getOrder() {
+        return order;
     }
 
-    public void setOrders(List<OrderEntity> orders) {
-        this.orders = orders;
+    public void setOrder(OrderEntity order) {
+        this.order = order;
     }
 }

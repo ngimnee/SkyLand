@@ -23,7 +23,7 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
     public static void joinTable(CustomerSearchBuilder customerSearchBuilder, StringBuilder sql) {
         Long staffId = customerSearchBuilder.getStaffId();
         if(NumberUtils.isNumber(staffId)) {
-            sql.append(" INNER JOIN assignmentcustomer ac WHERE ac.customerid = customer.id ");
+            sql.append(" INNER JOIN assignmentcustomer ac ON ac.customerid = customer.id ");
         }
     }
 
