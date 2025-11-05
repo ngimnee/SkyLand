@@ -28,7 +28,7 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
     }
 
     public static void queryNormal(CustomerSearchBuilder customerSearchBuilder, StringBuilder where) {
-        try{
+        try {
             Field[] fields = CustomerSearchBuilder.class.getDeclaredFields();
 
             for (Field item : fields) {
@@ -40,7 +40,9 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
                     if(valueObject != null) {
                         String value =  valueObject.toString();
                         if(StringUtils.check(value)) {
-                            if(NumberUtils.isLong(value) || NumberUtils.isInteger(value)) {
+                            if(fieldName.equals("isActive") && NumberUtils.isInteger(value)) {
+                                where.append(" AND customer.is_active = " + value);
+                            } else if(NumberUtils.isLong(value) || NumberUtils.isInteger(value)) {
                                 where.append(" AND customer." + fieldName + " = " + value);
                             } else {
                                 where.append(" AND customer." + fieldName + " LIKE '%" + value + "%' ");
@@ -48,6 +50,9 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
                         }
                     }
                 }
+//                if(fieldName.equals("isActive")) {
+//                    where.append(" AND customer.is_active = " + fieldName);
+//                }
 
             }
         } catch (Exception e) {
@@ -65,7 +70,7 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
     @Override
     public List<CustomerEntity> findCustomers(CustomerSearchBuilder customerSearchBuilder, Pageable pageable) {
         StringBuilder sql = new StringBuilder("SELECT * FROM customer ");
-        StringBuilder where = new StringBuilder("WHERE 1 = 1 ");
+        StringBuilder where = new StringBuilder(" WHERE 1 = 1 ");
 
         joinTable(customerSearchBuilder, sql);
         queryNormal(customerSearchBuilder, where);

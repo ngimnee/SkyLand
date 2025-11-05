@@ -74,16 +74,16 @@
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span><i class="fas fa-table me-1"></i>Tài khoản hiện có</span>
-<%--                <div class="d-flex align-items-center">--%>
-<%--                <label class="me-2 mb-0 fw-bold">Trạng thái:</label>--%>
-<%--                    <form:form modelAttribute="customerSeach" action="${customerURL}" method="GET">--%>
-<%--                        <form:select id="statusFilter" class="form-select form-select-sm" path="isActive">--%>
-<%--                            <form:option value="">Tất cả</form:option>--%>
-<%--                            <form:option value="1">Hoạt động</form:option>--%>
-<%--                            <form:option value="0">Đã tắt</form:option>--%>
-<%--                        </form:select>--%>
-<%--                    </form:form>--%>
-<%--                </div>--%>
+                <div class="d-flex align-items-center">
+                <label class="me-2 mb-0 fw-bold">Trạng thái:</label>
+                    <form:form modelAttribute="customerSearch" action="${customerURL}" method="GET">
+                        <form:select id="btnSearchActive" class="form-select form-select-sm" path="isActive" onchange="this.form.submit()">
+                            <form:option value="">Tất cả</form:option>
+                            <form:option value="1">Hoạt động</form:option>
+                            <form:option value="0">Đã tắt</form:option>
+                        </form:select>
+                    </form:form>
+                </div>
             </div>
             <div class="card-body">
                 <form:form id="customerListForm">

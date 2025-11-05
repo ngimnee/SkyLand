@@ -1,7 +1,9 @@
 package com.ngimnee.controller.web;
 
+import com.ngimnee.enums.City;
+import com.ngimnee.model.dto.BuildingDTO;
 import com.ngimnee.model.request.BuildingSearchRequest;
-import com.ngimnee.utils.DistrictCode;
+import com.ngimnee.utils.DistrictsByCityUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -22,7 +24,15 @@ public class HomeController {
 	public ModelAndView homePage(BuildingSearchRequest buildingSearchRequest, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("web/home");
         mav.addObject("modelSearch", buildingSearchRequest);
-        mav.addObject("districts", DistrictCode.type());
+
+        mav.addObject("city", City.getCity());
+        if (buildingSearchRequest.getCity() != null && !buildingSearchRequest.getCity().isEmpty()) {
+            BuildingDTO dto = new BuildingDTO();
+            dto.setCity(buildingSearchRequest.getCity());
+            mav.addObject("district", DistrictsByCityUtils.getDistrictsByCity(dto));
+        } else {
+            mav.addObject("district", DistrictsByCityUtils.getEmptyDistrict());
+        }
 		return mav;
 	}
 

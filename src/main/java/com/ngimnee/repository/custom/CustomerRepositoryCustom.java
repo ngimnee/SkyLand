@@ -2,6 +2,7 @@ package com.ngimnee.repository.custom;
 
 import com.ngimnee.builder.CustomerSearchBuilder;
 import com.ngimnee.entity.CustomerEntity;
+import com.ngimnee.model.dto.CustomerDTO;
 import com.ngimnee.model.response.CustomerSearchResponse;
 import org.springframework.data.domain.Pageable;
 

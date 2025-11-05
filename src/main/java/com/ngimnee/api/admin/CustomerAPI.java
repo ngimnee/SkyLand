@@ -46,7 +46,7 @@ public class CustomerAPI {
     }
 
     @DeleteMapping("/{ids}")
-    public ResponseEntity<CustomerDTO> deleteBuilding(@PathVariable Long[] ids) {
-        return ResponseEntity.ok(customerService.deleteCustomers(ids));
+    public void deleteBuilding(@PathVariable Long[] ids) {
+        customerService.deleteCustomers(ids);
     }
 }

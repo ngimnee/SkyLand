@@ -81,9 +81,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public AssignmentCustomerDTO addAssignment(AssignmentCustomerDTO assignmentCustomerDTO) {
         CustomerEntity customerEntity = customerRepository.findById(assignmentCustomerDTO.getCustomerId()).get();
-        List<UserEntity> staffs = userRepository.findByIdIn(assignmentCustomerDTO.getStaffs());
-        customerEntity.setUsers(staffs);
-        customerRepository.save(customerEntity);
+        if (customerEntity.getIsActive().equals(1)) {
+            List<UserEntity> staffs = userRepository.findByIdIn(assignmentCustomerDTO.getStaffs());
+            customerEntity.setUsers(staffs);
+            customerRepository.save(customerEntity);
+        } else {
+            throw new RuntimeException("Khách hàng đã ngưng hoạt động");
+        }
         return assignmentCustomerDTO;
     }
 
@@ -123,7 +127,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO deleteCustomers(Long[] ids) {
-        return null;
+    public void deleteCustomers(Long[] ids) {
+        for(Long id : ids){
+            CustomerEntity customerEntity = customerRepository.findById(id).get();
+            customerEntity.setIsActive(0);
+            customerRepository.save(customerEntity);
+        }
     }
 }

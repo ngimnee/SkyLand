@@ -47,9 +47,9 @@ public class OrderEntity extends BaseEntity {
     private List<BuildingEntity> buildings = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "order_staff",
-            joinColumns = @JoinColumn(name = "order_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "staff_id", nullable = false))
+    @JoinTable(name = "assignmentorder",
+            joinColumns = @JoinColumn(name = "orderid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
     private List<UserEntity> users = new ArrayList<>();
 
     @ManyToOne

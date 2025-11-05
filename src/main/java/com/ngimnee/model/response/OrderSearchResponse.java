@@ -1,23 +1,23 @@
-package com.ngimnee.model.request;
+package com.ngimnee.model.response;
 
 import com.ngimnee.model.dto.AbstractDTO;
 
-public class OrderSearchRequest extends AbstractDTO {
+public class OrderSearchResponse extends AbstractDTO {
     private Long id;
     private String code;
-    private Long customerId;
+    private String customerId;
     private String name;
     private String phone;
     private String email;
     private String address;
     private String status;
+    private String buildingName;
 
     @Override
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -30,11 +30,11 @@ public class OrderSearchRequest extends AbstractDTO {
         this.code = code;
     }
 
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
@@ -76,5 +76,13 @@ public class OrderSearchRequest extends AbstractDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
 }

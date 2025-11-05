@@ -39,6 +39,10 @@ public class CustomerController {
             customerSearchRequest.setStaffId(SecurityUtils.getPrincipal().getId());
         }
 
+        if (!request.getParameterMap().containsKey("isActive")) {
+            customerSearchRequest.setIsActive(1);
+        }
+
         CustomerSearchResponse model = new CustomerSearchResponse();
         DisplayTagUtils.of(request, model);
 
