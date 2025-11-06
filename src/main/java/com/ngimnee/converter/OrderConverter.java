@@ -1,13 +1,14 @@
 package com.ngimnee.converter;
 
-import com.ngimnee.entity.CustomerEntity;
+import com.ngimnee.entity.BuildingEntity;
 import com.ngimnee.entity.OrderEntity;
-import com.ngimnee.model.dto.CustomerDTO;
 import com.ngimnee.model.dto.OrderDTO;
 import com.ngimnee.model.response.OrderSearchResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class OrderConverter {
@@ -16,6 +17,13 @@ public class OrderConverter {
 
     public OrderSearchResponse toOrderSearchResponse(OrderEntity orderEntity) {
         OrderSearchResponse res = modelMapper.map(orderEntity, OrderSearchResponse.class);
+
+        if (orderEntity.getBuildings() != null && !orderEntity.getBuildings().isEmpty()) {
+            String buildingNames = orderEntity.getBuildings().stream()
+                    .map(BuildingEntity::getName)
+                    .collect(Collectors.joining(", "));
+            res.setBuildingName(buildingNames);
+        }
         return res;
     }
 

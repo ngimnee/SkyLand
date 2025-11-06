@@ -1,5 +1,6 @@
 package com.ngimnee.controller.admin;
 
+import com.ngimnee.enums.StatusOrder;
 import com.ngimnee.model.dto.OrderDTO;
 import com.ngimnee.model.request.OrderSearchRequest;
 import com.ngimnee.model.response.OrderSearchResponse;
@@ -43,22 +44,24 @@ public class OrderController {
         model.setListResult(resultList);
         model.setTotalItems(orderService.countTotalItem(resultList));
 
-        mav.addObject("orderSearch", model);
+        mav.addObject("orderList", model);
         return mav;
     }
 
-    @GetMapping("/admin/edit")
+    @GetMapping("/admin/order/edit")
     public ModelAndView editOrder(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("web/building");
+//        ModelAndView mav = new ModelAndView("web/list");
         return mav;
     }
 
-    @GetMapping("/admin/edit/{id}")
+    @GetMapping("/admin/order/edit/{id}")
     public ModelAndView editOrder(@PathVariable("id") Long id,
                                   HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/order/edit");
         OrderDTO orderDTO = orderService.findById(id);
         mav.addObject("editOrder", orderDTO);
+        mav.addObject("listStatus", StatusOrder.getStatus());
         return mav;
     }
 }

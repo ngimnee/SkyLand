@@ -54,7 +54,7 @@ public class BuildingServiceImpl implements BuildingService {
         BuildingEntity building = buildingRepository.findById(buildingId).get();
         List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
         List<UserEntity> staffAssignment = building.getUsers();
-        List<StaffResponseDTO>  staffResponseDTOS = new ArrayList<>();
+        List<StaffResponseDTO> staffResponseDTOs = new ArrayList<>();
         ResponseDTO responseDTO = new ResponseDTO();
 
         for(UserEntity it : staffs){
@@ -67,9 +67,9 @@ public class BuildingServiceImpl implements BuildingService {
             else {
                 staffResponseDTO.setChecked("");
             }
-            staffResponseDTOS.add(staffResponseDTO);
+            staffResponseDTOs.add(staffResponseDTO);
         }
-        responseDTO.setData(staffResponseDTOS);
+        responseDTO.setData(staffResponseDTOs);
         responseDTO.setMessage("success");
         return responseDTO;
     }
@@ -167,7 +167,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public AssignmentBuildingDTO addAssignmentBuildingEntity(AssignmentBuildingDTO assignmentBuildingDTO) {
+    public AssignmentBuildingDTO addAssignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
          BuildingEntity buildingEntity = buildingRepository.findById(assignmentBuildingDTO.getBuildingId()).get();
          List<UserEntity> users = userRepository.findByIdIn(assignmentBuildingDTO.getStaffs());
          buildingEntity.setUsers(users);

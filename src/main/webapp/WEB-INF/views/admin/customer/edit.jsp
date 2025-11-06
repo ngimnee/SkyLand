@@ -24,7 +24,7 @@
 
                     <div class="collapse show" id="searchForm">
                         <div class="card-body">
-                            <form:form id="form-edit" modelAttribute="editCustomer" method="GET">
+                            <form:form id="formEdit" modelAttribute="editCustomer" method="GET">
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-xl-2 col-form-label">
                                         Họ và tên<span class="text-danger">*</span>
@@ -67,8 +67,8 @@
                                 </div>
 
                                 <div class="d-flex gap-2">
-                                    <button type="submit" class="btn btn-success flex-fill" id="btnAddOrUpdateCustomer">
-                                        <i class="bi bi-building-add"></i> Cập nhật khách hàng
+                                    <button type="submit" class="btn btn-success flex-fill" id="btnUpdateCustomer">
+                                        <i class="bi bi-person-check"></i> Cập nhật khách hàng
                                     </button>
                                     <button type="button" class="btn btn-danger flex-fill" id="btnCancel">
                                         Hủy
@@ -85,18 +85,18 @@
     </div>
 
     <script>
-        $('#btnAddOrUpdateCustomer').click(function(e) {
+        $('#btnUpdateCustomer').click(function(e) {
             e.preventDefault();
             if (!validateRequiredFields()) return;
 
             var data = {};
 
-            $.each($('#form-edit').serializeArray(), function(i, v) {
+            $.each($('#formEdit').serializeArray(), function(i, v) {
                 data[v.name] = v.value;
             });
-            addOrUpdateCustomer(data);
+            updateCustomer(data);
 
-            function addOrUpdateCustomer() {
+            function updateCustomer() {
                 $.ajax({
                     type: "POST",
                     url: "${customerAPI}",

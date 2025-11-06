@@ -259,7 +259,7 @@
 
                                     <c:if test="${not empty editBuilding.id}">
                                         <button type="submit" class="btn btn-success flex-fill" id="btnAddOrUpdateBuilding">
-                                            <i class="bi bi-building-add"></i> Cập nhật tòa nhà
+                                            <i class="bi bi-building-check"></i> Cập nhật tòa nhà
                                         </button>
                                         <button type="button" class="btn btn-danger flex-fill" id="btnCancel">
                                             Hủy

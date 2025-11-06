@@ -16,5 +16,5 @@ public interface BuildingService {
     BuildingDTO addOrUpdateBuilding(BuildingDTO buildingDTO);
     BuildingDTO findById(Long id);
     int countTotalItem(List<BuildingSearchResponse> list);
-    AssignmentBuildingDTO addAssignmentBuildingEntity(AssignmentBuildingDTO assignmentBuildingDTO);
+    AssignmentBuildingDTO addAssignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO);
 }

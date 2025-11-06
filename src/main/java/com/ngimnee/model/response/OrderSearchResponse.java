@@ -11,6 +11,8 @@ public class OrderSearchResponse extends AbstractDTO {
     private String email;
     private String address;
     private String status;
+    private String amount;
+    private String paymentMethod;
     private String buildingName;
 
     @Override
@@ -76,6 +78,22 @@ public class OrderSearchResponse extends AbstractDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public String getBuildingName() {

@@ -1,7 +1,6 @@
 package com.ngimnee.repository.custom.impl;
 
 import com.ngimnee.builder.OrderSearchBuilder;
-import com.ngimnee.entity.CustomerEntity;
 import com.ngimnee.entity.OrderEntity;
 import com.ngimnee.model.response.OrderSearchResponse;
 import com.ngimnee.repository.custom.OrderRepositoryCustom;
@@ -27,6 +26,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
         joinTable(orderSearchBuilder, sql);
         queryNormal(orderSearchBuilder, where);
         querySpecial(orderSearchBuilder, where);
+//        groupByQuery(orderSearchBuilder, where);
         sql.append(where);
 
         Query query = entityManager.createNativeQuery(sql.toString(), OrderEntity.class);
@@ -36,7 +36,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     public static void joinTable(OrderSearchBuilder orderSearchBuilder, StringBuilder sql) {
         Long staffId = orderSearchBuilder.getStaffId();
         if(NumberUtils.isNumber(staffId)){
-            sql.append(" INNER JOIN assignmentorder ao ON orders.id = ao.staffid ");
+            sql.append(" INNER JOIN assignmentorder ao ON orders.id = ao.orderid ");
         }
     }
 
@@ -57,7 +57,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                                 where.append(" AND orders." + fieldName + " = " + value);
                             }
                             else {
-                                where.append(" AND orders." + fieldName + " LIKE '% " + value + "%' ");
+                                where.append(" AND orders." + fieldName + " LIKE '%" + value + "%' ");
                             }
 
                         }
@@ -76,6 +76,14 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
             where.append(" AND ao.staffid = " + staffId);
         }
     }
+
+//    public static void groupByQuery(OrderSearchBuilder orderSearchBuilder, StringBuilder where)
+//    {
+//        where.append(" GROUP BY orders.id ");
+//        if(orderSearchBuilder.getStaffId() != null) {
+//            where.append(" , ao.id ");
+//        }
+//    }
 
     @Override
     public int countTotalItem(OrderSearchResponse orderSearchResponse) {

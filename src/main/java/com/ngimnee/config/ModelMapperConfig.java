@@ -9,11 +9,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ModelMapperConfig {
-
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
+        // Field nào không gửi lên thì giữ nguyên
+        mapper.getConfiguration().setSkipNullEnabled(true);
 
+        // Mapping cho BuildingDTO → BuildingEntity
         mapper.addMappings(new PropertyMap<BuildingDTO, BuildingEntity>() {
             @Override
             protected void configure() {

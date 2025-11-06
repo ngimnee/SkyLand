@@ -14,7 +14,6 @@ public class OrderDTO extends AbstractDTO<OrderDTO> {
     private String address;
     private String status;
     private Long customerId;
-    private String customerName;
     private List<Long> buildingIds = new ArrayList<>();
     private List<Long> staffIds = new ArrayList<>();
 
@@ -97,14 +96,6 @@ public class OrderDTO extends AbstractDTO<OrderDTO> {
 
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public List<Long> getBuildingIds() {

@@ -43,7 +43,7 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "status")
     private String status = "DANG_XU_LY";
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,  cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<BuildingEntity> buildings = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
