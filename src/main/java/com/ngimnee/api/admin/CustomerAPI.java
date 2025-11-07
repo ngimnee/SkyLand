@@ -24,7 +24,7 @@ public class CustomerAPI {
     private CustomerService customerService;
 
     @GetMapping
-    public List<CustomerSearchResponse> getBuildings(@ModelAttribute CustomerSearchRequest customerSearchRequest, Pageable pageable) {
+    public List<CustomerSearchResponse> getCustomers(@ModelAttribute CustomerSearchRequest customerSearchRequest, Pageable pageable) {
         List<CustomerSearchResponse> res = customerService.findCustomers(customerSearchRequest, pageable);
         return res;
     }

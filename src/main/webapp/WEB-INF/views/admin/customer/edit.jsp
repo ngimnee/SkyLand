@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Quản Lý Khách Hàng</h1>
+        <h1 class="mt-4">Khách Hàng</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Cập nhật thông tin khách hàng</li>
         </ol>

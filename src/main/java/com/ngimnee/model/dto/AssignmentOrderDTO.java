@@ -2,7 +2,7 @@ package com.ngimnee.model.dto;
 
 import java.util.List;
 
-public class AssignmentOrderDTO {
+public class AssignmentOrderDTO extends OrderDTO {
     private Long orderId;
     private List<Long> staffs;
 

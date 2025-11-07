@@ -9,15 +9,25 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Quản Lý Tòa Nhà</h1>
+        <h1 class="mt-4">Tòa Nhà</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Thêm tòa nhà</li>
+            <c:if test="${empty editBuilding.id}">
+                <li class="breadcrumb-item active">Thêm tòa nhà</li>
+            </c:if>
+            <c:if test="${not empty editBuilding.id}">
+                <li class="breadcrumb-item active">Cập nhật tòa nhà</li>
+            </c:if>
         </ol>
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span><i class="bi-building-add me-1"></i> Thêm tòa nhà</span>
+                        <c:if test="${empty editBuilding.id}">
+                            <span><i class="bi-building-add me-1"></i> Thêm tòa nhà</span>
+                        </c:if>
+                        <c:if test="${not empty editBuilding.id}">
+                            <span><i class="bi-building-check me-1"></i> Cập nhật tòa nhà</span>
+                        </c:if>
                         <a href="${buildingURL}">
                             <i class="bi bi-x-circle"></i>
                         </a>
@@ -234,15 +244,6 @@
 
                                     <div class="col-xl-10">
                                         <input class="form-control" type="file" id="uploadImage" name="imageFile" />
-
-<%--                                        <c:if test="${not empty editBuilding.image}">--%>
-<%--                                            <c:set var="imagePath" value="/repository/${editBuilding.image}" />--%>
-<%--                                            <img src="${imagePath}" id="viewImage" width="300" height="300" style="margin-top: 20px;">--%>
-<%--                                        </c:if>--%>
-
-<%--                                        <c:if test="${empty editBuilding.image}">--%>
-<%--                                            <img src="/admin/image/default.png" id="viewImage" width="300" height="300" style="margin-top: 20px;">--%>
-<%--                                        </c:if>--%>
                                     </div>
                                 </div>
 

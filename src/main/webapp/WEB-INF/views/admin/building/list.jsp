@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Quản Lý Tòa Nhà</h1>
+        <h1 class="mt-4">Tòa Nhà</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Danh sách tòa nhà</li>
         </ol>

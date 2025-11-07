@@ -1,10 +1,12 @@
 package com.ngimnee.controller.admin;
 
 import com.ngimnee.model.dto.CustomerDTO;
+import com.ngimnee.model.dto.TransactionDTO;
 import com.ngimnee.model.request.CustomerSearchRequest;
 import com.ngimnee.model.response.CustomerSearchResponse;
 import com.ngimnee.security.utils.SecurityUtils;
 import com.ngimnee.service.CustomerService;
+import com.ngimnee.service.TransactionService;
 import com.ngimnee.service.UserService;
 import com.ngimnee.utils.DisplayTagUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,13 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+
     @GetMapping("/admin/customer")
     public ModelAndView customerPage(@ModelAttribute CustomerSearchRequest customerSearchRequest,
                                      HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/customer/list");
         mav.addObject("customerSearch", customerSearchRequest);
-
         mav.addObject("listStaff", userService.getStaffs());
-
 
         // Nếu là staff thì giới hạn dữ liệu theo ID
         if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {

@@ -26,7 +26,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
         joinTable(orderSearchBuilder, sql);
         queryNormal(orderSearchBuilder, where);
         querySpecial(orderSearchBuilder, where);
-//        groupByQuery(orderSearchBuilder, where);
+        groupByQuery(orderSearchBuilder, where);
         sql.append(where);
 
         Query query = entityManager.createNativeQuery(sql.toString(), OrderEntity.class);
@@ -38,6 +38,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
         if(NumberUtils.isNumber(staffId)){
             sql.append(" INNER JOIN assignmentorder ao ON orders.id = ao.orderid ");
         }
+//        sql.append(" INNER JOIN building b ON orders.id = b.orderid ");
     }
 
     public static void queryNormal(OrderSearchBuilder orderSearchBuilder, StringBuilder where) {
@@ -48,18 +49,19 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                 field.setAccessible(true);
                 String fieldName = field.getName();
 
+
                 if (!fieldName.equals("staffId")) {
                     Object valueObject = field.get(orderSearchBuilder);
                     if(valueObject != null){
                         String value = valueObject.toString();
                         if(StringUtils.check(value)){
+//                            where.append(" AND ( ");
                             if (NumberUtils.isLong(value) || NumberUtils.isInteger(value)) {
                                 where.append(" AND orders." + fieldName + " = " + value);
                             }
                             else {
                                 where.append(" AND orders." + fieldName + " LIKE '%" + value + "%' ");
                             }
-
                         }
                     }
                 }
@@ -75,15 +77,37 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
         if(NumberUtils.isNumber(staffId)){
             where.append(" AND ao.staffid = " + staffId);
         }
+
+//        try {
+//            Field[] fields = OrderSearchBuilder.class.getDeclaredFields();
+//
+//            for (Field field : fields) {
+//                field.setAccessible(true);
+//                String fieldName = field.getName();
+//
+//                if(!fieldName.equals("staffId")) {
+//                    Object valueObject = field.get(orderSearchBuilder);
+//                    if(valueObject != null){
+//                        String value = valueObject.toString();
+//                        if(StringUtils.check(value)) {
+//                            where.append(" OR b.name LIKE '%" + value + "%' ");
+//                        }
+//                        where.append(" ) ");
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-//    public static void groupByQuery(OrderSearchBuilder orderSearchBuilder, StringBuilder where)
-//    {
-//        where.append(" GROUP BY orders.id ");
-//        if(orderSearchBuilder.getStaffId() != null) {
-//            where.append(" , ao.id ");
-//        }
-//    }
+    public static void groupByQuery(OrderSearchBuilder orderSearchBuilder, StringBuilder where)
+    {
+        where.append(" GROUP BY orders.id ");
+        if(orderSearchBuilder.getStaffId() != null) {
+            where.append(" , ao.id ");
+        }
+    }
 
     @Override
     public int countTotalItem(OrderSearchResponse orderSearchResponse) {

@@ -2,6 +2,8 @@
 <%@include file="/common/taglib.jsp"%>
 <c:url var="customerAPI" value='/api/customer' />
 <c:url var="customerURL" value='/admin/customer' />
+<c:url var="transactionURL" value='/admin/customer/support'/>
+
 
 <html>
 <head>
@@ -9,7 +11,7 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Quản Lý Khách Hàng</h1>
+        <h1 class="mt-4">Khách Hàng</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">Danh sách khách hàng</li>
         </ol>
@@ -99,6 +101,14 @@
                                 defaultsort="2" defaultorder="ascending">
 
                         <!-- Cột dữ liệu -->
+                        <display:column title="Ngày" headerClass="text-center">
+                            <c:if test="${empty customer.modifiedDate}">
+                                <fmt:formatDate value="${customer.createdDate}" pattern="dd/MM/yyyy"/>
+                            </c:if>
+                            <c:if test="${not empty customer.modifiedDate}">
+                                <fmt:formatDate value="${customer.modifiedDate}" pattern="dd/MM/yyyy"/>
+                            </c:if>
+                        </display:column>
                         <display:column property="fullName" title="Họ và tên" headerClass="text-center" />
                         <display:column property="phone" title="SĐT" headerClass="text-center" />
                         <display:column property="email" title="Email" headerClass="text-center" />
@@ -131,7 +141,7 @@
                                     </button>
                                 </security:authorize>
 
-                                <a href="/admin/customer/edit/${customer.id}"
+                                <a href="${transactionURL}/${customer.id}"
                                    class="btn btn-primary btn-sm"
                                    title="CSKH">
                                     <i class="bi bi-headset"></i>

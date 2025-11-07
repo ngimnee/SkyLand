@@ -23,7 +23,7 @@
 
                 <div class="col mb-3">
                     <div class="input-group">
-                        <form:input path="code" class="form-control" placeholder="Nhập mã đơn hàng..." />
+                        <form:input path="code" class="form-control" placeholder="Nhập đơn hàng hoặc tòa nhà..." />
                         <button type="submit" class="btn btn-primary" id="btnSearchOrder">
                             <i class="fas fa-search"></i>
                         </button>
@@ -51,7 +51,14 @@
                                 defaultsort="2" defaultorder="ascending">
 
                         <!-- Cột dữ liệu -->
-                        <display:column property="createdDate" title="Ngày" headerClass="text-center" />
+                        <display:column title="Ngày" headerClass="text-center">
+                            <c:if test="${empty order.modifiedDate}">
+                                <fmt:formatDate value="${order.createdDate}" pattern="dd/MM/yyyy"/>
+                            </c:if>
+                            <c:if test="${not empty order.modifiedDate}">
+                                <fmt:formatDate value="${order.modifiedDate}" pattern="dd/MM/yyyy"/>
+                            </c:if>
+                        </display:column>
                         <display:column property="code" title="Mã đơn hàng" headerClass="text-center" />
                         <display:column property="buildingName" title="Tên tòa nhà" headerClass="text-center" />
                         <display:column property="name" title="Khách hàng" headerClass="text-center" />

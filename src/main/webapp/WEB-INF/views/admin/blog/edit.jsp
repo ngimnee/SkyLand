@@ -2,7 +2,7 @@
 <%@include file="/common/taglib.jsp"%>
 <html>
 <head>
-    <title>Title</title>
+    <title>Tin Tức</title>
 </head>
 <body>
 

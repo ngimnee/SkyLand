@@ -18,7 +18,7 @@
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span><i class="bi bi-person-fill-add"></i> Cập nhật đơn hàng</span>
+                        <span><i class="bi bi-person-fill-check"></i> Cập nhật đơn hàng</span>
                         <a href="${orderURL}">
                             <i class="bi bi-x-circle"></i>
                         </a>
@@ -126,12 +126,12 @@
                     dataType: "json",
                     success: function(respond) {
                         alert("Cập nhật thành công!");
-                        window.location.href = "/admin/order?message=success";
                         window.location.reload();
+                        window.location.href = "${orderURL}";
                     },
                     error: function(respond) {
                         console.log("Failed");
-                        window.location.href = "<c:url value='/admin/order?message=error' />";
+                        window.location.href = "<c:url value='${orderURL}?message=error'/>";
                         console.log(respond);
                         alert("Cập nhật thất bại!");
                     }

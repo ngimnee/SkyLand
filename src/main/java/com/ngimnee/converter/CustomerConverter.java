@@ -27,8 +27,8 @@ public class CustomerConverter {
         return customerDTO;
     }
 
-    public void updateEntityFromDTO(CustomerDTO customerDTO, CustomerEntity entity) {
+    public void updateEntityFromDTO(CustomerDTO customerDTO, CustomerEntity customerEntity) {
         modelMapper.getConfiguration().setPropertyCondition(context -> true);
-        modelMapper.map(customerDTO, entity);
+        modelMapper.map(customerDTO, customerEntity);
     }
 }
