@@ -1,36 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="customerAPI" value='/api/customer' />
-<c:url var="customerURL" value='/admin/customer' />
+<c:url var="userAPI" value='/api/user'/>
+<c:url var="userURL" value='/admin/user'/>
 <html>
 <head>
-    <title>Khách Hàng</title>
+    <title>Người Dùng</title>
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Khách Hàng</h1>
+        <h1 class="mt-4">Người dùng</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Cập nhật thông tin khách hàng</li>
+            <li class="breadcrumb-item active">Cập nhật vai trò người dùng</li>
         </ol>
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <span><i class="bi bi-person-fill-add"></i> Thông tin khách hàng</span>
-                        <a href="${customerURL}">
+                        <span><i class="bi bi-person-fill-add"></i> Vai trò người dùng</span>
+                        <a href="${userURL}">
                             <i class="bi bi-x-circle"></i>
                         </a>
                     </div>
 
-                    <div id="editForm">
+                    <div class="collapse show" id="searchForm">
                         <div class="card-body">
-                            <form:form id="formEdit" modelAttribute="editCustomer" method="GET">
+                            <c:if test="${not empty messageResponse}">
+                                <div class="alert alert-block alert-${alert}">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="ace-icon fa fa-times"></i>
+                                    </button>
+                                        ${messageResponse}
+                                </div>
+                            </c:if>
+                            <form:form id="formUpdate" modelAttribute="model" method="GET">
                                 <div class="row mb-3 align-items-center">
-                                    <label class="col-xl-2 col-form-label">
-                                        Họ và tên<span class="text-danger">*</span>
-                                    </label>
+                                    <label class="col-xl-2 col-form-label">Họ tên</label>
                                     <div class="col-xl-10">
-                                        <form:input class="form-control" path="fullName" required="true" />
+                                        <form:input class="form-control" path="fullName" readonly="true" />
                                     </div>
                                 </div>
                                 <div class="row mb-3 align-items-center">

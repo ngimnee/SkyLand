@@ -1,205 +1,217 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@include file="/common/taglib.jsp" %>
-<c:url var="formUrl" value="/admin/user"/>
-<c:url var="formAjax" value="/api/user"/>
-<!DOCTYPE html PUBLIC>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/common/taglib.jsp"%>
+<c:url var="userAPI" value='/api/user'/>
+<c:url var="userURL" value='/admin/user'/>
+<c:url var="editUserURL" value="/admin/user/edit"/>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>
-        <%--<spring:message code="label.user.list.jsp"/>--%>
-        Danh sách người dùng
-    </title>
+    <title>Tài Khoản</title>
 </head>
-
 <body>
-<div class="main-content">
-    <form:form modelAttribute="model" action="${formUrl}" id="listForm" method="GET">
-        <div class="main-content-inner">
-            <div class="breadcrumbs" id="breadcrumbs">
-                <script type="text/javascript">
-                    try {
-                        ace.settings.check('breadcrumbs', 'fixed')
-                    } catch (e) {
-                    }
-                </script>
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Tài Khoản</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Danh sách tài khoản</li>
+    </ol>
 
-                <ul class="breadcrumb">
-                    <li>
-                        <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="<c:url value="/admin/home"/>">
-                                <%--<spring:message code="label.home"/>--%>
-                            Trang chủ
-                        </a>
-                    </li>
-                    <li class="active">
-                            <%--<spring:message code="label.user.list.jsp"/>--%>
-                        Danh sách người dùng
-                    </li>
-                </ul>
-                <!-- /.breadcrumb -->
-            </div>
-            <div class="page-content">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <c:if test="${messageResponse!=null}">
-                            <div class="alert alert-block alert-${alert}">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <i class="ace-icon fa fa-times"></i>
-                                </button>
-                                    ${messageResponse}
-                            </div>
-                        </c:if>
-                        <!-- PAGE CONTENT BEGINS -->
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="widget-box table-filter">
-                                    <div class="widget-header">
-                                        <h4 class="widget-title">
-                                                <%--<spring:message code="label.search"/>--%>
-                                            Tìm kiếm
-                                        </h4>
-                                        <div class="widget-toolbar">
-                                            <a href="#" data-action="collapse">
-                                                <i class="ace-icon fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <div class="form-horizontal">
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label">
-                                                            <%--<spring:message code="label.search.value"/>--%>
-                                                        Giá trị cần tìm
-                                                    </label>
-                                                    <div class="col-sm-8">
-                                                        <div class="fg-line">
-                                                            <form:input path="searchValue" cssClass="form-control input-sm"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"></label>
-                                                    <div class="col-sm-8">
-                                                        <button id="btnSearch" type="button"
-                                                                class="btn btn-sm btn-success">
-                                                                <%--spring:message code="label.search"/>--%>
-                                                            Tìm kiếm
-                                                            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+    <!-- Form tìm kiếm -->
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-search me-1"></i> Tìm kiếm</span>
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#searchForm" role="button">
+                        <i class="fas fa-chevron-down" id="toggleArrow"></i>
+                    </a>
+                </div>
+                <div class="collapse show" id="searchForm">
+                    <div class="card-body">
+                        <form:form id="listForm" modelAttribute="MODEL" action="${userURL}" method="GET">
+                            <div class="row">
+                                <div class="col-xl-3 mb-3">
+                                    <label>Tài khoản</label>
+                                    <form:input class="form-control" path="userName"/>
                                 </div>
-                                <div class="table-btn-controls">
-                                    <div class="pull-right tableTools-container">
-                                        <div class="dt-buttons btn-overlap btn-group">
-                                            <a flag="info"
-                                               class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
-                                               data-toggle="tooltip"
-                                                <%--title='<spring:message code="label.user.add"/>'--%>
-                                               title="Thêm người dùng"
-                                               href='<c:url value="/admin/user-edit"/>'>
-															<span>
-																<i class="fa fa-plus-circle bigger-110 purple"></i>
-															</span>
-                                            </a>
-                                            <button id="btnDelete" type="button" disabled
-                                                    class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-                                                    data-toggle="tooltip"
-                                                    title="Xóa bài viết" onclick="warningBeforeDelete()">
-															<span>
-																<i class="fa fa-trash-o bigger-110 pink"></i>
-															</span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                <div class="col-xl-9 mb-3">
+                                    <label>Họ tên</label>
+                                    <form:input class="form-control" path="fullName"/>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="table-responsive">
-                                    <display:table name="model.listResult" cellspacing="0" cellpadding="0"
-                                                   requestURI="${formUrl}" partialList="true" sort="external"
-                                                   size="${model.totalItems}" defaultsort="2" defaultorder="ascending"
-                                                   id="tableList" pagesize="${model.maxPageItems}"
-                                                   export="false"
-                                                   class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                                   style="margin: 3em 0 1.5em;">
-                                        <display:column title="<fieldset class='form-group'>
-												        <input type='checkbox' id='checkAll' class='check-box-element'>
-												        </fieldset>" class="center select-cell"
-                                                        headerClass="center select-cell">
-                                            <fieldset>
-                                                <input type="checkbox" name="checkList" value="${tableList.id}"
-                                                       id="checkbox_${tableList.id}" class="check-box-element"/>
-                                            </fieldset>
-                                        </display:column>
-                                        <display:column headerClass="text-left" property="userName" title="Tên"/>
-                                        <display:column headerClass="text-left" property="fullName" title="full name"/>
-                                        <display:column headerClass="col-actions" title="Thao tác">
-                                            <c:if test="${tableList.roleCode != 'MANAGER'}">
-                                                <a class="btn btn-sm btn-primary btn-edit" data-toggle="tooltip"
-                                                   title="Cập nhật người dùng"
-                                                   href='<c:url value="/admin/user-edit-${tableList.id}"/>'>
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                </a>
-                                            </c:if>
-                                            <c:if test="${tableList.roleCode == 'MANAGER'}">
-                                                <p>Không đươc thao tác</p>
-                                            </c:if>
-                                        </display:column>
-                                    </display:table>
+                            <div class="row">
+                                <div class="col-xl-6 mb-3">
+                                    <label>SĐT</label>
+                                    <form:input class="form-control" path="phone"/>
+                                </div>
+                                <div class="col-xl-6 mb-3">
+                                    <label>Email</label>
+                                    <form:input class="form-control" path="email"/>
                                 </div>
                             </div>
-                        </div>
+
+                            <button type="submit" class="btn btn-primary w-100" id="btnSearchUser">
+                                <i class="fas fa-search me-1"></i> Tìm kiếm
+                            </button>
+                        </form:form>
                     </div>
                 </div>
             </div>
         </div>
-    </form:form>
+    </div>
+
+    <!-- Bảng danh sách -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-table me-1"></i> Danh sách tài khoản</span>
+        </div>
+
+        <div class="card-body">
+            <form:form id="userListForm" modelAttribute="model">
+                <display:table name="model.listResult"
+                               requestURI="${userURL}"
+                               id="user"
+                               class="table table-striped table-bordered align-middle text-start"
+                               cellspacing="0" cellpadding="0"
+                               export="false"
+                               pagesize="${model.maxPageItems}"
+                               partialList="true"
+                               size="${model.totalItems}"
+                               defaultsort="2" defaultorder="ascending">
+
+                    <!-- Checkbox chọn -->
+                    <display:column title="<input type='checkbox' id='checkAll'/>"
+                                    headerClass="text-center" class="text-center">
+                        <input type="checkbox" name="ids" value="${user.id}" class="checkItem"/>
+                    </display:column>
+
+                    <!-- Cột dữ liệu -->
+                    <display:column title="Ngày" headerClass="text-center">
+                        <c:choose>
+                            <c:when test="${not empty user.modifiedDate}">
+                                <fmt:formatDate value="${user.modifiedDate}" pattern="dd/MM/yyyy"/>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:formatDate value="${user.createdDate}" pattern="dd/MM/yyyy"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </display:column>
+
+                    <display:column property="userName" title="Tài khoản" headerClass="text-center"/>
+                    <display:column property="fullName" title="Họ tên" headerClass="text-center"/>
+                    <display:column property="phone" title="SĐT" headerClass="text-center"/>
+                    <display:column property="email" title="Email" headerClass="text-center"/>
+
+<%--                    <security:authorize access="hasRole('MANAGER')">--%>
+<%--                        <display:column title="Trạng thái" headerClass="text-center" class="text-center">--%>
+<%--                            <c:choose>--%>
+<%--                                <c:when test="${user.status == 1}">Hoạt động</c:when>--%>
+<%--                                <c:otherwise>Ngưng hoạt động</c:otherwise>--%>
+<%--                            </c:choose>--%>
+<%--                        </display:column>--%>
+
+<%--                        <display:column property="roleCode" title="Vai trò" headerClass="text-center"/>--%>
+<%--                    </security:authorize>--%>
+
+                    <!-- Cột thao tác -->
+                    <display:column title="Thao tác" headerClass="text-center" class="text-center">
+                        <div class="btn-group" role="group">
+                            <a href="${editUserURL}/${user.id}" class="btn btn-info btn-sm" title="Chỉnh sửa">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <security:authorize access="hasRole('MANAGER')">
+                                <button type="button" class="btn btn-danger btn-sm" title="Xóa"
+                                        onclick="deleteUser(${user.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </security:authorize>
+                        </div>
+                    </display:column>
+                </display:table>
+
+                <!-- Nút xoá nhiều -->
+                <security:authorize access="hasRole('MANAGER')">
+                    <div class="d-flex justify-content-start align-items-stretch mt-3 pt-2"
+                         style="border-top: 1px solid #ccc;">
+                        <button id="btnDeleteUsers" type="button" class="btn btn-danger" title="Xóa tài khoản">
+                            <i class="bi bi-trash"></i> Xóa đã chọn
+                        </button>
+                    </div>
+                </security:authorize>
+            </form:form>
+        </div>
+    </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        var someJsVar = "<c:out value='${addOrEditNews}'/>";
-        $('#btnSearch').click(function () {
-            $('#listForm').submit();
-        });
+<!-- Script -->
+<script>
+    // Nút tìm kiếm
+    $('#btnSearchUser').click(function (e) {
+        e.preventDefault();
+        $('#listForm').submit();
     });
 
-    function warningBeforeDelete() {
-        showAlertBeforeDelete(function () {
-            event.preventDefault();
-            var dataArray = $('tbody input[type=checkbox]:checked').map(function () {
-                return $(this).val();
-            }).get();
-            deleteUser(dataArray);
-        });
+    // Chọn tất cả
+    $('#checkAll').on('change', function () {
+        $('.checkItem').prop('checked', this.checked);
+    });
+
+    // Xóa 1 người dùng
+    function deleteUser(id) {
+        if (confirm("Bạn có chắc muốn xóa người dùng này không?")) {
+            $.ajax({
+                type: "DELETE",
+                url: "${userAPI}",
+                contentType: "application/json",
+                data: JSON.stringify([id]),
+                success: function () {
+                    alert("✅ Xóa thành công!");
+                    location.reload();
+                },
+                error: function (xhr) {
+                    console.error("❌ Lỗi khi xóa:", xhr);
+                    alert("❌ Xóa thất bại!");
+                }
+            });
+        }
     }
 
-    function deleteUser(data) {
-        $.ajax({
-            url: '${formAjax}/',
-            type: 'DELETE',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (res) {
-                window.location.href = "<c:url value='/admin/user-list?message=delete_success'/>";
-            },
-            error: function (res) {
-                console.log(res);
-                window.location.href = "<c:url value='/admin/user-list?message=error_system'/>";
+    // Xóa nhiều người dùng
+    function deleteUsers() {
+        const selectedIds = [];
+        $("input[name='ids']:checked").each(function () {
+            const val = $(this).val();
+            if (val && !isNaN(val)) {
+                selectedIds.push(parseInt(val));
             }
         });
+
+        if (selectedIds.length === 0) {
+            alert("⚠️ Vui lòng chọn ít nhất một người dùng để xóa!");
+            return;
+        }
+
+        if (confirm("Bạn có chắc muốn xóa người dùng đã chọn không?")) {
+            $.ajax({
+                type: "DELETE",
+                url: "${userAPI}",
+                contentType: "application/json",
+                data: JSON.stringify(selectedIds),
+                success: function () {
+                    alert("✅ Xóa thành công!");
+                    location.reload();
+                },
+                error: function (xhr) {
+                    console.error("❌ Lỗi khi xóa:", xhr);
+                    alert("❌ Xóa thất bại!");
+                }
+            });
+        }
     }
+
+    // Gắn sự kiện nút xoá nhiều
+    $('#btnDeleteUsers').click(function (e) {
+        e.preventDefault();
+        deleteUsers();
+    });
 </script>
 </body>
-
 </html>

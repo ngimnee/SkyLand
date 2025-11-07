@@ -11,6 +11,7 @@ public class OrderSearchRequest extends AbstractDTO {
     private String email;
     private String address;
     private String status;
+    private Long staffId;
 
     @Override
     public Long getId() {
@@ -76,5 +77,13 @@ public class OrderSearchRequest extends AbstractDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
 }

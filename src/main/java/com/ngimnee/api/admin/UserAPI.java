@@ -4,30 +4,46 @@ import com.ngimnee.constant.SystemConstant;
 import com.ngimnee.exception.MyException;
 import com.ngimnee.model.dto.PasswordDTO;
 import com.ngimnee.model.dto.UserDTO;
+import com.ngimnee.model.request.UserSearchRequest;
+import com.ngimnee.model.response.UserSearchResponse;
 import com.ngimnee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/user")
-public class UserAPI {
+import java.util.List;
 
+@RestController
+@RequestMapping("/api/user")
+public class UserAPI {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserDTO> createUsers(@RequestBody UserDTO newUser) {
-        return ResponseEntity.ok(userService.insert(newUser));
+    @GetMapping
+    public List<UserSearchResponse> getUsers(@ModelAttribute UserSearchRequest userSearchRequest, Pageable pageable) {
+        List<UserSearchResponse> res = userService.getUsers(userSearchRequest, pageable);
+        return res;
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUsers(@PathVariable("id") long id, @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.update(id, userDTO));
+    @PostMapping
+    public ResponseEntity<UserDTO> createOrUpdateUser(@RequestBody UserDTO newUser) {
+        if (newUser.getId() != null) {
+            return ResponseEntity.ok(userService.updateUser(newUser.getId(), newUser));
+        } else {
+            return ResponseEntity.ok(userService.createUser(newUser));
+        }
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUsers(@PathVariable("id") long id,
+                                               @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.updateUser(id, userDTO));
     }
 
     @PutMapping("/change-password/{id}")
-    public ResponseEntity<String> changePasswordUser(@PathVariable("id") long id, @RequestBody PasswordDTO passwordDTO) {
+    public ResponseEntity<String> changePasswordUser(@PathVariable("id") long id,
+                                                     @RequestBody PasswordDTO passwordDTO) {
         try {
             userService.updatePassword(id, passwordDTO);
             return ResponseEntity.ok(SystemConstant.UPDATE_SUCCESS);
@@ -43,14 +59,15 @@ public class UserAPI {
     }
 
     @PutMapping("/profile/{username}")
-    public ResponseEntity<UserDTO> updateProfileOfUser(@PathVariable("username") String username, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateProfileOfUser(@PathVariable("username") String username,
+                                                       @RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateProfileOfUser(username, userDTO));
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUsers(@RequestBody long[] idList) {
-        if (idList.length > 0) {
-            userService.delete(idList);
+    public ResponseEntity<Void> deleteUsers(@RequestBody Long[] ids) {
+        if (ids != null &&ids.length > 0) {
+            userService.deleteUser(ids);
         }
         return ResponseEntity.noContent().build();
     }

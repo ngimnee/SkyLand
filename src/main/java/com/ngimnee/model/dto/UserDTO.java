@@ -7,8 +7,10 @@ import java.util.Map;
 
 public class UserDTO extends AbstractDTO {
     private String userName;
-    private String fullName;
     private String password;
+    private String fullName;
+    protected String phone;
+    private String email;
     private Integer status;
     private List<RoleDTO> roles = new ArrayList<>();
     private String roleName;
@@ -39,6 +41,22 @@ public class UserDTO extends AbstractDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getStatus() {

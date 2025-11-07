@@ -2,9 +2,11 @@ package com.ngimnee.controller.admin;
 
 import com.ngimnee.constant.SystemConstant;
 import com.ngimnee.model.dto.UserDTO;
+import com.ngimnee.model.request.UserSearchRequest;
+import com.ngimnee.model.response.UserSearchResponse;
 import com.ngimnee.security.utils.SecurityUtils;
+import com.ngimnee.service.RoleService;
 import com.ngimnee.service.UserService;
-import com.ngimnee.service.impl.RoleServiceImpl;
 import com.ngimnee.utils.DisplayTagUtils;
 import com.ngimnee.utils.MessageUtils;
 import org.apache.commons.lang.StringUtils;
@@ -15,77 +17,106 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @Controller(value = "usersControllerOfAdmin")
 public class UserController {
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private MessageUtils messageUtil;
 
-	@Autowired
-	private UserService userService;
+    @RequestMapping(value = "/admin/user", method = RequestMethod.GET)
+    public ModelAndView getUsers(@ModelAttribute(SystemConstant.MODEL) UserSearchRequest userSearchRequest,
+                                 HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin/user/list");
+        mav.addObject(SystemConstant.MODEL, userSearchRequest);
 
-	@Autowired
-	private RoleServiceImpl roleServiceImpl;
+        // Nếu là staff thì chỉ được xem user có role USER
+        if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
+            userSearchRequest.setRoleCode(Collections.singletonList("USER"));
+        }
+        if (!request.getParameterMap().containsKey("isActive")) {
+            userSearchRequest.setStatus(1);
+        }
 
-	@Autowired
-	private MessageUtils messageUtil;
+        UserSearchResponse model = new UserSearchResponse();
+        DisplayTagUtils.of(request, model);
 
-	@RequestMapping(value = "/admin/user", method = RequestMethod.GET)
-	public ModelAndView getNews(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("admin/user/list");
-		DisplayTagUtils.of(request, model);
-		List<UserDTO> news = userService.getUsers(model.getSearchValue(), PageRequest.of(model.getPage() - 1, model.getMaxPageItems()));
-		model.setListResult(news);
-		model.setTotalItems(userService.countTotalItems());
-		mav.addObject(SystemConstant.MODEL, model);
-		initMessageResponse(mav, request);
-		return mav;
-	}
+        List<UserSearchResponse> users = userService.getUsers(
+                userSearchRequest,
+                PageRequest.of(model.getPage() - 1, model.getMaxPageItems())
+        );
 
-	@RequestMapping(value = "/admin/user/edit", method = RequestMethod.GET)
-	public ModelAndView addUser(@ModelAttribute(SystemConstant.MODEL) UserDTO model, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("admin/user/edit");
-		model.setRoleDTOs(roleServiceImpl.getRoles());
-		initMessageResponse(mav, request);
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
-	}
+        model.setListResult(users);
+        model.setTotalItems(userService.countTotalItems());
+        mav.addObject("MODEL", userSearchRequest);
+        mav.addObject(SystemConstant.MODEL, model);
+        initMessageResponse(mav, request);
+        return mav;
+    }
 
-	@RequestMapping(value = "/admin/profile/{username}", method = RequestMethod.GET)
-	public ModelAndView updateProfile(@PathVariable("username") String username, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("admin/user/profile");
-		UserDTO model = userService.findOneByUserName(username);
-		initMessageResponse(mav, request);
-		model.setRoleDTOs(roleServiceImpl.getRoles());
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
-	}
+    @GetMapping("/admin/user/edit")
+    public ModelAndView addUser(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("edit");
+        UserDTO model = new UserDTO();
+        model.setRoleDTOs(roleService.getRoles());
+        mav.addObject(SystemConstant.MODEL, model);
+        initMessageResponse(mav, request);
+        return mav;
+    }
 
-	@RequestMapping(value = "/admin/user/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView updateUser(@PathVariable("id") Long id, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("admin/user/edit");
-		UserDTO model = userService.findUserById(id);
-		model.setRoleDTOs(roleServiceImpl.getRoles());
-		initMessageResponse(mav, request);
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
-	}
+    @GetMapping("/admin/user/edit/{id}")
+    public ModelAndView editUser(@PathVariable("id") Long id, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("edit");
+        UserDTO model = userService.findUserById(id);
+        model.setRoleDTOs(roleService.getRoles());
+        mav.addObject(SystemConstant.MODEL, model);
+        initMessageResponse(mav, request);
+        return mav;
+    }
 
-	@RequestMapping(value = "/admin/profile/password", method = RequestMethod.GET)
-	public ModelAndView updatePassword(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("admin/user/password");
-		UserDTO model = userService.findOneByUserName(SecurityUtils.getPrincipal().getUsername());
-		initMessageResponse(mav, request);
-		mav.addObject(SystemConstant.MODEL, model);
-		return mav;
-	}
+    /** 👉 Chỉ cập nhật vai trò + trạng thái */
+    @GetMapping("/admin/user/update/{id}")
+    public ModelAndView updateRoleUser(@PathVariable("id") Long id, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin/user/update");
+        UserDTO user = userService.findUserById(id);
+        user.setRoleDTOs(roleService.getRoles());
+        initMessageResponse(mav, request);
+        mav.addObject(SystemConstant.MODEL, user);
+        return mav;
+    }
 
-	private void initMessageResponse(ModelAndView mav, HttpServletRequest request) {
-		String message = request.getParameter("message");
-		if (message != null && StringUtils.isNotEmpty(message)) {
-			Map<String, String> messageMap = messageUtil.getMessage(message);
-			mav.addObject(SystemConstant.ALERT, messageMap.get(SystemConstant.ALERT));
-			mav.addObject(SystemConstant.MESSAGE_RESPONSE, messageMap.get(SystemConstant.MESSAGE_RESPONSE));
-		}
-	}
+    /** Hồ sơ cá nhân */
+    @RequestMapping(value = "/admin/profile/{username}", method = RequestMethod.GET)
+    public ModelAndView updateProfile(@PathVariable("username") String username, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin/user/profile");
+        UserDTO model = userService.findOneByUserName(username);
+        model.setRoleDTOs(roleService.getRoles());
+        mav.addObject(SystemConstant.MODEL, model);
+        initMessageResponse(mav, request);
+        return mav;
+    }
+
+    @RequestMapping(value = "/admin/profile/password", method = RequestMethod.GET)
+    public ModelAndView updatePassword(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin/user/password");
+        UserDTO model = userService.findOneByUserName(SecurityUtils.getPrincipal().getUsername());
+        mav.addObject(SystemConstant.MODEL, model);
+        initMessageResponse(mav, request);
+        return mav;
+    }
+
+    private void initMessageResponse(ModelAndView mav, HttpServletRequest request) {
+        String message = request.getParameter("message");
+        if (StringUtils.isNotEmpty(message)) {
+            Map<String, String> messageMap = messageUtil.getMessage(message);
+            mav.addObject(SystemConstant.ALERT, messageMap.get(SystemConstant.ALERT));
+            mav.addObject(SystemConstant.MESSAGE_RESPONSE, messageMap.get(SystemConstant.MESSAGE_RESPONSE));
+        }
+    }
 }

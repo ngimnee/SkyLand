@@ -34,7 +34,7 @@ public class OrderController {
         mav.addObject("listStaff", userService.getStaffs());
 
         if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
-            orderSearchRequest.setId(SecurityUtils.getPrincipal().getId());
+            orderSearchRequest.setStaffId(SecurityUtils.getPrincipal().getId());
         }
 
         OrderSearchResponse model =  new OrderSearchResponse();

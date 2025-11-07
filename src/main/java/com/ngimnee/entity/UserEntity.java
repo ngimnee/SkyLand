@@ -1,13 +1,17 @@
 package com.ngimnee.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "user")
 public class UserEntity extends BaseEntity {
-
     private static final long serialVersionUID = -4988455421375043688L;
 
     @Id
@@ -17,14 +21,17 @@ public class UserEntity extends BaseEntity {
     @Column(name = "username", nullable = false, unique = true)
     private String userName;
 
-    @Column(name = "fullname", nullable = false)
-    private String fullName;
-
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "fullname", nullable = false)
+    private String fullName;
+
     @Column(name = "status", nullable = false)
     private Integer status;
+
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -72,13 +79,7 @@ public class UserEntity extends BaseEntity {
         this.fullName = fullName;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Integer getStatus() {
         return status;

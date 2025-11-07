@@ -32,7 +32,7 @@
                             <i class="bi bi-x-circle"></i>
                         </a>
                     </div>
-                    <div class="collapse show">
+                    <div id="editForm">
                         <div class="card-body">
                             <form:form id="form-edit" modelAttribute="editBuilding" method="GET">
                                 <div class="row mb-3 align-items-center">
@@ -267,8 +267,7 @@
                                         </button>
                                     </c:if>
                                 </div>
-
-                                <form:hidden path="id" id="buildingId" />
+                                <form:hidden path="id" id="buildingId"/>
                             </form:form>
                         </div>
                     </div>

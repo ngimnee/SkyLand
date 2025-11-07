@@ -1,7 +1,9 @@
 package com.ngimnee.config;
 
 import com.ngimnee.entity.BuildingEntity;
+import com.ngimnee.entity.UserEntity;
 import com.ngimnee.model.dto.BuildingDTO;
+import com.ngimnee.model.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,17 @@ public class ModelMapperConfig {
                 skip(destination.getUsers());
                 skip(destination.getOrder());
                 skip(destination.getRentAreas());
+            }
+        });
+
+        // Cấu hình cho UserDTO → UserEntity
+        mapper.addMappings(new PropertyMap<UserDTO, UserEntity>() {
+            @Override
+            protected void configure() {
+                skip(destination.getId());
+                skip(destination.getUserName());
+                skip(destination.getPassword());
+                skip(destination.getRoles());
             }
         });
 

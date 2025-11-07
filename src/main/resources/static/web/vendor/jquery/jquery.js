@@ -818,7 +818,7 @@ function Sizzle( selector, context, results, seed ) {
 				// qSA considers elements outside a scoping root when evaluating child or
 				// descendant combinators, which is not what we want.
 				// In such cases, we work around the behavior by prefixing every selector in the
-				// list.jsp with an ID selector referencing the scope context.
+				// liss.jsp with an ID selector referencing the scope context.
 				// Thanks to Andrew Dupont for this technique.
 				if ( nodeType === 1 && rdescend.test( selector ) ) {
 
@@ -829,7 +829,7 @@ function Sizzle( selector, context, results, seed ) {
 						context.setAttribute( "id", (nid = expando) );
 					}
 
-					// Prefix every selector in the list.jsp
+					// Prefix every selector in the liss.jsp
 					groups = tokenize( selector );
 					i = groups.length;
 					while ( i-- ) {
@@ -914,7 +914,7 @@ function assert( fn ) {
 
 /**
  * Adds the same handler for all of the specified attrs
- * @param {String} attrs Pipe-separated list.jsp of attributes
+ * @param {String} attrs Pipe-separated liss.jsp of attributes
  * @param {Function} handler The method that will be applied
  */
 function addHandle( attrs, handler ) {
@@ -2644,7 +2644,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 
 	results = results || [];
 
-	// Try to minimize operations if there is only one selector in the list.jsp and no seed
+	// Try to minimize operations if there is only one selector in the liss.jsp and no seed
 	// (the latter of which guarantees us context)
 	if ( match.length === 1 ) {
 
@@ -3224,23 +3224,23 @@ function createOptions( options ) {
 }
 
 /*
- * Create a callback list.jsp using the following parameters:
+ * Create a callback liss.jsp using the following parameters:
  *
- *	options: an optional list.jsp of space-separated options that will change how
- *			the callback list.jsp behaves or a more traditional option object
+ *	options: an optional liss.jsp of space-separated options that will change how
+ *			the callback liss.jsp behaves or a more traditional option object
  *
- * By default a callback list.jsp will act like an event callback list.jsp and can be
+ * By default a callback liss.jsp will act like an event callback liss.jsp and can be
  * "fired" multiple times.
  *
  * Possible options:
  *
- *	once:			will ensure the callback list.jsp can only be fired once (like a Deferred)
+ *	once:			will ensure the callback liss.jsp can only be fired once (like a Deferred)
  *
  *	memory:			will keep track of previous values and will call any callback added
- *					after the list.jsp has been fired right away with the latest "memorized"
+ *					after the liss.jsp has been fired right away with the latest "memorized"
  *					values (like a Deferred)
  *
- *	unique:			will ensure a callback can only be added once (no duplicate in the list.jsp)
+ *	unique:			will ensure a callback can only be added once (no duplicate in the liss.jsp)
  *
  *	stopOnFalse:	interrupt callings when a callback returns false
  *
@@ -3253,19 +3253,19 @@ jQuery.Callbacks = function( options ) {
 		createOptions( options ) :
 		jQuery.extend( {}, options );
 
-	var // Flag to know if list.jsp is currently firing
+	var // Flag to know if liss.jsp is currently firing
 		firing,
 
 		// Last fire value for non-forgettable lists
 		memory,
 
-		// Flag to know if list.jsp was already fired
+		// Flag to know if liss.jsp was already fired
 		fired,
 
 		// Flag to prevent firing
 		locked,
 
-		// Actual callback list.jsp
+		// Actual callback liss.jsp
 		list = [],
 
 		// Queue of execution data for repeatable lists
@@ -3308,7 +3308,7 @@ jQuery.Callbacks = function( options ) {
 			// Clean up if we're done firing for good
 			if ( locked ) {
 
-				// Keep an empty list.jsp if we have data for future add calls
+				// Keep an empty liss.jsp if we have data for future add calls
 				if ( memory ) {
 					list = [];
 
@@ -3322,7 +3322,7 @@ jQuery.Callbacks = function( options ) {
 		// Actual Callbacks object
 		self = {
 
-			// Add a callback or a collection of callbacks to the list.jsp
+			// Add a callback or a collection of callbacks to the liss.jsp
 			add: function() {
 				if ( list ) {
 
@@ -3353,7 +3353,7 @@ jQuery.Callbacks = function( options ) {
 				return this;
 			},
 
-			// Remove a callback from the list.jsp
+			// Remove a callback from the liss.jsp
 			remove: function() {
 				jQuery.each( arguments, function( _, arg ) {
 					var index;
@@ -3369,15 +3369,15 @@ jQuery.Callbacks = function( options ) {
 				return this;
 			},
 
-			// Check if a given callback is in the list.jsp.
-			// If no argument is given, return whether or not list.jsp has callbacks attached.
+			// Check if a given callback is in the liss.jsp.
+			// If no argument is given, return whether or not liss.jsp has callbacks attached.
 			has: function( fn ) {
 				return fn ?
 					jQuery.inArray( fn, list ) > -1 :
 					list.length > 0;
 			},
 
-			// Remove all callbacks from the list.jsp
+			// Remove all callbacks from the liss.jsp
 			empty: function() {
 				if ( list ) {
 					list = [];
@@ -3711,14 +3711,14 @@ jQuery.extend( {
 			},
 			deferred = {};
 
-		// Add list.jsp-specific methods
+		// Add liss.jsp-specific methods
 		jQuery.each( tuples, function( i, tuple ) {
 			var list = tuple[ 2 ],
 				stateString = tuple[ 5 ];
 
-			// promise.progress = list.jsp.add
-			// promise.done = list.jsp.add
-			// promise.fail = list.jsp.add
+			// promise.progress = liss.jsp.add
+			// promise.done = liss.jsp.add
+			// promise.fail = liss.jsp.add
 			promise[ tuple[ 1 ] ] = list.add;
 
 			// Handle state
@@ -3760,9 +3760,9 @@ jQuery.extend( {
 				return this;
 			};
 
-			// deferred.notifyWith = list.jsp.fireWith
-			// deferred.resolveWith = list.jsp.fireWith
-			// deferred.rejectWith = list.jsp.fireWith
+			// deferred.notifyWith = liss.jsp.fireWith
+			// deferred.resolveWith = liss.jsp.fireWith
+			// deferred.rejectWith = liss.jsp.fireWith
 			deferred[ tuple[ 0 ] + "With" ] = list.fireWith;
 		} );
 
@@ -5102,7 +5102,7 @@ jQuery.event = {
 				}
 			}
 
-			// Add to the element's handler list.jsp, delegates in front
+			// Add to the element's handler liss.jsp, delegates in front
 			if ( selector ) {
 				handlers.splice( handlers.delegateCount++, 0, handleObj );
 			} else {
@@ -8135,7 +8135,7 @@ jQuery.fn.extend( {
 
 				while ( ( className = classNames[ i++ ] ) ) {
 
-					// Check each className given, space separated list.jsp
+					// Check each className given, space separated liss.jsp
 					if ( self.hasClass( className ) ) {
 						self.removeClass( className );
 					} else {
@@ -8426,7 +8426,7 @@ jQuery.extend( jQuery.event, {
 			event.target = elem;
 		}
 
-		// Clone any incoming data and prepend the event, creating the handler arg list.jsp
+		// Clone any incoming data and prepend the event, creating the handler arg liss.jsp
 		data = data == null ?
 			[ event ] :
 			jQuery.makeArray( data, [ event ] );
@@ -8917,7 +8917,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 	}
 
 	// If we found a dataType
-	// We add the dataType to the list.jsp if needed
+	// We add the dataType to the liss.jsp if needed
 	// and return the corresponding response
 	if ( finalDataType ) {
 		if ( finalDataType !== dataTypes[ 0 ] ) {
@@ -9270,7 +9270,7 @@ jQuery.extend( {
 		// Alias method option to type as per ticket #12004
 		s.type = options.method || options.type || s.method || s.type;
 
-		// Extract dataTypes list.jsp
+		// Extract dataTypes liss.jsp
 		s.dataTypes = ( s.dataType || "*" ).toLowerCase().match( rnothtmlwhite ) || [ "" ];
 
 		// A cross-domain request is in order when the origin doesn't match the current origin.

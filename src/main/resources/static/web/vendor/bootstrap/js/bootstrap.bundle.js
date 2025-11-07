@@ -2363,7 +2363,7 @@
   }
 
   /**
-   * Loop trough the list.jsp of modifiers and run them in order,
+   * Loop trough the liss.jsp of modifiers and run them in order,
    * each of them will then edit the data object.
    * @method
    * @memberof Popper.Utils
@@ -2620,7 +2620,7 @@
    * @memberof Popper.Utils
    * @argument {Element} element - Element to apply the style to
    * @argument {Object} styles
-   * Object with a list.jsp of properties and values which will be applied to the element
+   * Object with a liss.jsp of properties and values which will be applied to the element
    */
   function setStyles(element, styles) {
     Object.keys(styles).forEach(function (prop) {
@@ -2639,7 +2639,7 @@
    * @memberof Popper.Utils
    * @argument {Element} element - Element to apply the attributes to
    * @argument {Object} styles
-   * Object with a list.jsp of properties and values which will be applied to the element
+   * Object with a liss.jsp of properties and values which will be applied to the element
    */
   function setAttributes(element, attributes) {
     Object.keys(attributes).forEach(function (prop) {
@@ -2862,7 +2862,7 @@
    * It checks if the needed modifier is listed and enabled.
    * @method
    * @memberof Popper.Utils
-   * @param {Array} modifiers - list.jsp of modifiers
+   * @param {Array} modifiers - liss.jsp of modifiers
    * @param {String} requestingName - name of requesting modifier
    * @param {String} requestedName - name of requested modifier
    * @returns {Boolean}
@@ -2992,7 +2992,7 @@
    * - `bottom`
    * - `left`
    *
-   * Each placement can have a variation from this list.jsp:
+   * Each placement can have a variation from this liss.jsp:
    * - `-start`
    * - `-end`
    *
@@ -3234,7 +3234,7 @@
     // will use the other one
     var useHeight = ['right', 'left'].indexOf(basePlacement) !== -1;
 
-    // Split the offset string to obtain a list.jsp of values and operands
+    // Split the offset string to obtain a liss.jsp of values and operands
     // The regex addresses values with the plus or minus sign in front (+10, -20, etc)
     var fragments = offset.split(/(\+|\-)/).map(function (frag) {
       return frag.trim();
@@ -3250,7 +3250,7 @@
       console.warn('Offsets separated by white space(s) are deprecated, use a comma (,) instead.');
     }
 
-    // If divider is found, we divide the list.jsp of values and operands to divide
+    // If divider is found, we divide the liss.jsp of values and operands to divide
     // them by ofset X and Y.
     var splitRegex = /\s*,\s*|\s+/;
     var ops = divider !== -1 ? [fragments.slice(0, divider).concat([fragments[divider].split(splitRegex)[0]]), [fragments[divider].split(splitRegex)[1]].concat(fragments.slice(divider + 1))] : [fragments];
@@ -3699,7 +3699,7 @@
       /**
        * @prop {String|Array} behavior='flip'
        * The behavior used to change the popper's placement. It can be one of
-       * `flip`, `clockwise`, `counterclockwise` or an array with a list.jsp of valid
+       * `flip`, `clockwise`, `counterclockwise` or an array with a liss.jsp of valid
        * placements (with optional variations)
        */
       behavior: 'flip',
@@ -3969,7 +3969,7 @@
         _this.options.modifiers[name] = _extends({}, Popper.Defaults.modifiers[name] || {}, options.modifiers ? options.modifiers[name] : {});
       });
 
-      // Refactoring modifiers' list.jsp (Object => Array)
+      // Refactoring modifiers' liss.jsp (Object => Array)
       this.modifiers = Object.keys(this.options.modifiers).map(function (name) {
         return _extends({
           name: name
@@ -6248,10 +6248,10 @@
   var Selector$8 = {
     DATA_SPY: '[data-spy="scroll"]',
     ACTIVE: '.active',
-    NAV_LIST_GROUP: '.nav, .list.jsp-group',
+    NAV_LIST_GROUP: '.nav, .liss.jsp-group',
     NAV_LINKS: '.nav-link',
     NAV_ITEMS: '.nav-item',
-    LIST_ITEMS: '.list.jsp-group-item',
+    LIST_ITEMS: '.liss.jsp-group-item',
     DROPDOWN: '.dropdown',
     DROPDOWN_ITEMS: '.dropdown-item',
     DROPDOWN_TOGGLE: '.dropdown-toggle'
@@ -6548,10 +6548,10 @@
   };
   var Selector$9 = {
     DROPDOWN: '.dropdown',
-    NAV_LIST_GROUP: '.nav, .list.jsp-group',
+    NAV_LIST_GROUP: '.nav, .liss.jsp-group',
     ACTIVE: '.active',
     ACTIVE_UL: '> li > .active',
-    DATA_TOGGLE: '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="list.jsp"]',
+    DATA_TOGGLE: '[data-toggle="tab"], [data-toggle="pill"], [data-toggle="liss.jsp"]',
     DROPDOWN_TOGGLE: '.dropdown-toggle',
     DROPDOWN_ACTIVE_CHILD: '> .dropdown-menu .active'
     /**
