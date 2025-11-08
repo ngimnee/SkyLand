@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="buildingURL" value='/admin/building' />
-<c:url var="editBuildingURL" value='/admin/building/edit/' />
-<c:url var="buildingAPI" value='/api/building' />
+<c:url var="buildingURL" value='/admin/building'/>
+<c:url var="editBuildingURL" value='/admin/building/edit/'/>
+<c:url var="buildingAPI" value='/api/building'/>
 <html>
 <head>
     <title>
@@ -39,7 +39,7 @@
                     </div>
                     <div id="editForm">
                         <div class="card-body">
-                            <form:form id="form-edit" modelAttribute="editBuilding" method="GET">
+                            <form:form id="form-edit" modelAttribute="editBuilding" method="POST">
                                 <div class="row mb-3 align-items-center">
                                     <label class="col-xl-2 col-form-label">
                                         Tên tòa nhà<span class="text-danger">*</span>
@@ -264,7 +264,7 @@
                                     </c:if>
 
                                     <c:if test="${not empty editBuilding.id}">
-                                        <button type="submit" class="btn btn-success flex-fill" id="btnAddOrUpdateBuilding">
+                                        <button type="button" class="btn btn-success flex-fill" id="btnAddOrUpdateBuilding">
                                             <i class="bi bi-building-check"></i> Cập nhật tòa nhà
                                         </button>
                                         <button type="button" class="btn btn-danger flex-fill" id="btnCancel">
@@ -295,7 +295,7 @@
         }
 
         $('#btnAddOrUpdateBuilding').click(function(e) {
-            e.preventDefault();
+            // e.preventDefault();
             if (!validateRequiredFields()) return;
 
             var data = {};
@@ -315,6 +315,7 @@
                 }
             });
             data['typeCode'] = typeCode;
+            data['id'] = $('#buildingId').val();
             $('#loading_image').show();
             if(typeCode != '') {
                 addOrUpdateBuilding(data);

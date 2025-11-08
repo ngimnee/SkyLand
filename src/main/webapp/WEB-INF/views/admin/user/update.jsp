@@ -2,237 +2,195 @@
 <%@include file="/common/taglib.jsp"%>
 <c:url var="userAPI" value='/api/user'/>
 <c:url var="userURL" value='/admin/user'/>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cập Nhật Tài Khoản</title>
+    <title>Cập Nhật</title>
 </head>
 <body>
-<div class="container-fluid px-4">
-    <h1 class="mt-4">Tài Khoản</h1>
-    <ol class="breadcrumb mb-4">Cập nhật tài khoản</ol>
-
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Cập nhật vai trò</span>
-                    <a href="${userURL}" class="text-danger"><i class="bi bi-x-circle"></i></a>
-                </div>
-                <div class="card-body">
-                    <form:form id="formEdit" modelAttribute="model" method="POST">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-                        <!-- TÀI KHOẢN -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-sm-3 col-form-label">Tài Khoản <span class="text-danger">*</span></label>
-                            <div class="col-sm-9 d-flex align-items-center gap-2">
-                                <!-- Dropdown -->
-                                <form:select path="userName" class="form-select w-50" id="userSelect">
-                                    <form:option value="">-- Chọn tài khoản --</form:option>
-                                    <c:forEach var="users" items="${userList}">
-                                        <form:option value="${users.userName}">
-                                            ${users.fullName} (${users.roleName})
-                                        </form:option>
-                                    </c:forEach>
-                                    <form:option value="other">Khác...</form:option>
-                                </form:select>
-
-                                <!-- Ô nhập username khác (luôn trùng dòng, cùng hàng) -->
-                                <input type="text" id="customUserName" name="customUserName"
-                                       class="form-control w-50" placeholder="Nhập username khác"
-                                       style="display:none;"/>
-                            </div>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Tài Khoản</h1>
+        <ol class="breadcrumb mb-4">Cập nhật tài khoản</ol>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-pencil-square me-1"></i>Cập nhật vai trò
                         </div>
 
-                        <!-- HỌ TÊN -->
-                        <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label">Họ tên</label>
-                            <div class="col-sm-9">
-                                <form:input path="fullName" class="form-control" id="fullName" readonly="true"/>
-                            </div>
-                        </div>
+                        <a href="${userURL}">
+                            <i class="bi bi-x-circle"></i>
+                        </a>
+                    </div>
 
-                        <!-- ROLE -->
-                        <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label">Vai trò <span class="text-danger">*</span></label>
-                            <div class="col-sm-9">
-                                <security:authorize access="hasRole('MANAGER')">
-                                    <form:select path="roleCode" class="form-select" id="roleSelect">
-                                        <form:option value="">-- Chọn vai trò --</form:option>
-                                        <c:forEach var="role" items="${model.roleDTOs}">
-                                            <form:option value="${role.key}">${role.value}</form:option>
+                    <div class="card-body">
+                        <form id="formUpdate">
+                            <div class="row mb-3 align-items-center">
+                                <label class="col-sm-3 col-form-label">Tài khoản <span class="text-danger">*</span></label>
+                                <div class="col-sm-9 d-flex gap-2">
+                                    <select class="form-select" id="userSelect">
+                                        <option value="">-- Chọn tài khoản --</option>
+                                        <c:forEach var="u" items="${userList}">
+                                            <option value="${u.userName}">${u.fullName} (${u.roleName})</option>
                                         </c:forEach>
-                                    </form:select>
-                                </security:authorize>
+                                        <option value="other">Khác</option>
+                                    </select>
+                                    <input type="text" id="userName" class="form-control" placeholder="Nhập username" style="display:none;">
+                                    <button type="button" id="backToSelect" class="btn btn-outline-secondary" style="display:none;"><i class="bi bi-arrow-left"></i></button>
+                                </div>
                             </div>
-                        </div>
 
-                        <form:hidden path="id" id="userId"/>
-
-                        <!-- BUTTONS -->
-                        <div class="row mt-4">
-                            <div class="col-sm-9 offset-sm-3">
-                                <button type="button" class="btn btn-primary me-2" id="btnSave">
-                                    <i class="fa-solid fa-circle-check me-1"></i> Cập nhật
-                                </button>
-                                <button type="button" class="btn btn-secondary" id="btnCancel">
-                                    <i class="fas fa-times"></i> Hủy
-                                </button>
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Họ tên</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="fullName" class="form-control" readonly>
+                                </div>
                             </div>
-                        </div>
-                    </form:form>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Vai trò <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <select class="form-select" id="roleSelect">
+                                        <option value="">-- Chọn vai trò --</option>
+                                        <c:forEach var="r" items="${model.roleDTOs}">
+                                            <option value="${r.key}">${r.value}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="userId">
+
+                            <div class="row mt-4">
+                                <div class="col-sm-9 offset-sm-3 d-flex gap-2">
+                                    <button type="button" class="btn btn-success" id="btnSave">
+                                        <i class="bi bi-check-lg"></i> Cập nhật ngay
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="btnCancel">
+                                        Hủy
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-$(document).ready(function () {
-    const select = $('#userSelect');
-    const customInput = $('#customUserName');
-    const fullNameInput = $('#fullName');
-    const userId = $('#userId');
-    const roleSelect = $('#roleSelect');
+    <script>
+    $(document).ready(function () {
+        const CSRF_TOKEN = '${_csrf.token}';
 
-    // Khi chọn tài khoản
-    select.on('change', function () {
-        const selected = $(this).val();
+        const $userSelect = $('#userSelect');
+        const $userName = $('#userName');
+        const $backToSelect = $('#backToSelect');
+        const $fullName = $('#fullName');
+        const $userId = $('#userId');
+        const $roleSelect = $('#roleSelect');
+        const $btnSave = $('#btnSave');
 
-        if (selected === 'other') {
-            // Hiện ô nhập trùng hàng luôn
-            customInput.show().val('');
-            fullNameInput.val('');
-            userId.val('');
-            roleSelect.val('');
-        } else if (selected) {
-            customInput.hide().val('');
-            $.ajax({
-                url: '${userAPI}/detail?userName=' + selected,
-                type: 'GET',
-                dataType: 'json',
-                success: function (res) {
-                    if (!res || !res.id) {
-                        Swal.fire({ icon: 'error', title: 'Không tồn tại!', text: 'Username không tồn tại.' });
-                        fullNameInput.val('');
-                        userId.val('');
-                        roleSelect.val('');
+        function reset() {
+            $fullName.val('');
+            $userId.val('');
+            $roleSelect.val('');
+        }
+
+        function loadUser(username) {
+            $.get('${userAPI}/detail', { userName: username })
+                .done(res => {
+                    if (!res?.id) {
+                        Swal.fire('Không tồn tại!', 'Tài khoản này không có trong hệ thống.', 'error');
+                        reset();
                         return;
                     }
-                    fullNameInput.val(res.fullName || '');
-                    userId.val(res.id || '');
-
-                    // Highlight role hiện tại
-                    if (res.roleCode) {
-                        roleSelect.val(res.roleCode);
-                    } else {
-                        roleSelect.val('');
-                    }
-                },
-                error: function () {
-                    Swal.fire({ icon: 'error', title: 'Lỗi!', text: 'Không tìm thấy tài khoản!' });
-                    fullNameInput.val('');
-                    userId.val('');
-                    roleSelect.val('');
-                }
-            });
-        } else {
-            customInput.hide().val('');
-            fullNameInput.val('');
-            userId.val('');
-            roleSelect.val('');
-        }
-    });
-
-    // Khi nhập username “Khác” → kiểm tra tồn tại
-    customInput.on('blur', function () {
-        const username = $(this).val().trim();
-        if (username) {
-            $.ajax({
-                url: '${userAPI}/detail?userName=' + username,
-                type: 'GET',
-                dataType: 'json',
-                success: function (res) {
-                    if (!res || !res.id) {
-                        Swal.fire({ icon: 'error', title: 'Không tồn tại!', text: 'Username không tồn tại trong hệ thống.' });
-                        fullNameInput.val('');
-                        userId.val('');
-                        roleSelect.val('');
-                        return;
-                    }
-                    fullNameInput.val(res.fullName || '');
-                    userId.val(res.id || '');
-                    roleSelect.val(res.roleCode || '');
-                },
-                error: function () {
-                    Swal.fire({ icon: 'error', title: 'Không tồn tại!', text: 'Username không tồn tại trong hệ thống.' });
-                    fullNameInput.val('');
-                    userId.val('');
-                    roleSelect.val('');
-                }
-            });
-        }
-    });
-
-    // Nút Hủy
-    $('#btnCancel').click(() => window.location.href = '${userURL}');
-
-    // Nút Lưu
-    $('#btnSave').click(function () {
-        if (!validateForm()) return;
-
-        const data = {};
-        $('#formEdit').serializeArray().forEach(item => data[item.name] = item.value);
-
-        if (data.userName === 'other' && data.customUserName) {
-            data.userName = data.customUserName.trim();
-        }
-
-        const id = $('#userId').val();
-        const url = id ? '${userAPI}/' + id : '${userAPI}';
-
-        $.ajax({
-            url: url,
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function () {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công!',
-                    text: 'Cập nhật tài khoản thành công!',
-                    timer: 2000,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.href = '${userURL}?message=success';
+                    $fullName.val(res.fullName || '');
+                    $userId.val(res.id);
+                    $roleSelect.val(res.roleCode || '');
+                })
+                .fail(() => {
+                    Swal.fire('Lỗi!', 'Không kết nối được server!', 'error');
+                    reset();
                 });
-            },
-            error: function (xhr) {
-                const msg = xhr.responseJSON?.message || xhr.responseText || 'Hệ thống lỗi!';
-                Swal.fire({ icon: 'error', title: 'Lỗi!', text: msg });
+        }
+
+        $userSelect.on('change', function() {
+            const v = this.value;
+            if (v === 'other') {
+                $userSelect.hide();
+                $userName.show().focus();
+                $backToSelect.show();
+                reset();
+            } else if (v) {
+                loadUser(v);
+            } else {
+                reset();
             }
         });
-    });
 
-    // Validate
-    function validateForm() {
-        const role = $('#roleSelect').val();
-        const user = $('#userSelect').val();
-        const custom = $('#customUserName').val();
+        $backToSelect.on('click', () => {
+            $userName.hide().val('');
+            $backToSelect.hide();
+            $userSelect.show().val('');
+            reset();
+        });
 
-        if ((!user || (user === 'other' && !custom.trim())) || !role) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Thiếu thông tin!',
-                text: 'Vui lòng chọn hoặc nhập tài khoản và vai trò.'
+        $userName.on('blur', function() {
+            const u = this.value.trim();
+            if (u) loadUser(u);
+        });
+
+        $btnSave.on('click', function() {
+            const selected = $userSelect.val();
+            const custom = $userName.val().trim();
+            const username = selected === 'other' ? custom : selected;
+            const roleCode = $roleSelect.val();
+            const id = $userId.val();
+
+            if (!username || !roleCode || !id) {
+                Swal.fire('Thiếu!', 'Vui lòng chọn đầy đủ thông tin!', 'warning');
+                return;
+            }
+
+            $btnSave.prop('disabled', true).html('Đang lưu...');
+
+            $.ajax({
+                url: '${userAPI}',
+                type: 'PUT',
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRF-TOKEN': CSRF_TOKEN
+                },
+                data: JSON.stringify({
+                    id: id,
+                    userName: username,
+                    roleCode: roleCode
+                }),
+                timeout: 10000, // Tối đa 10s
+                success: function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'THÀNH CÔNG!',
+                        text: 'Vai trò đã được cập nhật thành công!',
+                        timer: 1500,
+                        showConfirmButton: true
+                    }).then(() => {
+                        location.reload();
+                        <%--window.location.href = '${userURL}?message=update_success';--%>
+                    });
+                },
+
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || xhr.responseText || 'Lỗi hệ thống! Vui lòng thử lại.';
+                    Swal.fire('Thất bại!', msg, 'error');
+                },
+
             });
-            return false;
-        }
-        return true;
-    }
-});
-</script>
+        });
+
+        $('#btnCancel').on('click', () => window.location.href = '${userURL}');
+    });
+    </script>
 </body>
 </html>

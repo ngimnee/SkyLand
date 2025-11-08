@@ -17,6 +17,7 @@ public class UserConverter {
     private ModelMapper modelMapper;
 
     public UserDTO convertToDTO(UserEntity entity){
+        if (entity == null) {return null;}
         UserDTO result = modelMapper.map(entity, UserDTO.class);
 
         // Nếu user có role, gán roleName để hiển thị

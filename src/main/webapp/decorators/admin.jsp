@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"/>
 
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="/admin/assets/sweetalert/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/admin/css/styles.css"/>
@@ -60,8 +60,7 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
 
     <!-- SweetAlert2 -->
-    <script src="/admin/assets/sweetalert/sweetalert2.all.min.js"></script>
-<%--    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>--%>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Custom JS -->
     <script src="/admin/js/scripts.js"></script>
