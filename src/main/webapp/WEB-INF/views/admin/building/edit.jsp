@@ -5,7 +5,12 @@
 <c:url var="buildingAPI" value='/api/building' />
 <html>
 <head>
-    <title>Tòa Nhà</title>
+    <title>
+        <c:choose>
+            <c:when test="${empty editBuilding.id}">Thêm Tòa Nhà</c:when>
+            <c:otherwise>Thông Tin Tòa Nhà</c:otherwise>
+        </c:choose>
+    </title>
 </head>
 <body>
     <div class="container-fluid px-4">

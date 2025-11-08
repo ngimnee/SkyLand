@@ -120,6 +120,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerConverter.updateEntityFromDTO(customerDTO, customerEntity);
         } else {
             customerEntity = customerConverter.toCustomerEntity(customerDTO);
+//            customerEntity.setIsActive(1);
         }
 
         customerRepository.save(customerEntity);

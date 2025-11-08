@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="homeURL" value='/admin/home' />
-<c:url var="buildingURL" value='/admin/building' />
-<c:url var="editBuildingURL" value='/admin/building/edit' />
-<c:url var="userURL" value='/admin/user' />
-<c:url var="editUserURL" value='/admin/user/edit' />
-<c:url var="orderURL" value="/admin/order" />
+<c:url var="homeURL" value='/admin/home'/>
+<c:url var="buildingURL" value='/admin/building'/>
+<c:url var="editBuildingURL" value='/admin/building/edit'/>
+<c:url var="userURL" value='/admin/user'/>
+<c:url var="editUserURL" value='/admin/user/edit'/>
+<c:url var="updateRoleUserURL" value='/admin/user/update'/>
+<c:url var="orderURL" value="/admin/order"/>
+<c:url var="customerURL" value="/admin/customer"/>
+<c:url var="blogURL" value="/admin/blog"/>
+<c:url var="editBlogURL" value="/admin/blog/edit"/>
 <c:url var="blogURL" value="/admin/blog" />
 <c:url var="editBlogURL" value="/admin/blog/edit" />
-<c:url var="customerURL" value="/admin/customer" />
 
 <!DOCTYPE html PUBLIC>
 <div id="layoutSidenav_nav">
@@ -61,7 +64,9 @@
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="${userURL}">Danh sách tài khoản</a>
                         <a class="nav-link" href="${editUserURL}">Thêm tài khoản</a>
-                        <a class="nav-link" href="${editUserURL}">Cập nhật tải khoản</a>
+                        <security:authorize access="hasRole('MANAGER')">
+                            <a class="nav-link" href="${updateRoleUserURL}">Cập nhật tài khoản</a>
+                        </security:authorize>
                     </nav>
                 </div>
 
@@ -78,11 +83,12 @@
                     </nav>
                 </div>
 
-
-                <a class="nav-link" href="${homeURL}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-chart-column"></i></div>
-                    Thống kê
-                </a>
+                <security:authorize access="hasRole('MANAGER')">
+                    <a class="nav-link" href="${homeURL}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-column"></i></div>
+                        Thống kê
+                    </a>
+                </security:authorize>
 
 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesSupport">

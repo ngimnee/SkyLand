@@ -3,209 +3,245 @@
 <c:url var="userAPI" value='/api/user'/>
 <c:url var="userURL" value='/admin/user'/>
 
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Tài Khoản</title>
+    <title>
+        <c:choose>
+            <c:when test="${empty model.id}">Thêm Tài Khoản</c:when>
+            <c:otherwise>Cập Nhật Tài Khoản</c:otherwise>
+        </c:choose>
+    </title>
 </head>
 <body>
-<div class="container-fluid px-4">
-    <h1 class="mt-4">Tài Khoản</h1>
-    <ol class="breadcrumb mb-4">
-        <c:choose>
-            <c:when test="${empty model.id}">
-                <li class="breadcrumb-item active">Thêm mới</li>
-            </c:when>
-            <c:otherwise>
-                <li class="breadcrumb-item active">Cập nhật thông tin</li>
-            </c:otherwise>
-        </c:choose>
-    </ol>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Tài Khoản</h1>
+        <ol class="breadcrumb mb-4">
+            <c:choose>
+                <c:when test="${empty model.id}"><li class="breadcrumb-item active">Thêm tài khoản mới</li></c:when>
+                <c:otherwise><li class="breadcrumb-item active">Cập nhật thông tin</li></c:otherwise>
+            </c:choose>
+        </ol>
 
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <c:choose>
-                        <c:when test="${empty model.id}">
-                            <span><i class="bi bi-person-fill-add"></i> Thêm mới tài khoản</span>
-                        </c:when>
-                        <c:otherwise>
-                            <span><i class="bi bi-person-fill-check"></i> Cập nhật thông tin tài khoản</span>
-                        </c:otherwise>
-                    </c:choose>
-                    <a href="${userURL}" class="text-decoration-none">
-                        <i class="bi bi-x-circle"></i>
-                    </a>
-                </div>
-
-                <div class="card-body">
-                    <form:form id="formEdit" modelAttribute="model">
-                        <!-- USERNAME -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-xl-2 col-form-label">Username<span class="text-danger">*</span></label>
-                            <div class="col-xl-10">
-                                <c:choose>
-                                    <c:when test="${empty model.id}">
-                                        <form:input class="form-control" path="userName" placeholder="Nhập username..." />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <form:input class="form-control" path="userName" readonly="true"/>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <c:choose>
+                                <c:when test="${empty model.id}">
+                                    <i class="bi bi-person-plus me-2"></i>Tạo tài khoản mới
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="bi bi-person-check me-2"></i>Chỉnh sửa tài khoản
+                                </c:otherwise>
+                            </c:choose>
                         </div>
+                        <a href="${userURL}">
+                            <i class="bi bi-x-circle"></i>
+                        </a>
+                    </div>
 
-                        <!-- PASSWORD -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-xl-2 col-form-label">Password<span class="text-danger">*</span></label>
-                            <div class="col-xl-10">
-                                <c:choose>
-                                    <c:when test="${empty model.id}">
-                                        <form:password class="form-control" path="password" placeholder="Nhập mật khẩu..." />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <form:password class="form-control" path="password" readonly="true" />
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <form:form id="formEdit" modelAttribute="model" method="POST">
+                            <!-- CSRF Token -->
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-                        <!-- CONFIRM PASSWORD -->
-                        <c:if test="${empty model.id}">
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-xl-2 col-form-label">Xác nhận mật khẩu<span class="text-danger">*</span></label>
-                                <div class="col-xl-10">
-                                    <input type="password" class="form-control" id="confirmPassword" placeholder="Nhập lại mật khẩu" required />
+                            <!-- USERNAME -->
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Username <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <form:input path="userName" class="form-control"
+                                               placeholder="Nhập username..." readonly="${not empty model.id}"/>
                                 </div>
                             </div>
-                        </c:if>
 
-                        <!-- HỌ TÊN -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-xl-2 col-form-label">Họ tên<span class="text-danger">*</span></label>
-                            <div class="col-xl-10">
-                                <form:input class="form-control" path="fullName" placeholder="Nhập họ tên..." />
+                            <!-- FULLNAME -->
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Họ tên <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <form:input path="fullName" class="form-control" placeholder="Nhập họ tên..." />
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- SĐT -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-xl-2 col-form-label">SĐT<span class="text-danger">*</span></label>
-                            <div class="col-xl-10">
-                                <form:input class="form-control" path="phone" placeholder="Nhập số điện thoại..." />
+                            <!-- PHONE -->
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <form:input path="phone" class="form-control" placeholder="0909123456..." />
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- EMAIL -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-xl-2 col-form-label">Email</label>
-                            <div class="col-xl-10">
-                                <form:input class="form-control" path="email" placeholder="Nhập email..." />
+                            <!-- EMAIL -->
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <form:input path="email" class="form-control" placeholder="example@gmail.com" />
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- TRẠNG THÁI + VAI TRÒ (chỉ MANAGER) -->
-                        <security:authorize access="hasRole('MANAGER')">
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-xl-2 col-form-label">Trạng thái</label>
-                                <div class="col-xl-10">
-                                    <form:select class="form-select" path="status">
+                            <!-- PASSWORD - Chỉ khi thêm mới -->
+                            <c:if test="${empty model.id}">
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Mật khẩu <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <form:password path="password" class="form-control" placeholder="Nhập mật khẩu..." />
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Xác nhận <span class="text-danger">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input type="password" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu..." />
+                                    </div>
+                                </div>
+                            </c:if>
+
+                            <!-- PASSWORD khi sửa -->
+                            <c:if test="${not empty model.id}">
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label">Mật khẩu</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" value="********" readonly>
+                                        <small class="text-muted">Dùng chức năng "Đổi mật khẩu" để thay đổi.</small>
+                                    </div>
+                                </div>
+                                <form:hidden path="password"/>
+                            </c:if>
+
+                            <!-- ROLE -->
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Vai trò <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <security:authorize access="hasRole('STAFF')">
+                                        <input type="text" class="form-control" value="USER" readonly>
+                                        <small class="text-info">Nhân viên chỉ được tạo tài khoản USER</small>
+                                        <form:hidden path="roleCode" value="USER"/>
+                                    </security:authorize>
+
+                                    <security:authorize access="hasRole('MANAGER')">
+                                        <form:select path="roleCode" class="form-select">
+                                            <form:option value="">-- Chọn vai trò --</form:option>
+                                            <c:forEach var="role" items="${model.roleDTOs}">
+                                                <form:option value="${role.key}">${role.value}</form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                    </security:authorize>
+                                </div>
+                            </div>
+
+                            <!-- STATUS -->
+                            <security:authorize access="hasRole('MANAGER')">
+                                <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label">Trạng thái</label>
+                                <div class="col-sm-9">
+                                    <form:select path="status" class="form-select">
                                         <form:option value="1">Hoạt động</form:option>
-                                        <form:option value="0">Ngưng hoạt động</form:option>
+                                        <form:option value="0">Khóa</form:option>
                                     </form:select>
                                 </div>
                             </div>
+                            </security:authorize>
+                            <form:hidden path="id" id="userId"/>
 
-                            <div class="row mb-3 align-items-center">
-                                <label class="col-xl-2 col-form-label">Vai trò</label>
-                                <div class="col-xl-10">
-                                    <form:select class="form-select" path="roleCode">
-                                        <form:option value="">--- Chọn vai trò ---</form:option>
-                                        <form:option value="MANAGER">Quản lý</form:option>
-                                        <form:option value="STAFF">Nhân viên</form:option>
-                                        <form:option value="USER">Người dùng</form:option>
-                                    </form:select>
+
+                            <!-- BUTTONS -->
+                            <div class="row mt-4">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <button type="button" class="btn btn-primary me-2" id="btnSave">
+                                        <i class="fas fa-save"></i>
+                                        <c:choose><c:when test="${empty model.id}">Thêm mới</c:when><c:otherwise>Cập nhật</c:otherwise></c:choose>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="btnCancel">
+                                        <i class="fas fa-times"></i> Hủy
+                                    </button>
                                 </div>
                             </div>
-                        </security:authorize>
-
-                        <!-- NÚT -->
-                        <div class="d-flex gap-2 mt-3">
-                            <button type="submit" class="btn btn-success flex-fill" id="btnAddOrUpdateUser">
-                                <c:choose>
-                                    <c:when test="${empty model.id}">
-                                        <i class="bi bi-person-add"></i> Thêm mới
-                                    </c:when>
-                                    <c:otherwise>
-                                        <i class="bi bi-person-check"></i> Cập nhật
-                                    </c:otherwise>
-                                </c:choose>
-                            </button>
-                            <button type="button" class="btn btn-danger flex-fill" id="btnCancel">Hủy</button>
-                        </div>
-
-                        <form:hidden path="id" id="userId"/>
-                    </form:form>
+                        </form:form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    $('#btnAddOrUpdateUser').click(function (e) {
-        e.preventDefault();
-        if (!validateRequiredFields()) return;
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnSave').click(function () {
+                if (!validateForm()) return;
 
-        const data = {};
-        $.each($('#formEdit').serializeArray(), function (i, v) {
-            data[v.name] = v.value;
-        });
+                const data = {};
+                $('#formEdit').serializeArray().forEach(item => {
+                    data[item.name] = item.value;
+                });
 
-        const password = $('[name="password"]').val();
-        const confirm = $('#confirmPassword').val();
-        if (confirm && password !== confirm) {
-            alert("❌ Mật khẩu xác nhận không khớp!");
-            $('#confirmPassword').addClass('is-invalid');
-            return;
-        }
+                const id = $('#userId').val();
+                const url = id ? '${userAPI}/' + id : '${userAPI}';
+                const type = id ? 'PUT' : 'POST';
 
-        const id = $('#userId').val();
-        const url = id ? '${userAPI}/' + id : '${userAPI}';
+                $.ajax({
+                    url: url,
+                    type: type,
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: id ? 'Cập nhật tài khoản thành công!' : 'Thêm tài khoản thành công!',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = '${userURL}?message=success';
+                        });
+                    },
+                    error: function (xhr) {
+                        const msg = xhr.responseJSON?.message || xhr.responseText || 'Hệ thống lỗi!';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: msg
+                        });
+                    }
+                });
+            });
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            success: function () {
-                window.location.href = "<c:url value='${userURL}?message=success'/>";
-            },
-            error: function (xhr) {
-                console.error("❌ Lỗi khi lưu:", xhr);
-                window.location.href = "<c:url value='${userURL}?message=error'/>";
+            $('#btnCancel').click(() => window.location.href = '${userURL}');
+
+            function validateForm() {
+                let valid = true;
+                $('.is-invalid').removeClass('is-invalid');
+
+                const required = ['userName', 'fullName', 'phone'];
+                if (!$('#userId').val()) {
+                    required.push('password');
+                }
+                // roleCode luôn có giá trị (do hidden hoặc select)
+                if (!$('[name="roleCode"]').val()) {
+                    required.push('roleCode');
+                }
+
+                required.forEach(field => {
+                    const el = $('[name="' + field + '"]');
+                    if (!el.val()?.trim()) {
+                        el.addClass('is-invalid');
+                        valid = false;
+                    }
+                });
+
+                if (!$('#userId').val()) {
+                    const pass = $('[name="password"]').val();
+                    const confirm = $('#confirmPassword').val();
+                    if (pass !== confirm) {
+                        $('#confirmPassword').addClass('is-invalid');
+                        Swal.fire('Lỗi!', 'Mật khẩu xác nhận không khớp!', 'error');
+                        valid = false;
+                    }
+                }
+
+                return valid;
             }
         });
-    });
-
-    function validateRequiredFields() {
-        const requiredFields = ['userName', 'fullName', 'phone'];
-        if (!$('#userId').val()) requiredFields.push('password');
-        let isValid = true;
-        $('.is-invalid').removeClass('is-invalid');
-
-        requiredFields.forEach(name => {
-            const el = $('[name="' + name + '"]');
-            const val = el.val()?.trim();
-            if (!val) {
-                el.addClass('is-invalid');
-                isValid = false;
-            }
-        });
-        return isValid;
-    }
-
-    $('#btnCancel').click(() => window.location.href = "${userURL}");
-</script>
+    </script>
 </body>
 </html>

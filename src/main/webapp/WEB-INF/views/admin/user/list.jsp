@@ -114,7 +114,7 @@
                     <!-- Cột thao tác -->
                     <display:column title="Thao tác" headerClass="text-center" class="text-center">
                         <div class="btn-group" role="group">
-                            <a href="${editUserURL}/${user.id}" class="btn btn-info btn-sm" title="Chỉnh sửa">
+                            <a href="${editUserURL}?id=${user.id}" class="btn btn-info btn-sm" title="Chỉnh sửa">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                             <security:authorize access="hasRole('MANAGER')">

@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Đơn Hàng</title>
+    <title>Cập Nhật Đơn Hàng</title>
 </head>
 <body>
     <div class="container-fluid px-4">

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,17 +41,14 @@ public class UserController {
         if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
             userSearchRequest.setRoleCode(Collections.singletonList("USER"));
         }
-        if (!request.getParameterMap().containsKey("isActive")) {
+        if (!request.getParameterMap().containsKey("status")) {
             userSearchRequest.setStatus(1);
         }
 
         UserSearchResponse model = new UserSearchResponse();
         DisplayTagUtils.of(request, model);
 
-        List<UserSearchResponse> users = userService.getUsers(
-                userSearchRequest,
-                PageRequest.of(model.getPage() - 1, model.getMaxPageItems())
-        );
+        List<UserSearchResponse> users = userService.getUsers(userSearchRequest, PageRequest.of(model.getPage() - 1, model.getMaxPageItems()));
 
         model.setListResult(users);
         model.setTotalItems(userService.countTotalItems());
@@ -61,37 +59,62 @@ public class UserController {
     }
 
     @GetMapping("/admin/user/edit")
-    public ModelAndView addUser(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("edit");
-        UserDTO model = new UserDTO();
-        model.setRoleDTOs(roleService.getRoles());
-        mav.addObject(SystemConstant.MODEL, model);
+    public ModelAndView addOrUpdateUser(@RequestParam(value = "id", required = false) Long id,
+                                        HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("admin/user/edit");
+        UserDTO user = new UserDTO();
+
+        // Kiểm tra (id) -> thêm/sửa
+        if (id != null) {
+            user = userService.findUserById(id);
+            if (isStaffTryingToEditNonUser(user)) {
+                return getAccessDeniedRedirect(mav);
+            }
+        } else {
+            if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
+                user.setRoleCode("USER");
+            }
+        }
+
+        // Load danh sách role để chọn (MANAGER thấy hết, STAFF chỉ thấy USER)
+        Map<String, String> allRoles = roleService.getRoles();
+        if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
+            Map<String, String> userRoleOnly = new HashMap<>();
+            userRoleOnly.put("USER", allRoles.get("USER"));
+            user.setRoleDTOs(userRoleOnly);
+        } else {
+            user.setRoleDTOs(allRoles);
+        }
+
+        mav.addObject(SystemConstant.MODEL, user);
         initMessageResponse(mav, request);
         return mav;
     }
 
-    @GetMapping("/admin/user/edit/{id}")
-    public ModelAndView editUser(@PathVariable("id") Long id, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("edit");
-        UserDTO model = userService.findUserById(id);
-        model.setRoleDTOs(roleService.getRoles());
-        mav.addObject(SystemConstant.MODEL, model);
-        initMessageResponse(mav, request);
-        return mav;
-    }
-
-    /** 👉 Chỉ cập nhật vai trò + trạng thái */
-    @GetMapping("/admin/user/update/{id}")
-    public ModelAndView updateRoleUser(@PathVariable("id") Long id, HttpServletRequest request) {
+    // Chỉ cập nhật vai trò/quyền (ROLE) của tài khoản
+    @GetMapping("/admin/user/update")
+    public ModelAndView updateRoleUser(@RequestParam(value="userName", required = false) String userName,
+                                       HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/user/update");
-        UserDTO user = userService.findUserById(id);
+        UserDTO user;
+        if (userName != null && !userName.trim().isEmpty()) {
+            user = userService.findOneByUserName(userName);
+            if (user == null) {
+                mav.setViewName("redirect:/admin/user?message=userNotFound");
+                return mav;
+            }
+        } else {
+            user = new UserDTO();
+        }
         user.setRoleDTOs(roleService.getRoles());
+
+        List<UserDTO> userList = userService.findUsersByRole();
         initMessageResponse(mav, request);
+        mav.addObject("userList", userList);
         mav.addObject(SystemConstant.MODEL, user);
         return mav;
     }
 
-    /** Hồ sơ cá nhân */
     @RequestMapping(value = "/admin/profile/{username}", method = RequestMethod.GET)
     public ModelAndView updateProfile(@PathVariable("username") String username, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/user/profile");
@@ -118,5 +141,18 @@ public class UserController {
             mav.addObject(SystemConstant.ALERT, messageMap.get(SystemConstant.ALERT));
             mav.addObject(SystemConstant.MESSAGE_RESPONSE, messageMap.get(SystemConstant.MESSAGE_RESPONSE));
         }
+    }
+
+    private boolean isStaffTryingToEditNonUser(UserDTO user) {
+        return SecurityUtils.getAuthorities().contains("ROLE_STAFF")
+                && user.getRoleCode() != null
+                && !"USER".equals(user.getRoleCode());
+    }
+
+    private ModelAndView getAccessDeniedRedirect(ModelAndView mav) {
+        mav.addObject("messageResponse", "Bạn không có quyền sửa tài khoản này!");
+        mav.addObject("alert", "danger");
+        mav.setViewName("redirect:/admin/user");
+        return mav;
     }
 }

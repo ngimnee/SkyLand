@@ -27,17 +27,6 @@ public class ModelMapperConfig {
             }
         });
 
-        // Cấu hình cho UserDTO → UserEntity
-        mapper.addMappings(new PropertyMap<UserDTO, UserEntity>() {
-            @Override
-            protected void configure() {
-                skip(destination.getId());
-                skip(destination.getUserName());
-                skip(destination.getPassword());
-                skip(destination.getRoles());
-            }
-        });
-
         return mapper;
     }
 }

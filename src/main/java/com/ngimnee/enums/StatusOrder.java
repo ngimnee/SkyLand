@@ -4,9 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public enum StatusOrder {
-    DANG_XU_LY("Đang xử lý"),
-    HOAN_THANH("Hoàn thành"),
-    HUY("Đã hủy");
+    PROCESSING("Đang xử lý"),
+    COMPLETED("Hoàn thành"),
+    CANCELLED("Đã hủy");
 
     private final String statusName;
     StatusOrder(String statusName) {

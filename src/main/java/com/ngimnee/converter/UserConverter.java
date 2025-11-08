@@ -1,9 +1,8 @@
 package com.ngimnee.converter;
 
-import com.ngimnee.entity.CustomerEntity;
+import com.ngimnee.entity.RoleEntity;
 import com.ngimnee.model.dto.UserDTO;
 import com.ngimnee.entity.UserEntity;
-import com.ngimnee.model.response.CustomerSearchResponse;
 import com.ngimnee.model.response.UserSearchResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +13,22 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserConverter {
-
     @Autowired
     private ModelMapper modelMapper;
 
     public UserDTO convertToDTO(UserEntity entity){
         UserDTO result = modelMapper.map(entity, UserDTO.class);
+
+        // Nếu user có role, gán roleName để hiển thị
+        List<RoleEntity> roles = entity.getRoles();
+        if (roles != null && !roles.isEmpty()) {
+            result.setRoleName(roles.get(0).getName());
+        }
         return result;
     }
 
-    public UserEntity convertToEntity(UserDTO dto){
-        UserEntity result = modelMapper.map(dto, UserEntity.class);
+    public UserEntity toEntity(UserDTO userDTO){
+        UserEntity result = modelMapper.map(userDTO, UserEntity.class);
         return result;
     }
 
@@ -33,24 +37,13 @@ public class UserConverter {
         return res;
     }
 
-    public List<UserSearchResponse> convertToSearchResponse(List<UserDTO> dtoList) {
+    public void updateEntityFromDTO(UserDTO userDTO, UserEntity userEntity) {
         modelMapper.getConfiguration().setPropertyCondition(context -> true);
-
-        // Map từng DTO sang Response bằng Stream
-        return dtoList.stream()
-                .map(userDTO -> modelMapper.map(userDTO, UserSearchResponse.class))
-                .collect(Collectors.toList());
+        modelMapper.map(userDTO, userEntity);
     }
 
-
-//    public List<UserSearchResponse> convertToSearchResponse(List<UserDTO> dto){
-//        List<UserSearchResponse> result = new ArrayList<>();
-//        for (UserDTO userDTO : dto) {
-//            UserSearchResponse userSearchResponse = new UserSearchResponse();
-//            modelMapper.getConfiguration().setPropertyCondition(context -> true);
-//            modelMapper.map(userDTO, userSearchResponse);
-//            result.add(userSearchResponse);
-//        }
-//        return result;
-//    }
+    public List<UserDTO> toDTOList(List<UserEntity> entities) {
+        return entities.stream().map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 }

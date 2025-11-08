@@ -4,7 +4,7 @@
 <c:url var="customerURL" value='/admin/customer' />
 <html>
 <head>
-    <title>Khách Hàng</title>
+    <title>Thông Tin Khách Hàng</title>
 </head>
 <body>
     <div class="container-fluid px-4">

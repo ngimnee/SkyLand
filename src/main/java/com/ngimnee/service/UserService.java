@@ -13,18 +13,15 @@ import java.util.Map;
 public interface UserService {
     UserDTO findOneByUserNameAndStatus(String name, int status);
     List<UserSearchResponse> getUsers(UserSearchRequest userSearchRequest, Pageable pageable);
-    int getTotalItems(String searchValue);
     UserDTO findOneByUserName(String userName);
     UserDTO findUserById(long id);
-    UserDTO createUser(UserDTO userDTO);
-    UserDTO updateUser(Long id, UserDTO userDTO);
+    List<UserDTO> findUsersByRole();
+    void addOrUpdateUser(UserDTO userDTO);
+    void updateRoleUser(UserDTO userDTO);
     void updatePassword(long id, PasswordDTO userDTO) throws MyException;
     UserDTO resetPassword(long id);
     UserDTO updateProfileOfUser(String id, UserDTO userDTO);
     void deleteUser(Long[] ids);
-//    ResponseDTO listStaff(Long buildingId);
-    List<UserDTO> getAllUsers(Pageable pageable);
     int countTotalItems();
-
     Map<Long, String> getStaffs();
 }

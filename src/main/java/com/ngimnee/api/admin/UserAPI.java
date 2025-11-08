@@ -27,18 +27,36 @@ public class UserAPI {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createOrUpdateUser(@RequestBody UserDTO newUser) {
-        if (newUser.getId() != null) {
-            return ResponseEntity.ok(userService.updateUser(newUser.getId(), newUser));
-        } else {
-            return ResponseEntity.ok(userService.createUser(newUser));
-        }
+    public ResponseEntity<Void> createUser(@RequestBody UserDTO userDTO) {
+        userService.addOrUpdateUser(userDTO);
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUsers(@PathVariable("id") long id,
-                                               @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok(userService.updateUser(id, userDTO));
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        userDTO.setId(id);
+        userService.addOrUpdateUser(userDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> updateRoleUser(@RequestBody UserDTO userDTO) {
+        userService.updateRoleUser(userDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<UserDTO> getUserDetail(@RequestParam String userName) {
+        return ResponseEntity.ok(userService.findOneByUserName(userName));
+    }
+
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUsers(@RequestBody Long[] ids) {
+        if (ids != null &&ids.length > 0) {
+            userService.deleteUser(ids);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/change-password/{id}")
@@ -48,7 +66,6 @@ public class UserAPI {
             userService.updatePassword(id, passwordDTO);
             return ResponseEntity.ok(SystemConstant.UPDATE_SUCCESS);
         } catch (MyException e) {
-            //LOGGER.error(e.getMessage());
             return ResponseEntity.ok(e.getMessage());
         }
     }
@@ -62,13 +79,5 @@ public class UserAPI {
     public ResponseEntity<UserDTO> updateProfileOfUser(@PathVariable("username") String username,
                                                        @RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(userService.updateProfileOfUser(username, userDTO));
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteUsers(@RequestBody Long[] ids) {
-        if (ids != null &&ids.length > 0) {
-            userService.deleteUser(ids);
-        }
-        return ResponseEntity.noContent().build();
     }
 }

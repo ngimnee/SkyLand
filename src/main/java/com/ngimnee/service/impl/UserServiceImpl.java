@@ -4,6 +4,7 @@ import com.ngimnee.builder.UserSearchBuilder;
 import com.ngimnee.constant.SystemConstant;
 import com.ngimnee.converter.UserConverter;
 import com.ngimnee.converter.UserSearchBuilderConverter;
+import com.ngimnee.entity.OrderEntity;
 import com.ngimnee.model.dto.PasswordDTO;
 import com.ngimnee.model.dto.UserDTO;
 import com.ngimnee.entity.RoleEntity;
@@ -19,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,18 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers(Pageable pageable) {
-        List<UserEntity> userEntities = userRepository.getAllUsers(pageable);
-        List<UserDTO> results = new ArrayList<>();
-        for (UserEntity userEntity : userEntities) {
-            UserDTO userDTO = userConverter.convertToDTO(userEntity);
-            userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
-            results.add(userDTO);
-        }
-        return results;
-    }
-
-    @Override
     public int countTotalItems() {
         return userRepository.countTotalItem();
     }
@@ -83,18 +73,6 @@ public class UserServiceImpl implements UserService {
             listStaffs.put(it.getId(), it.getFullName());
         }
         return listStaffs;
-    }
-
-
-    @Override
-    public int getTotalItems(String searchValue) {
-        int totalItem = 0;
-        if (StringUtils.isNotBlank(searchValue)) {
-            totalItem = (int) userRepository.countByUserNameContainingIgnoreCaseOrFullNameContainingIgnoreCaseAndStatusNot(searchValue, searchValue, 0);
-        } else {
-            totalItem = (int) userRepository.countByStatusNot(0);
-        }
-        return totalItem;
     }
 
     @Override
@@ -116,52 +94,68 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public UserDTO createUser(UserDTO newUser) {
-        UserEntity userEntity =userConverter.convertToEntity(newUser);
-
-        RoleEntity role = roleRepository.findOneByCode(newUser.getRoleCode());
-        if (role == null) {
-            throw new RuntimeException("Invalid role code: " + newUser.getRoleCode());
-        }
-
-        userEntity.setRoles(Collections.singletonList(role));
-        userEntity.setStatus(1);
-        userEntity.setPassword(passwordEncoder.encode(SystemConstant.PASSWORD_DEFAULT));
-
-        return userConverter.convertToDTO(userRepository.save(userEntity));
+    public List<UserDTO> findUsersByRole() {
+        List<String> roles = List.of("STAFF", "MANAGER");
+        List<UserEntity> entities = userRepository.findByRoles_CodeIn(roles);
+        return userConverter.toDTOList(entities);
     }
 
 
     @Override
-    @Transactional
-    public UserDTO updateUser(Long id, UserDTO updateUser) {
-        // 1️⃣ Tìm user cũ
-        UserEntity oldUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id = " + id));
+    public void addOrUpdateUser(UserDTO userDTO) {
+        UserEntity userEntity;
+        if (userDTO.getId() != null) {
+            userEntity = userRepository.findById(userDTO.getId())
+                    .orElseThrow(() -> new NotFoundException("User not found"));
 
-        // 2️⃣ Map các field không null từ DTO sang Entity (sử dụng ModelMapper)
-        userConverter.convertToEntity(updateUser);
+            String username = userEntity.getUserName();
+            String password = userEntity.getPassword();
 
-        // 3️⃣ Giữ nguyên các giá trị quan trọng
-        oldUser.setUserName(oldUser.getUserName());
-        oldUser.setPassword(oldUser.getPassword());
-
-        // 4️⃣ Cập nhật vai trò nếu có
-        if (updateUser.getRoleCode() != null) {
-            RoleEntity role = roleRepository.findOneByCode(updateUser.getRoleCode());
-            if (role == null) {
-                throw new RuntimeException("Invalid role code: " + updateUser.getRoleCode());
-            }
-            oldUser.setRoles(Collections.singletonList(role));
+            userConverter.updateEntityFromDTO(userDTO, userEntity);
+            userEntity.setUserName(username);
+            userEntity.setPassword(password);
+        }
+        else {
+            userEntity = userConverter.toEntity(userDTO);
+            userEntity.setPassword(encryptPassword(userDTO.getPassword()));
+            userEntity.setStatus(1);
         }
 
-        // 5️⃣ Lưu lại và trả về DTO
-        UserEntity savedUser = userRepository.save(oldUser);
-        return userConverter.convertToDTO(savedUser);
+        List<RoleEntity> roles = new ArrayList<>();
+        if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
+            RoleEntity userRole = roleRepository.findOneByCode("USER");
+            if (userRole != null) {
+                roles.add(userRole);
+            }
+        } else {
+            if (StringUtils.isNotBlank(userDTO.getRoleCode())) {
+                RoleEntity role = roleRepository.findOneByCode(userDTO.getRoleCode());
+                if (role != null) {
+                    roles.add(role);
+                }
+            }
+        }
+        userEntity.setRoles(roles);
+        userRepository.save(userEntity);
     }
 
+    @Override
+    public void updateRoleUser(UserDTO userDTO) {
+        UserEntity userEntity = userRepository.findOneByUserName(userDTO.getUserName());
+        if (userEntity == null) {
+            throw new NotFoundException("User not found.");
+        }
 
+        List<RoleEntity> roles = new ArrayList<>();
+        if (StringUtils.isNotBlank(userDTO.getRoleCode())) {
+            RoleEntity role = roleRepository.findOneByCode(userDTO.getRoleCode());
+            if (role != null) {
+                roles.add(role);
+            }
+        }
+        userEntity.setRoles(roles);
+        userRepository.save(userEntity);
+    }
 
     @Override
     @Transactional
@@ -207,23 +201,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public String encryptPassword(String password) {
+        if (StringUtils.isNotBlank(password)) {
+            return passwordEncoder.encode(password);
+        }
+        return password;
+    }
 
-
-//    @Override
-//    public List<UserDTO> getUsers(String searchValue, Pageable pageable) {
-//        Page<UserEntity> users = null;
-//        if (StringUtils.isNotBlank(searchValue)) {
-//            users = userRepository.findByUserNameContainingIgnoreCaseOrFullNameContainingIgnoreCaseAndStatusNot(searchValue, searchValue, 0, pageable);
-//        } else {
-//            users = userRepository.findByStatusNot(0, pageable);
-//        }
-//        List<UserEntity> newsEntities = users.getContent();
-//        List<UserDTO> result = new ArrayList<>();
-//        for (UserEntity userEntity : newsEntities) {
-//            UserDTO userDTO = userConverter.convertToDTO(userEntity);
-//            userDTO.setRoleCode(userEntity.getRoles().get(0).getCode());
-//            result.add(userDTO);
-//        }
-//        return result;
-//    }
 }
