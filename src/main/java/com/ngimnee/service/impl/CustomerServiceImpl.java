@@ -1,8 +1,8 @@
 package com.ngimnee.service.impl;
 
 import com.ngimnee.builder.CustomerSearchBuilder;
-import com.ngimnee.converter.CustomerConverter;
-import com.ngimnee.converter.CustomerSearchBuilderConverter;
+import com.ngimnee.converter.customer.CustomerConverter;
+import com.ngimnee.converter.customer.CustomerSearchBuilderConverter;
 import com.ngimnee.entity.CustomerEntity;
 import com.ngimnee.entity.UserEntity;
 import com.ngimnee.model.dto.AssignmentCustomerDTO;

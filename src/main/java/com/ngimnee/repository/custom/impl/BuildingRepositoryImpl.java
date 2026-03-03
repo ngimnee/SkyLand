@@ -111,7 +111,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     public List<BuildingEntity> findBuilding(BuildingSearchBuilder buildingSearchBuilder, Pageable pageable)
     {
         StringBuilder sql = new StringBuilder(" SELECT * FROM building b ");
-        StringBuilder where = new StringBuilder(" WHERE 1 = 1 ");
+        StringBuilder where = new StringBuilder(" WHERE 1 = 1 AND status = 'N' ");
 
         joinTable(buildingSearchBuilder, sql);
         queryNormal(buildingSearchBuilder, where);

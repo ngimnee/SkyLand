@@ -2,9 +2,8 @@ package com.ngimnee.service.impl;
 
 import com.ngimnee.builder.UserSearchBuilder;
 import com.ngimnee.constant.SystemConstant;
-import com.ngimnee.converter.UserConverter;
-import com.ngimnee.converter.UserSearchBuilderConverter;
-import com.ngimnee.entity.OrderEntity;
+import com.ngimnee.converter.user.UserConverter;
+import com.ngimnee.converter.user.UserSearchBuilderConverter;
 import com.ngimnee.model.dto.PasswordDTO;
 import com.ngimnee.model.dto.UserDTO;
 import com.ngimnee.entity.RoleEntity;
@@ -18,7 +17,6 @@ import com.ngimnee.security.utils.SecurityUtils;
 import com.ngimnee.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {

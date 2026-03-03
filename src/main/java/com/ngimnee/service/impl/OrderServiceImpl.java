@@ -1,9 +1,8 @@
 package com.ngimnee.service.impl;
 
 import com.ngimnee.builder.OrderSearchBuilder;
-import com.ngimnee.converter.OrderConverter;
-import com.ngimnee.converter.OrderSearchBuilderConverter;
-import com.ngimnee.entity.BuildingEntity;
+import com.ngimnee.converter.order.OrderConverter;
+import com.ngimnee.converter.order.OrderSearchBuilderConverter;
 import com.ngimnee.entity.OrderEntity;
 import com.ngimnee.entity.UserEntity;
 import com.ngimnee.model.dto.AssignmentOrderDTO;
@@ -20,13 +19,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.acls.model.NotFoundException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class OrderServiceImpl implements OrderService {

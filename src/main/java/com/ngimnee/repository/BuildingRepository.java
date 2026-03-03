@@ -4,7 +4,11 @@ import com.ngimnee.entity.BuildingEntity;
 import com.ngimnee.repository.custom.BuildingRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface BuildingRepository extends JpaRepository<BuildingEntity, Long>, BuildingRepositoryCustom {
     void deleteById(Long id);
     void deleteByIdIn(Long[] id);
+
+    Optional<BuildingEntity> findByIdAndStatus(Long id, String status);
 }

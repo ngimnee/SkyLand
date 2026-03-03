@@ -1,6 +1,6 @@
 package com.ngimnee.service.impl;
 
-import com.ngimnee.converter.TransactionConverter;
+import com.ngimnee.converter.customer.TransactionConverter;
 import com.ngimnee.entity.TransactionEntity;
 import com.ngimnee.model.dto.TransactionDTO;
 import com.ngimnee.repository.TransactionRepository;
@@ -8,7 +8,6 @@ import com.ngimnee.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

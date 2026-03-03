@@ -1,6 +1,6 @@
 package com.ngimnee.service.impl;
 
-import com.ngimnee.converter.RoleConverter;
+import com.ngimnee.converter.user.RoleConverter;
 import com.ngimnee.model.dto.RoleDTO;
 import com.ngimnee.entity.RoleEntity;
 import com.ngimnee.repository.RoleRepository;

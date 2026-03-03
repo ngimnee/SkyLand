@@ -12,7 +12,7 @@ import java.util.List;
 public interface BuildingService {
     ResponseDTO listStaff(Long buildingId);
     List<BuildingSearchResponse> findBuilding (BuildingSearchRequest buildingSearchRequest,  Pageable pageable);
-    BuildingDTO deleteBuildings(Long[] ids);
+    List<BuildingDTO> deleteBuildings(Long[] ids);
     BuildingDTO addOrUpdateBuilding(BuildingDTO buildingDTO);
     BuildingDTO findById(Long id);
     int countTotalItem(List<BuildingSearchResponse> list);

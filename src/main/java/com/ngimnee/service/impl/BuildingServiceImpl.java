@@ -1,8 +1,8 @@
 package com.ngimnee.service.impl;
 
 import com.ngimnee.builder.BuildingSearchBuilder;
-import com.ngimnee.converter.BuildingSearchBuilderConverter;
-import com.ngimnee.converter.BuildingConverter;
+import com.ngimnee.converter.building.BuildingSearchBuilderConverter;
+import com.ngimnee.converter.building.BuildingConverter;
 import com.ngimnee.entity.BuildingEntity;
 import com.ngimnee.entity.RentAreaEntity;
 import com.ngimnee.entity.UserEntity;
@@ -93,11 +93,17 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public BuildingDTO deleteBuildings(Long[] ids) {
-        BuildingEntity buildingEntities = buildingRepository.findById(ids[0]).get();
-        buildingRepository.deleteByIdIn(ids);
-//        buildingRepository.delete(buildingEntities);
-        return buildingConverter.toBuildingDTO(buildingEntities);
+    public List<BuildingDTO> deleteBuildings(Long[] ids) {
+        List<BuildingDTO> result = new ArrayList<>();
+        for (Long id : ids) {
+            BuildingEntity building = buildingRepository.findById(id).orElseThrow(() -> new NotFoundException("Building not found with id: " + id));
+
+            building.setStatus("Y");
+            buildingRepository.save(building);
+
+            result.add(buildingConverter.toBuildingDTO(building));
+        }
+        return result;
     }
 
     @Override
@@ -105,7 +111,7 @@ public class BuildingServiceImpl implements BuildingService {
         BuildingEntity building;
 
         if(buildingDTO.getId() != null) {
-            building = buildingRepository.findById(buildingDTO.getId())
+            building = buildingRepository.findByIdAndStatus(buildingDTO.getId(), "N")
                     .orElseThrow(() -> new NotFoundException("Building not found!"));
 
             buildingConverter.updateEntityFromDTO(buildingDTO, building);
