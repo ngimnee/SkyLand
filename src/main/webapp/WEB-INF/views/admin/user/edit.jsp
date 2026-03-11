@@ -15,13 +15,20 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Tài Khoản</h1>
-        <ol class="breadcrumb mb-4">
-            <c:choose>
-                <c:when test="${empty model.id}"><li class="breadcrumb-item active">Thêm tài khoản mới</li></c:when>
-                <c:otherwise><li class="breadcrumb-item active">Cập nhật thông tin</li></c:otherwise>
-            </c:choose>
-        </ol>
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="fw-bold mb-0">
+                <i class="bi bi-person-badge me-2 text-primary"></i>Tài khoản
+            </h3>
+        </div>
+        <nav class="mt-1">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item text-muted">Quản lý</li>
+                <c:choose>
+                    <c:when test="${empty model.id}"><li class="breadcrumb-item active">Thêm tài khoản</li></c:when>
+                    <c:otherwise><li class="breadcrumb-item active">Cập nhật thông tin tài khoản</li></c:otherwise>
+                </c:choose>
+            </ol>
+        </nav>
 
         <div class="row">
             <div class="col-xl-12">

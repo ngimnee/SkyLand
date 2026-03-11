@@ -25,5 +25,5 @@ public class BuildingSearchRequest extends AbstractDTO {
     private Long staffId;
     private List<String> typeCode;
     private String status;
-
+    private String typeO;
 }

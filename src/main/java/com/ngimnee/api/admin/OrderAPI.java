@@ -1,9 +1,7 @@
 package com.ngimnee.api.admin;
 
-import com.ngimnee.entity.OrderEntity;
 import com.ngimnee.model.dto.AssignmentOrderDTO;
 import com.ngimnee.model.dto.OrderDTO;
-import com.ngimnee.model.request.CustomerSearchRequest;
 import com.ngimnee.model.request.OrderSearchRequest;
 import com.ngimnee.model.response.OrderSearchResponse;
 import com.ngimnee.model.response.ResponseDTO;
@@ -22,9 +20,14 @@ public class OrderAPI {
     private OrderService orderService;
 
     @GetMapping
-    public List<OrderSearchResponse> getBuildings(@ModelAttribute OrderSearchRequest orderSearchRequest, Pageable pageable) {
+    public List<OrderSearchResponse> getOrders(@ModelAttribute OrderSearchRequest orderSearchRequest, Pageable pageable) {
         List<OrderSearchResponse> res = orderService.findOrders(orderSearchRequest, pageable);
         return res;
+    }
+
+    @GetMapping("/{id}")
+    public OrderDTO getOrder(@PathVariable Long id){
+        return orderService.findById(id);
     }
 
     @GetMapping("/{id}/staffs")

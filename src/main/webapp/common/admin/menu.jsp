@@ -19,30 +19,18 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading divider-text"> Bảng thống kê </div>
-                <a class="nav-link" href="${homeURL}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    Tổng Quan
-                </a>
-
                 <security:authorize access="hasRole('MANAGER')">
                     <a class="nav-link" href="${homeURL}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-chart-column"></i></div>
-                        Thống kê
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Bảng thống kê
                     </a>
                 </security:authorize>
 
                 <div class="sb-sidenav-menu-heading divider-text"> Bảng điều khiển </div>
-                <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBuildings" aria-expanded="true" aria-controls="collapseBuildings">
+                <a class="nav-link" href="${buildingURL}">
                     <div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>
-                    Quản Lý Toà Nhà
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    Quản Lý Tòa Nhà
                 </a>
-                <div class="collapse show" id="collapseBuildings" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="${buildingURL}">Tòa nhà hiện có</a>
-                        <a class="nav-link" href="${editBuildingURL}">Thêm tòa nhà</a>
-                    </nav>
-                </div>
 
 
                 <a class="nav-link" href="${orderURL}">

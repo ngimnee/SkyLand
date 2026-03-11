@@ -6,7 +6,7 @@
     <div class="container-fluid px-4">
         <div class="d-flex align-items-center justify-content-between small">
             <div class="text-center text-muted">
-                &copy; 2022 - <span id="year"></span> iBuildings. All rights reserved.
+                &copy; 2022 - <span id="year"></span> SkyLand. All rights reserved.
             </div>
 
             <div>

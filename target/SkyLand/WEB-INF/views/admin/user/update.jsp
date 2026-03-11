@@ -9,21 +9,21 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Tài Khoản</h1>
-        <ol class="breadcrumb mb-4">Cập nhật tài khoản</ol>
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="fw-bold mb-0">
+                <i class="bi bi-person-badge me-2 text-primary"></i>Tài khoản
+            </h3>
+        </div>
+        <nav class="mt-1 mb-4">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item text-muted">Quản lý</li>
+                <li class="breadcrumb-item active">Cập nhật vai trò</li>
+            </ol>
+        </nav>
+
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="bi bi-pencil-square me-1"></i>Cập nhật vai trò
-                        </div>
-
-                        <a href="${userURL}">
-                            <i class="bi bi-x-circle"></i>
-                        </a>
-                    </div>
-
                     <div class="card-body">
                         <form id="formUpdate">
                             <div class="row mb-3 align-items-center">

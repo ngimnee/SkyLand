@@ -14,15 +14,24 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Tòa Nhà</h1>
-        <ol class="breadcrumb mb-4">
-            <c:if test="${empty editBuilding.id}">
-                <li class="breadcrumb-item active">Thêm tòa nhà</li>
-            </c:if>
-            <c:if test="${not empty editBuilding.id}">
-                <li class="breadcrumb-item active">Cập nhật tòa nhà</li>
-            </c:if>
-        </ol>
+        <div class="mb-4 border-bottom pb-2">
+            <div class="d-flex align-items-center gap-2">
+                <h3 class="fw-bold mb-0">
+                    <i class="bi bi-buildings me-2 text-primary"></i>Tòa nhà
+                </h3>
+            </div>
+            <nav class="mt-1">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item">Quản lý</li>
+                    <c:if test="${empty editBuilding.id}">
+                        <li class="breadcrumb-item active">Thêm tòa nhà</li>
+                    </c:if>
+                    <c:if test="${not empty editBuilding.id}">
+                        <li class="breadcrumb-item active">Cập nhật tòa nhà</li>
+                    </c:if>
+                </ol>
+            </nav>
+        </div>
         <div class="row">
             <div class="col-xl-12">
                 <div class="card mb-4">

@@ -23,6 +23,7 @@ public class BuildingSearchBuilder {
     private String managerName;
     private String managerPhone;
     private String status;
+    private String typeO;
 
     public BuildingSearchBuilder(Builder builder) {
         this.id = builder.id;
@@ -44,6 +45,7 @@ public class BuildingSearchBuilder {
         this.managerName = builder.managerName;
         this.managerPhone = builder.managerPhone;
         this.status = builder.status;
+        this.typeO = builder.typeO;
     }
 
     public Long getId() {
@@ -97,6 +99,9 @@ public class BuildingSearchBuilder {
     public String getStatus() {
         return status;
     }
+    public String getTypeO() {
+        return typeO;
+    }
 
     public static class Builder {
         private Long id;
@@ -118,6 +123,7 @@ public class BuildingSearchBuilder {
         private String managerName;
         private String managerPhone;
         private String status;
+        private String typeO;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -194,6 +200,11 @@ public class BuildingSearchBuilder {
 
         public Builder setStatus(String status) {
             this.status = status;
+            return this;
+        }
+
+        public Builder setTypeO(String typeO) {
+            this.typeO = typeO;
             return this;
         }
 

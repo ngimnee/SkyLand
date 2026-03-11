@@ -37,7 +37,7 @@ public class BuildingController {
         mav.addObject("buildingSearch", buildingSearchRequest);
 
         mav.addObject("listStaff", userService.getStaffs());
-        mav.addObject("status", StatusBuilding.getStatus());
+        mav.addObject("typeO", StatusBuilding.getStatus());
         mav.addObject("city", City.getCity());
         if (buildingSearchRequest.getCity() != null && !buildingSearchRequest.getCity().isEmpty()) {
             BuildingDTO dto = new BuildingDTO();

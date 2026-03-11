@@ -11,82 +11,53 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Khách Hàng</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Danh sách khách hàng</li>
-        </ol>
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-search me-1"></i> Tìm kiếm</span>
-                        <a class="text-decoration-none" data-bs-toggle="collapse" href="#searchForm" role="button">
-                            <i class="fas fa-chevron-down" id="toggleArrow"></i>
-                        </a>
-                    </div>
+        <div class="mb-4 border-bottom pb-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="fw-bold mb-0">
+                    <i class="bi bi-people me-2 text-primary"></i>Danh sách khách hàng
+                </h3>
+            </div>
 
-                    <div class="collapse show" id="searchForm">
-                        <div class="card-body">
-                            <form:form id="listForm" modelAttribute="customerSearch" action="${customerURL}" method="GET">
-                                <div class="row">
-                                    <div class="col-xl-12 mb-3">
-                                        <label class="fullname">Họ và tên</label>
-                                        <form:input class="form-control" path="fullName"/>
-                                    </div>
-                                </div>
+            <nav class="mt-1">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item text-muted">Quản lý</li>
+                    <li class="breadcrumb-item active">Khách hàng</li>
+                </ol>
+            </nav>
+        </div>
 
-                                <div class="row">
-                                    <div class="col-xl-12 mb-3">
-                                        <label class="companyName">Công ty</label>
-                                        <form:input class="form-control" path="companyName"/>
-                                    </div>
-                                </div>
+        <div class="row mb-3">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fw-bold">Trạng thái:</span>
+                    <form action="${customerURL}" method="GET" class="mb-0">
+                        <div class="d-flex gap-1" role="group">
+                            <input type="radio" class="btn-check" name="isActive" id="statusAll" value="" onchange="this.form.submit()"${empty param.isActive ? 'checked' : ''}>
+                            <label class="btn btn-outline-secondary btn-sm rounded-pill px-3" for="statusAll">Tất cả</label>
 
-                                <div class="row">
-                                    <div class="col-xl-4 mb-3">
-                                        <label class="phone">SĐT</label>
-                                        <form:input class="form-control" path="phone"/>
-                                    </div>
-                                    <div class="col-xl-4 mb-3">
-                                        <label class="email">Email</label>
-                                        <form:input class="form-control" path="email"/>
-                                    </div>
-                                    <div class="col-xl-3 mb-3">
-                                    <security:authorize access="hasRole('MANAGER')">
-                                        <label class="staffId">Nhân viên</label>
-                                        <form:select class="form-control" path="staffId">
-                                            <form:option value="">-- Chọn nhân viên --</form:option>
-                                            <form:options items="${listStaff}"/>
-                                        </form:select>
-                                    </security:authorize>
-                                    </div>
-                                </div>
+                            <input type="radio" class="btn-check" name="isActive" id="statusActive" value="1" onchange="this.form.submit()"${param.isActive == '1' ? 'checked' : ''}>
+                            <label class="btn btn-outline-success btn-sm rounded-pill px-3" for="statusActive">Hoạt động</label>
 
-                                <button type="submit" class="btn btn-primary w-100" id="btnSearchCustomer">
-                                    <i class="fas fa-search me-1"></i> Tìm kiếm
-                                </button>
-                            </form:form>
+                            <input type="radio" class="btn-check" name="isActive" id="statusInactive" value="0" onchange="this.form.submit()"${param.isActive == '0' ? 'checked' : ''}>
+                            <label class="btn btn-outline-danger btn-sm rounded-pill px-3" for="statusInactive">Đã tắt</label>
                         </div>
-                    </div>
+                    </form>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#searchCustomerModal">
+                        <i class="fas fa-search me-1"></i> Tìm kiếm
+                    </button>
+
+                    <button class="btn btn-success shadow-sm" onclick="addCustomer()">
+                        <i class="fas fa-plus me-1"></i> Thêm khách hàng
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Bảng danh sách tài khoản -->
         <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-table me-1"></i>Tài khoản hiện có</span>
-                <div class="d-flex align-items-center">
-                <label class="me-2 mb-0 fw-bold">Trạng thái:</label>
-                    <form:form modelAttribute="customerSearch" action="${customerURL}" method="GET">
-                        <form:select id="btnSearchActive" class="form-select form-select-sm" path="isActive" onchange="this.form.submit()">
-                            <form:option value="">Tất cả</form:option>
-                            <form:option value="1">Hoạt động</form:option>
-                            <form:option value="0">Đã tắt</form:option>
-                        </form:select>
-                    </form:form>
-                </div>
-            </div>
             <div class="card-body">
                 <form:form id="customerListForm">
                     <display:table name="customerList.listResult"
@@ -100,8 +71,11 @@
                                 size="${customerList.totalItems}"
                                 defaultsort="2" defaultorder="ascending">
 
+                        <display:column title="STT" headerClass="text-center" class="text-center">
+                            ${customer_offset + customer_rowNum}
+                        </display:column>
                         <!-- Cột dữ liệu -->
-                        <display:column title="Ngày" headerClass="text-center">
+                        <display:column title="Ngày" headerClass="text-center" class="text-center">
                             <c:if test="${empty customer.modifiedDate}">
                                 <fmt:formatDate value="${customer.createdDate}" pattern="dd/MM/yyyy"/>
                             </c:if>
@@ -109,71 +83,37 @@
                                 <fmt:formatDate value="${customer.modifiedDate}" pattern="dd/MM/yyyy"/>
                             </c:if>
                         </display:column>
-                        <display:column property="fullName" title="Họ và tên" headerClass="text-center" />
-                        <display:column property="phone" title="SĐT" headerClass="text-center" />
-                        <display:column property="email" title="Email" headerClass="text-center" />
-                        <display:column property="companyName" title="Công ty" headerClass="text-center" />
-                        <display:column property="demand" title="Yêu cầu" headerClass="text-center" />
-                        <display:column property="status" title="Tình trạng" headerClass="text-center" />
-<%--                        <security:authorize access="hasRole('MANAGER')">--%>
-<%--                            <display:column title="Trạng thái" headerClass="text-center" class="text-center">--%>
-<%--                                <c:choose>--%>
-<%--                                    <c:when test="${customer.isActive == 1}">--%>
-<%--                                        <span>Hoạt động</span>--%>
-<%--                                    </c:when>--%>
-<%--                                    <c:otherwise>--%>
-<%--                                        <span>Ngưng hoạt động</span>--%>
-<%--                                    </c:otherwise>--%>
-<%--                                </c:choose>--%>
-<%--                            </display:column>--%>
-<%--                        </security:authorize>--%>
-
+                        <display:column property="fullName" title="Họ và tên" headerClass="text-center" class="text-center"/>
+                        <display:column property="phone" title="SĐT" headerClass="text-center" class="text-center"/>
+                        <display:column property="email" title="Email" headerClass="text-center" class="text-center"/>
+                        <display:column property="companyName" title="Công ty" headerClass="text-center" class="text-center"/>
+                        <display:column property="demand" title="Yêu cầu" headerClass="text-center" class="text-center"/>
+                        <display:column property="status" title="Tình trạng" headerClass="text-center" class="text-center"/>
 
                         <!-- Cột thao tác -->
                         <display:column title="Thao tác" headerClass="text-center" class="text-center">
-                            <div class="btn-group" role="group">
+                            <div class="d-flex justify-content-center gap-1">
                                 <security:authorize access="hasRole('MANAGER')">
-                                    <button type="button"
-                                            class="btn btn-success btn-sm"
-                                            title="Giao khách hàng"
-                                            onclick="assignmentCustomer(${customer.id})">
+                                    <button type="button" class="btn btn-outline-success btn-sm" title="Giao khách hàng" onclick="assignmentCustomer(${customer.id})">
                                         <i class="bi bi-arrow-left-right"></i>
                                     </button>
                                 </security:authorize>
 
-                                <a href="${transactionURL}/${customer.id}"
-                                   class="btn btn-primary btn-sm"
-                                   title="CSKH">
+                                <a href="${transactionURL}/${customer.id}" class="btn btn-outline-primary btn-sm" title="CSKH">
                                     <i class="bi bi-headset"></i>
                                 </a>
 
-                                <a href="/admin/customer/edit/${customer.id}"
-                                   class="btn btn-info btn-sm"
-                                   title="Chỉnh sửa">
+                                <button type="button" class="btn btn-info btn-sm" onclick="editCustomer(${customer.id})" title="Cập nhật thông tin">
                                     <i class="bi bi-pencil-square"></i>
-                                </a>
+                                </button>
 
                                 <security:authorize access="hasRole('MANAGER')">
-                                    <button type="button"
-                                            class="btn btn-danger btn-sm"
-                                            title="Xóa"
-                                            onclick="deleteCustomer(${customer.id})">
+                                    <button type="button" class="btn btn-outline-danger btn-sm" title="Xóa" onclick="deleteCustomer(${customer.id})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </security:authorize>
                             </div>
                         </display:column>
-<%--                        <display:setProperty name="paging.banner.full">--%>
-<%--                            <nav aria-label="Page navigation">--%>
-<%--                                <ul class="pagination mb-0">--%>
-<%--                                    <li class="page-item">${firstPage}</li>--%>
-<%--                                    <li class="page-item">${prevPage}</li>--%>
-<%--                                    ${pageLinks}--%>
-<%--                                    <li class="page-item">${nextPage}</li>--%>
-<%--                                    <li class="page-item">${lastPage}</li>--%>
-<%--                                </ul>--%>
-<%--                            </nav>--%>
-<%--                        </display:setProperty>--%>
                     </display:table>
                 </form:form>
             </div>
@@ -209,6 +149,146 @@
         </div>
     </div>
 
+    <!-- Modal tìm kiếm khách hàng -->
+    <div class="modal fade" id="searchCustomerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tìm kiếm khách hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form:form id="listForm" modelAttribute="customerSearch" action="${customerURL}" method="GET">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label>Họ và tên</label>
+                                <form:input class="form-control" path="fullName"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label>Công ty</label>
+                                <form:input class="form-control" path="companyName"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label>SĐT</label>
+                                <form:input class="form-control" path="phone"/>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label>Email</label>
+                                <form:input class="form-control" path="email"/>
+                            </div>
+
+                            <security:authorize access="hasRole('MANAGER')">
+                                <div class="col-md-4 mb-3">
+                                    <label>Nhân viên</label>
+                                    <form:select class="form-control" path="staffId">
+                                        <form:option value="">-- Chọn nhân viên --</form:option>
+                                        <form:options items="${listStaff}"/>
+                                    </form:select>
+                                </div>
+                            </security:authorize>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-1"></i> Tìm kiếm
+                            </button>
+
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Đóng
+                            </button>
+                        </div>
+                    </form:form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="customerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerModalTitle">
+                        <i class="bi bi-person-fill-add"></i> Thông tin khách hàng
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form id="formEditCustomer">
+
+                        <div class="row mb-3">
+                            <label class="col-md-3 col-form-label">
+                                Họ và tên<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="fullName" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-md-3 col-form-label">
+                                SĐT<span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="customerPhone" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-md-3 col-form-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="email">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-md-3 col-form-label">Công ty</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="companyName">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-md-3 col-form-label">Yêu cầu</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="demand" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-md-3 col-form-label">Tình trạng</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="status" required>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="id" id="editCustomerId">
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="btnUpdateCustomer">
+                        <i class="bi bi-check"></i> Cập nhật
+                    </button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <script>
         $('#btnSearchCustomer').click(function(e) {
@@ -328,6 +408,94 @@
                     }
                 });
             }
+        }
+
+        function editCustomer(id) {
+            $('#customerModalTitle').text("Cập nhật khách hàng");
+
+            $.ajax({
+                type: "GET",
+                url: "${customerAPI}/" + id,
+                dataType: "json",
+                success: function(data){
+                    $('[name="fullName"]').val(data.fullName);
+                    $('[name="customerPhone"]').val(data.customerPhone);
+                    $('[name="email"]').val(data.email);
+                    $('[name="companyName"]').val(data.companyName);
+                    $('[name="demand"]').val(data.demand);
+                    $('[name="status"]').val(data.status);
+                    $('#editCustomerId').val(data.id);
+                    var modal = new bootstrap.Modal(document.getElementById('customerModal'));
+                    modal.show();
+                }
+            });
+        }
+
+        $('#btnUpdateCustomer').click(function(){
+            if(!validateCustomerForm()){
+                return;
+            }
+            let data = {};
+            $.each($('#formEditCustomer').serializeArray(), function(i,v){
+                data[v.name] = v.value;
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "${customerAPI}",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function(){
+                    if(data.id){
+                        alert("✅ Cập nhật khách hàng thành công");
+                    }else{
+                        alert("✅ Thêm khách hàng thành công");
+                    }
+                    location.reload();
+                },
+                error: function(){
+                    alert("❌ Thao tác thất bại");
+                }
+            });
+        });
+
+        function addCustomer(){
+            $('#formEditCustomer')[0].reset();
+            $('#editCustomerId').val('');
+            $('#customerModalTitle').text("Thêm khách hàng");
+
+            var modal = new bootstrap.Modal(document.getElementById('customerModal'));
+            modal.show();
+        }
+
+        function validateCustomerForm(){
+            let fullName = $('#formEditCustomer [name="fullName"]').val().trim();
+            let phone = $('#formEditCustomer [name="customerPhone"]').val().trim();
+            let demand = $('#formEditCustomer [name="demand"]').val().trim();
+            let status = $('#formEditCustomer [name="status"]').val().trim();
+
+            if(fullName === ""){
+                alert("⚠️ Vui lòng nhập họ tên");
+                return false;
+            }
+            if(phone === ""){
+                alert("⚠️ Vui lòng nhập số điện thoại");
+                return false;
+            }
+            var phoneRegex = /^[0-9]{9,11}$/;
+            if(!phoneRegex.test(phone)){
+                alert("⚠️ Số điện thoại không hợp lệ");
+                return false;
+            }
+            if(demand === ""){
+                alert("⚠️ Vui lòng nhập yêu cầu");
+                return false;
+            }
+            if(status === ""){
+                alert("⚠️ Vui lòng nhập tình trạng");
+                return false;
+            }
+            return true;
         }
     </script>
 </body>

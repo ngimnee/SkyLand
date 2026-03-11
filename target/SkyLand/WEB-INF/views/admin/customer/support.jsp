@@ -10,24 +10,33 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Khách Hàng</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Chăm sóc khách hàng</li>
-        </ol>
+        <div class="mb-4 border-bottom pb-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="fw-bold mb-0">
+                    <i class="bi bi-people me-2 text-primary"></i>Khách hàng
+                </h3>
+            </div>
+
+            <nav class="mt-1">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item text-muted">Quản lý</li>
+                    <li class="breadcrumb-item active">CSKH</li>
+                </ol>
+            </nav>
+        </div>
 
         <!-- Nút mở modal thêm -->
-        <div class="col-12 text-center">
-            <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                                    data-bs-toggle="modal" data-bs-target="#noteModal">
-                <i class="fa fa-location-arrow"></i>Add
+        <div class="col-12 d-flex mt-3 mb-1">
+            <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#noteModal">
+                <i class="fa fa-plus"></i>Thêm yêu cầu
             </button>
         </div>
 
         <!-- Bảng CSKH & Dẫn KH đi xem -->
         <c:forEach var="code" items="${codeList}">
-            <div class="card mb-4">
+            <div class="card mb-4 shadow-sm">
                 <!-- Header -->
-                <div class="card-header">
+                <div class="card-header bg-light fw-semibold">
                     <c:choose>
                         <c:when test="${code.key == 'CSKH'}">CSKH</c:when>
                         <c:when test="${code.key == 'VIEW'}">Dẫn đi xem</c:when>
@@ -35,71 +44,73 @@
                     </c:choose>
                 </div>
 
-                <div class="card-body">
-                    <form:form id="transactionForm_${code.key}">
-                        <table class="table table-bordered table-striped text-center align-middle">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Ngày</th>
-                                    <th>Người tạo</th>
-                                    <th>Chi tiết giao dịch</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:choose>
-                                    <c:when test="${code.key == 'CSKH'}">
-                                        <c:forEach var="supportItem" items="${supports}" varStatus="status">
-                                            <tr>
-                                                <td>${status.index + 1}</td>
-                                                <td><fmt:formatDate value="${supportItem.createdDate}" pattern="dd/MM/yyyy"/></td>
-                                                <td>${supportItem.createdBy}</td>
-                                                <td>${supportItem.note}</td>
-                                                <td>
-                                                    <a class="btn btn-info btn-sm" title="Cập nhật" onclick="editTransaction(${supportItem.id})">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-danger btn-sm" title="Xóa" onclick="deleteTransaction(${supportItem.id})">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                        <c:if test="${empty supports}">
-                                            <tr>
-                                                <td colspan="5" class="text-center text-muted">Không có hỗ trợ CSKH nào.</td>
-                                            </tr>
-                                        </c:if>
-                                    </c:when>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <form:form id="transactionForm_${code.key}">
+                            <table class="table table-bordered table-striped text-center align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Ngày</th>
+                                        <th>Người tạo</th>
+                                        <th>Chi tiết giao dịch</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:choose>
+                                        <c:when test="${code.key == 'CSKH'}">
+                                            <c:forEach var="supportItem" items="${supports}" varStatus="status">
+                                                <tr>
+                                                    <td>${status.index + 1}</td>
+                                                    <td><fmt:formatDate value="${supportItem.createdDate}" pattern="dd/MM/yyyy"/></td>
+                                                    <td>${supportItem.createdBy}</td>
+                                                    <td>${supportItem.note}</td>
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm" title="Cập nhật" onclick="editTransaction(${supportItem.id})">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </a>
+                                                        <button type="button" class="btn btn-danger btn-sm" title="Xóa" onclick="deleteTransaction(${supportItem.id})">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            <c:if test="${empty supports}">
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">Không có hỗ trợ CSKH nào.</td>
+                                                </tr>
+                                            </c:if>
+                                        </c:when>
 
-                                    <c:when test="${code.key == 'VIEW'}">
-                                        <c:forEach var="viewItem" items="${views}" varStatus="status">
-                                            <tr>
-                                                <td>${status.index + 1}</td>
-                                                <td><fmt:formatDate value="${viewItem.createdDate}" pattern="dd/MM/yyyy"/></td>
-                                                <td>${viewItem.createdBy}</td>
-                                                <td>${viewItem.note}</td>
-                                                <td>
-                                                    <a class="btn btn-info btn-sm" onclick="editTransaction(${viewItem.id})">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteTransaction(${viewItem.id})">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                        <c:if test="${empty views}">
-                                            <tr>
-                                                <td colspan="5" class="text-center text-muted">Không có hỗ trợ dẫn khách hàng đi xem BĐS nào.</td>
-                                            </tr>
-                                        </c:if>
-                                    </c:when>
-                                </c:choose>
-                            </tbody>
-                        </table>
-                    </form:form>
+                                        <c:when test="${code.key == 'VIEW'}">
+                                            <c:forEach var="viewItem" items="${views}" varStatus="status">
+                                                <tr>
+                                                    <td>${status.index + 1}</td>
+                                                    <td><fmt:formatDate value="${viewItem.createdDate}" pattern="dd/MM/yyyy"/></td>
+                                                    <td>${viewItem.createdBy}</td>
+                                                    <td>${viewItem.note}</td>
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm" onclick="editTransaction(${viewItem.id})">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </a>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteTransaction(${viewItem.id})">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            <c:if test="${empty views}">
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">Không có hỗ trợ dẫn khách hàng đi xem BĐS nào.</td>
+                                                </tr>
+                                            </c:if>
+                                        </c:when>
+                                    </c:choose>
+                                </tbody>
+                            </table>
+                        </form:form>
+                    </div>
                 </div>
             </div>
         </c:forEach>
@@ -166,7 +177,7 @@
                 id: $('#transactionId').val(),
                 code: $('#transactionCode').val(),
                 note: $('#noteContent').val(),
-                customerId: ${customerId}
+                customerId: '${customerId}'
             };
             $.ajax({
                 type: 'POST',

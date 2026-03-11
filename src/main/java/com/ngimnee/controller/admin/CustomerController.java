@@ -57,13 +57,4 @@ public class CustomerController {
         return mav;
     }
 
-    @GetMapping("/admin/customer/edit/{id}")
-    public ModelAndView editCustomer(@PathVariable("id") Long id,
-                                     HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("admin/customer/edit");
-        CustomerDTO customerDTO = customerService.findById(id);
-        mav.addObject("editCustomer", customerDTO);
-        mav.addObject("listStaffs", userService.getStaffs());
-        return mav;
-    }
 }

@@ -2,6 +2,8 @@ package com.ngimnee.repository.custom.impl;
 
 import com.ngimnee.builder.BuildingSearchBuilder;
 import com.ngimnee.entity.BuildingEntity;
+import com.ngimnee.enums.StatusBuilding;
+import com.ngimnee.enums.StatusOrder;
 import com.ngimnee.model.response.BuildingSearchResponse;
 import com.ngimnee.repository.custom.BuildingRepositoryCustom;
 import com.ngimnee.utils.NumberUtils;
@@ -36,7 +38,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
                 String fieldName = item.getName();
 
                 if (!fieldName.equals("staffId") && !fieldName.equals("typeCode") && !fieldName.startsWith("rentArea")
-                        && !fieldName.startsWith("rentPrice")) {
+                        && !fieldName.startsWith("rentPrice") && !fieldName.equals("typeO")) {
                     Object valueObject = item.get(buildingSearchBuilder);
 
                     if (valueObject != null) {
@@ -97,13 +99,27 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
                 where.append(" AND b.rentPrice <= " + rentPriceTo);
             }
         }
+
+        String typeO = buildingSearchBuilder.getTypeO();
+        if (StringUtils.check(typeO)) {
+            if (StatusBuilding.AVAILABLE.name().equals(typeO)) {
+                where.append(" AND NOT EXISTS (SELECT 1 FROM orders o WHERE o.id = b.orderid AND o.status IN ('"
+                        + StatusOrder.PROCESSING.name() + "','" + StatusOrder.COMPLETED.name() + "')) ");
+            } else if (StatusBuilding.DEPOSITED.name().equals(typeO)) {
+                where.append(" AND EXISTS (SELECT 1 FROM orders o WHERE o.id = b.orderid AND o.status = '"
+                        + StatusOrder.PROCESSING.name() + "') ");
+            } else if (StatusBuilding.SOLD.name().equals(typeO)) {
+                where.append(" AND EXISTS (SELECT 1 FROM orders o WHERE o.id = b.orderid AND o.status = '"
+                        + StatusOrder.COMPLETED.name() + "') ");
+            }
+        }
     }
 
     public static void groupByQuery(BuildingSearchBuilder buildingSearchBuilder, StringBuilder where)
     {
         where.append(" GROUP BY b.id ");
         if(buildingSearchBuilder.getStaffId() != null) {
-            where.append(" , ab.id; ");
+            where.append(" , ab.id ");
         }
     }
 
@@ -111,7 +127,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     public List<BuildingEntity> findBuilding(BuildingSearchBuilder buildingSearchBuilder, Pageable pageable)
     {
         StringBuilder sql = new StringBuilder(" SELECT * FROM building b ");
-        StringBuilder where = new StringBuilder(" WHERE 1 = 1 AND status = 'N' ");
+        StringBuilder where = new StringBuilder(" WHERE 1 = 1 AND b.status = 'N' ");
 
         joinTable(buildingSearchBuilder, sql);
         queryNormal(buildingSearchBuilder, where);

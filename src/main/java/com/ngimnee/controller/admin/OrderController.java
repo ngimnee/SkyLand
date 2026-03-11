@@ -32,6 +32,7 @@ public class OrderController {
         ModelAndView mav = new ModelAndView("admin/order/list");
         mav.addObject("orderSearch", orderSearchRequest);
         mav.addObject("listStaff", userService.getStaffs());
+        mav.addObject("listStatus", StatusOrder.getStatus());
 
         if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
             orderSearchRequest.setStaffId(SecurityUtils.getPrincipal().getId());
@@ -49,20 +50,4 @@ public class OrderController {
         return mav;
     }
 
-    @GetMapping("/admin/order/edit")
-    public ModelAndView editOrder(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("web/building");
-//        ModelAndView mav = new ModelAndView("web/list");
-        return mav;
-    }
-
-    @GetMapping("/admin/order/edit/{id}")
-    public ModelAndView editOrder(@PathVariable("id") Long id,
-                                  HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("admin/order/edit");
-        OrderDTO orderDTO = orderService.findById(id);
-        mav.addObject("editOrder", orderDTO);
-        mav.addObject("listStatus", StatusOrder.getStatus());
-        return mav;
-    }
 }

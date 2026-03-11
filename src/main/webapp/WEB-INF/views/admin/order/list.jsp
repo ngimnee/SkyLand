@@ -10,22 +10,27 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Đơn Hàng</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Danh sách đơn hàng</li>
-        </ol>
+        <div class="mb-4 border-bottom pb-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="fw-bold mb-0">
+                    <i class="bi bi-receipt me-2 text-primary"></i>Danh sách đơn hàng
+                </h3>
+            </div>
+            <nav class="mt-1">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item text-muted">Quản lý</li>
+                    <li class="breadcrumb-item active">Đơn hàng</li>
+                </ol>
+            </nav>
+        </div>
 
         <form:form id="listForm" modelAttribute="orderSearch" action="${orderURL}" method="GET">
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <label class="fw-bold mb-3"> Tìm kiếm:</label>
-                </div>
-
-                <div class="col mb-3">
-                    <div class="input-group">
-                        <form:input path="code" class="form-control" placeholder="Nhập đơn hàng hoặc tòa nhà..." />
-                        <button type="submit" class="btn btn-primary" id="btnSearchOrder">
-                            <i class="fas fa-search"></i>
+            <div class="row mb-4">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <div class="input-group shadow-sm" style="max-width:420px;">
+                        <form:input path="code" class="form-control" placeholder="🔍 Nhập mã đơn hoặc tên tòa nhà..." />
+                        <button type="submit" class="btn btn-primary px-4" id="btnSearchOrder">
+                            <i class="fas fa-search"></i> Tìm
                         </button>
                     </div>
                 </div>
@@ -34,9 +39,6 @@
 
         <!-- Bảng danh sách -->
         <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-table me-1"></i> Danh sách đơn hàng</span>
-            </div>
             <div class="card-body">
                 <form:form id="orderListForm">
                     <display:table name="orderList.listResult"
@@ -50,8 +52,11 @@
                                 size="${orderList.totalItems}"
                                 defaultsort="2" defaultorder="ascending">
 
-                        <!-- Cột dữ liệu -->
-                        <display:column title="Ngày" headerClass="text-center">
+                        <display:column title="STT" headerClass="text-center" class="text-center">
+                            ${order_offset + order_rowNum}
+                        </display:column>
+
+                        <display:column title="Ngày" headerClass="text-center" class="text-center">
                             <c:if test="${empty order.modifiedDate}">
                                 <fmt:formatDate value="${order.createdDate}" pattern="dd/MM/yyyy"/>
                             </c:if>
@@ -59,29 +64,47 @@
                                 <fmt:formatDate value="${order.modifiedDate}" pattern="dd/MM/yyyy"/>
                             </c:if>
                         </display:column>
-                        <display:column property="code" title="Mã đơn hàng" headerClass="text-center" />
-                        <display:column property="buildingName" title="Tên tòa nhà" headerClass="text-center" />
-                        <display:column property="name" title="Khách hàng" headerClass="text-center" />
-                        <display:column property="phone" title="SĐT" headerClass="text-center" />
-                        <display:column property="email" title="Email" headerClass="text-center" />
-                        <display:column property="amount" title="Đã cọc" headerClass="text-center" />
-                        <display:column property="status" title="Trạng thái" headerClass="text-center" />
+                        <display:column property="code" title="Mã đơn hàng" headerClass="text-center" class="text-center"/>
+                        <display:column property="buildingName" title="Tên tòa nhà" headerClass="text-center" class="text-center"/>
+                        <display:column property="name" title="Khách hàng" headerClass="text-center" class="text-center"/>
+                        <display:column property="phone" title="SĐT" headerClass="text-center" class="text-center"/>
+                        <display:column property="email" title="Email" headerClass="text-center" class="text-center"/>
+                        <display:column title="Đã cọc" headerClass="text-center" class="text-center">
+                            <fmt:formatNumber value="${order.amount}" type="number"/> đ
+                        </display:column>
+<%--                        <display:column property="amount" title="Thanh toán" headerClass="text-center" />--%>
+                        <display:column title="Trạng thái" headerClass="text-center" class="text-center">
+                            <c:choose>
+                                <c:when test="${order.status == 'PROCESSING'}">
+                                    <span class="badge bg-warning text-dark rounded-pill fs-7 px-3 py-2">Đang xử lý</span>
+                                </c:when>
+                                <c:when test="${order.status == 'COMPLETED'}">
+                                    <span class="badge bg-success rounded-pill fs-7 px-3 py-2">Hoàn thành</span>
+                                </c:when>
+                                <c:when test="${order.status == 'CANCELLED'}">
+                                    <span class="badge bg-danger rounded-pill fs-7 px-3 py-2">Đã hủy</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="badge bg-secondary">${order.status}</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </display:column>
 
                         <!-- Cột thao tác -->
                         <display:column title="Thao tác" headerClass="text-center" class="text-center">
-                            <div class="btn-group" role="group">
+                            <div class="d-flex justify-content-center gap-1">
                                 <security:authorize access="hasRole('MANAGER')">
-                                    <button type="button" class="btn btn-success btn-sm" title="Giao đơn hàng" onclick="assignmentOrder(${order.id})">
+                                    <button type="button" class="btn btn-outline-success btn-sm" title="Giao đơn hàng" onclick="assignmentOrder(${order.id})">
                                         <i class="bi bi-arrow-left-right"></i>
                                     </button>
                                 </security:authorize>
 
-                                <a href="${editOrderURL}/${order.id}" class="btn btn-info btn-sm" title="Cập nhật">
+                               <button type="button" class="btn btn-outline-primary btn-sm" onclick="openEditOrder(${order.id})" title="Cập nhật">
                                     <i class="bi bi-pencil-square"></i>
-                                </a>
+                                </button>
 
                                 <security:authorize access="hasRole('MANAGER')">
-                                    <button type="button" class="btn btn-danger btn-sm" title="Xóa" onclick="deleteOrder(${order.id})">
+                                    <button type="button" class="btn btn-outline-danger btn-sm" title="Xóa" onclick="deleteOrder(${order.id})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </security:authorize>
@@ -122,6 +145,70 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editOrderModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-pencil-square me-2"></i> Cập nhật đơn hàng
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formEdit">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Họ và tên<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="name">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">SĐT<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="phone">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="text" class="form-control" name="email">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Địa chỉ<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="address">
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">Ghi chú</label>
+                                <input type="text" class="form-control" name="note">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Trạng thái<span class="text-danger">*</span></label>
+                                <select class="form-select" name="status">
+                                    <c:forEach var="item" items="${listStatus}">
+                                        <option value="${item.key}">${item.value}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id" id="editOrderId">
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success px-4" id="btnUpdateOrder">
+                        <i class="bi bi-check-circle"></i> Cập nhật
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         $('#btnSearchOrder').click(function(e) {
@@ -142,8 +229,6 @@
             $.ajax({
                 type: "GET",
                 url: "${orderAPI}/" + orderId + '/staffs',
-                // data: JSON.stringify(data),
-                // contentType: "application/json",
                 dataType: "JSON",
                 success: function(response) {
                     var row = "";
@@ -242,6 +327,59 @@
                 });
             }
         }
+
+        function openEditOrder(id){
+            $('#editOrderId').val(id);
+            $.ajax({
+                type: "GET",
+                url: "${orderAPI}/" + id,
+                success: function(response){
+                    var data = response;
+                    $('[name="name"]').val(data.name);
+                    $('[name="phone"]').val(data.phone);
+                    $('[name="email"]').val(data.email);
+                    $('[name="address"]').val(data.address);
+                    $('[name="note"]').val(data.note);
+                    $('[name="status"]').val(data.status);
+                    var modal = new bootstrap.Modal(document.getElementById('editOrderModal'));
+                    modal.show();
+                },
+                error: function(){
+                    alert("Không lấy được dữ liệu đơn hàng!");
+                }
+            });
+        }
+
+        $('#btnUpdateOrder').click(function(){
+            var name = $('[name="name"]').val().trim();
+            var phone = $('[name="phone"]').val().trim();
+            var address = $('[name="address"]').val().trim();
+            var status = $('[name="status"]').val();
+            if(name === '' || phone === '' || address === '' || status === ''){
+                alert("⚠️ Vui lòng nhập đầy đủ các trường bắt buộc!");
+                return;
+            }
+
+            var data = {};
+            $.each($('#formEdit').serializeArray(), function (i, v) {
+                data[v.name] = v.value;
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "${orderAPI}",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json",
+                success: function(){
+                    alert("✅ Cập nhật thành công!");
+                    location.reload();
+                },
+                error: function(){
+                    alert("❌ Cập nhật thất bại!");
+                }
+            });
+        });
 
     </script>
 </body>

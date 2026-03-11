@@ -1,9 +1,6 @@
 package com.ngimnee.api.admin;
 
-import com.ngimnee.model.dto.AssignmentBuildingDTO;
-import com.ngimnee.model.dto.AssignmentCustomerDTO;
-import com.ngimnee.model.dto.BuildingDTO;
-import com.ngimnee.model.dto.CustomerDTO;
+import com.ngimnee.model.dto.*;
 import com.ngimnee.model.request.CustomerSearchRequest;
 import com.ngimnee.model.response.CustomerSearchResponse;
 import com.ngimnee.model.response.ResponseDTO;
@@ -27,6 +24,11 @@ public class CustomerAPI {
     public List<CustomerSearchResponse> getCustomers(@ModelAttribute CustomerSearchRequest customerSearchRequest, Pageable pageable) {
         List<CustomerSearchResponse> res = customerService.findCustomers(customerSearchRequest, pageable);
         return res;
+    }
+
+    @GetMapping("/{id}")
+    public CustomerDTO getCustomer(@PathVariable Long id){
+        return customerService.findById(id);
     }
 
     @GetMapping("/{id}/staffs")

@@ -9,61 +9,39 @@
 </head>
 <body>
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Tài Khoản</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Danh sách tài khoản</li>
-    </ol>
-
-    <!-- Form tìm kiếm -->
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-search me-1"></i> Tìm kiếm</span>
-                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#searchForm" role="button">
-                        <i class="fas fa-chevron-down" id="toggleArrow"></i>
-                    </a>
-                </div>
-                <div class="collapse show" id="searchForm">
-                    <div class="card-body">
-                        <form:form id="listForm" modelAttribute="MODEL" action="${userURL}" method="GET">
-                            <div class="row">
-                                <div class="col-xl-3 mb-3">
-                                    <label>Tài khoản</label>
-                                    <form:input class="form-control" path="userName"/>
-                                </div>
-                                <div class="col-xl-9 mb-3">
-                                    <label>Họ tên</label>
-                                    <form:input class="form-control" path="fullName"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xl-6 mb-3">
-                                    <label>SĐT</label>
-                                    <form:input class="form-control" path="phone"/>
-                                </div>
-                                <div class="col-xl-6 mb-3">
-                                    <label>Email</label>
-                                    <form:input class="form-control" path="email"/>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100" id="btnSearchUser">
-                                <i class="fas fa-search me-1"></i> Tìm kiếm
-                            </button>
-                        </form:form>
-                    </div>
-                </div>
-            </div>
+    <div class="mb-4 border-bottom pb-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="fw-bold mb-0">
+                <i class="bi bi-person-badge me-2 text-primary"></i>Danh sách tài khoản
+            </h3>
         </div>
+
+        <nav class="mt-1">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item text-muted">Quản lý</li>
+                <li class="breadcrumb-item active">Tài khoản</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="card-header d-flex justify-content-end align-items-center gap-2 mt-4 mb-2">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+            <i class="fas fa-search me-1"></i> Tìm kiếm
+        </button>
+
+        <a href="${editUserURL}" class="btn btn-success">
+            <i class="bi bi-person-plus me-1"></i> Thêm tài khoản
+        </a>
+
+        <security:authorize access="hasRole('MANAGER')">
+            <button id="btnDeleteUsers" type="button" class="btn btn-danger">
+                <i class="bi bi-trash me-1"></i> Xóa đã chọn
+            </button>
+        </security:authorize>
     </div>
 
     <!-- Bảng danh sách -->
     <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span><i class="fas fa-table me-1"></i> Danh sách tài khoản</span>
-        </div>
-
         <div class="card-body">
             <form:form id="userListForm" modelAttribute="model">
                 <display:table name="model.listResult"
@@ -78,13 +56,12 @@
                                defaultsort="2" defaultorder="ascending">
 
                     <!-- Checkbox chọn -->
-                    <display:column title="<input type='checkbox' id='checkAll'/>"
-                                    headerClass="text-center" class="text-center">
+                    <display:column title="<input type='checkbox' id='checkAll'/>" headerClass="text-center" class="text-center">
                         <input type="checkbox" name="ids" value="${user.id}" class="checkItem"/>
                     </display:column>
 
                     <!-- Cột dữ liệu -->
-                    <display:column title="Ngày" headerClass="text-center">
+                    <display:column title="Ngày" headerClass="text-center" class="text-center">
                         <c:choose>
                             <c:when test="${not empty user.modifiedDate}">
                                 <fmt:formatDate value="${user.modifiedDate}" pattern="dd/MM/yyyy"/>
@@ -95,10 +72,10 @@
                         </c:choose>
                     </display:column>
 
-                    <display:column property="userName" title="Tài khoản" headerClass="text-center"/>
-                    <display:column property="fullName" title="Họ tên" headerClass="text-center"/>
-                    <display:column property="phone" title="SĐT" headerClass="text-center"/>
-                    <display:column property="email" title="Email" headerClass="text-center"/>
+                    <display:column property="userName" title="Tài khoản" headerClass="text-center" class="text-center"/>
+                    <display:column property="fullName" title="Họ tên" headerClass="text-center" class="text-center"/>
+                    <display:column property="phone" title="SĐT" headerClass="text-center" class="text-center"/>
+                    <display:column property="email" title="Email" headerClass="text-center" class="text-center"/>
 
 <%--                    <security:authorize access="hasRole('MANAGER')">--%>
 <%--                        <display:column title="Trạng thái" headerClass="text-center" class="text-center">--%>
@@ -113,35 +90,70 @@
 
                     <!-- Cột thao tác -->
                     <display:column title="Thao tác" headerClass="text-center" class="text-center">
-                        <div class="btn-group" role="group">
-                            <a href="${editUserURL}?id=${user.id}" class="btn btn-info btn-sm" title="Chỉnh sửa">
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="${editUserURL}?id=${user.id}" class="btn btn-outline-primary btn-sm" title="Chỉnh sửa">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
+
                             <security:authorize access="hasRole('MANAGER')">
-                                <button type="button" class="btn btn-danger btn-sm" title="Xóa"
-                                        onclick="deleteUser(${user.id})">
+                                <button type="button" class="btn btn-outline-danger btn-sm" title="Xóa người dùng" onclick="deleteUser(${user.id})">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </security:authorize>
                         </div>
                     </display:column>
                 </display:table>
-
-                <!-- Nút xoá nhiều -->
-                <security:authorize access="hasRole('MANAGER')">
-                    <div class="d-flex justify-content-start align-items-stretch mt-3 pt-2"
-                         style="border-top: 1px solid #ccc;">
-                        <button id="btnDeleteUsers" type="button" class="btn btn-danger" title="Xóa tài khoản">
-                            <i class="bi bi-trash"></i> Xóa đã chọn
-                        </button>
-                    </div>
-                </security:authorize>
             </form:form>
         </div>
     </div>
 </div>
 
-<!-- Script -->
+<div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-search me-2"></i>Tìm kiếm
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form:form id="listForm" modelAttribute="MODEL" action="${userURL}" method="GET">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Tài khoản</label>
+                            <form:input class="form-control" path="userName"/>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Họ tên</label>
+                            <form:input class="form-control" path="fullName"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>SĐT</label>
+                            <form:input class="form-control" path="phone"/>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Email</label>
+                            <form:input class="form-control" path="email"/>
+                        </div>
+                    </div>
+                </form:form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Đóng
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSearchUser">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     // Nút tìm kiếm
     $('#btnSearchUser').click(function (e) {
