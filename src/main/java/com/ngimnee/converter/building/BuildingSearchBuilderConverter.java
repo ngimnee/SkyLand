@@ -28,6 +28,7 @@ public class BuildingSearchBuilderConverter {
                 .setRentAreaTo(SearchRequestUtil.getObject(buildingSearchRequest.getRentAreaTo(), Long.class))
                 .setStaffId(SearchRequestUtil.getObject(buildingSearchRequest.getStaffId(), Long.class))
                 .setLevel(SearchRequestUtil.getObject(buildingSearchRequest.getLevel(), Long.class))
+                .setStatus(SearchRequestUtil.getObject(buildingSearchRequest.getStatus(), String.class))
                 .setDirection(SearchRequestUtil.getObject(buildingSearchRequest.getDirection(), String.class))
                 .setTypeO(SearchRequestUtil.getObject(buildingSearchRequest.getTypeO(), String.class))
                 .build();

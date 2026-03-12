@@ -43,6 +43,9 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "status")
     private String status = "DANG_XU_LY";
 
+    @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    private Integer isActive = 1;
+
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,  cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<BuildingEntity> buildings = new ArrayList<>();
 

@@ -136,12 +136,12 @@
                                 </div>
                             </div>
 
-                            <!-- STATUS -->
+                            <!-- IS ACTIVE -->
                             <security:authorize access="hasRole('MANAGER')">
                                 <div class="row mb-3">
                                 <label class="col-sm-3 col-form-label">Trạng thái</label>
                                 <div class="col-sm-9">
-                                    <form:select path="status" class="form-select">
+                                    <form:select path="isActive" class="form-select">
                                         <form:option value="1">Hoạt động</form:option>
                                         <form:option value="0">Khóa</form:option>
                                     </form:select>

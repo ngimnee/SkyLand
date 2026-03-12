@@ -11,9 +11,10 @@ public class OrderSearchBuilder {
     private String name;
     private String phone;
     private String email;
-    private  String address;
+    private String address;
     private Long staffId;
     private Long buildingId;
+    private String buildingName;
 
     public OrderSearchBuilder(Builder builder) {
         this.id = builder.id;
@@ -29,6 +30,7 @@ public class OrderSearchBuilder {
         this.address = builder.address;
         this.staffId = builder.staffId;
         this.buildingId = buildingId;
+        this.buildingName = buildingName;
     }
 
     public Long getId() {
@@ -83,6 +85,10 @@ public class OrderSearchBuilder {
         return buildingId;
     }
 
+    public String getBuildingName() {
+        return buildingName;
+    }
+
     public static class Builder {
         private Long id;
         private String code;
@@ -97,6 +103,7 @@ public class OrderSearchBuilder {
         private  String address;
         private Long staffId;
         private Long buildingId;
+        private String buildingName;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -160,6 +167,11 @@ public class OrderSearchBuilder {
 
         public Builder setBuildingId(Long buildingId) {
             this.buildingId = buildingId;
+            return this;
+        }
+
+        public Builder setBuildingName(String buildingName) {
+            this.buildingName = buildingName;
             return this;
         }
 

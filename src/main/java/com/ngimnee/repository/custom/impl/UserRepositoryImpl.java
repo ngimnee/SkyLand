@@ -24,33 +24,12 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT * FROM user ");
         StringBuilder where = new StringBuilder(" WHERE 1 = 1 ");
 
-        joinTable(builder, sql);
         queryNormal(builder, where);
         querySpecial(builder, where);
         groupByQuery(builder, where);
         sql.append(where);
+        sql.append(" ORDER BY user.createddate DESC ");
 
-        Query query = entityManager.createNativeQuery(sql.toString(), UserEntity.class);
-        return query.getResultList();
-    }
-
-    @Override
-    public List<UserEntity> findByRole(String roleCode) {
-        String sql = "SELECT * FROM user " +
-                "INNER JOIN user_role ur ON user.id = ur.user_id " +
-                "INNER JOIN role ON ur.role_id = role.id " +
-                "WHERE role.code = ?1";
-        Query query = entityManager.createNativeQuery(sql, UserEntity.class);
-        query.setParameter(1, roleCode);
-        return query.getResultList();
-    }
-
-    @Override
-    public List<UserEntity> getAllUsers(Pageable pageable) {
-        StringBuilder sql = new StringBuilder(buildQueryFilter())
-                .append(" LIMIT ").append(pageable.getPageSize()).append("\n")
-                .append(" OFFSET ").append(pageable.getOffset());
-        System.out.println("Final query: " + sql.toString());
         Query query = entityManager.createNativeQuery(sql.toString(), UserEntity.class);
         return query.getResultList();
     }
@@ -62,11 +41,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return query.getResultList().size();
     }
 
-    private void joinTable(UserSearchBuilder builder, StringBuilder sql) {
-        if (builder.getRoleId() != null) {
-            sql.append(" INNER JOIN user_role ur ON user.id = ur.user_id ");
-        }
-    }
 
     public static void queryNormal(UserSearchBuilder builder, StringBuilder where) {
         try {
@@ -81,7 +55,11 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     String value = valueObj.toString();
                     if (StringUtils.check(value)) {
                         if (NumberUtils.isLong(value) || NumberUtils.isInteger(value)) {
-                            where.append(" AND user.").append(name).append(" = ").append(value);
+                            if (name.equals("isActive")) {
+                                where.append(" AND user.is_active").append(" = ").append(value);
+                            } else {
+                                where.append(" AND user.").append(name).append(" = ").append(value);
+                            }
                         } else {
                             where.append(" AND user.").append(name).append(" LIKE '%").append(value).append("%'");
                         }
@@ -107,14 +85,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         }
     }
 
-    private long countTotalRecords(String sql) {
-        String countSql = "SELECT COUNT(*) FROM (" + sql + ") AS total";
-        Query countQuery = entityManager.createNativeQuery(countSql);
-        return ((Number) countQuery.getSingleResult()).longValue();
-    }
-
     private String buildQueryFilter() {
-        String sql = "SELECT * FROM user WHERE user.status = 1";
+        String sql = "SELECT * FROM user WHERE user.is_active = 1";
         return sql;
     }
 }

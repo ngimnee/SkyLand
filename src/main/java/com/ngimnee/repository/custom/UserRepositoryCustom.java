@@ -10,7 +10,5 @@ import java.util.List;
 
 public interface UserRepositoryCustom {
     List<UserEntity> findUsers(UserSearchBuilder userSearchBuilder, Pageable pageable);
-	List<UserEntity> findByRole(String roleCode);
-	List<UserEntity> getAllUsers(Pageable pageable);
 	int countTotalItem();
 }

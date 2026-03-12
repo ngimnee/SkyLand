@@ -127,7 +127,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
     public List<BuildingEntity> findBuilding(BuildingSearchBuilder buildingSearchBuilder, Pageable pageable)
     {
         StringBuilder sql = new StringBuilder(" SELECT * FROM building b ");
-        StringBuilder where = new StringBuilder(" WHERE 1 = 1 AND b.status = 'N' ");
+        StringBuilder where = new StringBuilder(" WHERE 1 = 1 AND b.is_active = 1 ");
 
         joinTable(buildingSearchBuilder, sql);
         queryNormal(buildingSearchBuilder, where);
@@ -135,6 +135,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom {
 
         groupByQuery(buildingSearchBuilder, where);
         sql.append(where);
+        sql.append(" ORDER BY createddate DESC ");
 
         Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
         return query.getResultList();

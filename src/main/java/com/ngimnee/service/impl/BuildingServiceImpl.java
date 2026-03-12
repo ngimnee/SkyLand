@@ -52,7 +52,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public ResponseDTO listStaff(Long buildingId) {
         BuildingEntity building = buildingRepository.findById(buildingId).get();
-        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> staffs = userRepository.findByStatusAndRole_Code(1, "STAFF");
         List<UserEntity> staffAssignment = building.getUsers();
         List<StaffResponseDTO> staffResponseDTOs = new ArrayList<>();
         ResponseDTO responseDTO = new ResponseDTO();
@@ -98,7 +98,7 @@ public class BuildingServiceImpl implements BuildingService {
         for (Long id : ids) {
             BuildingEntity building = buildingRepository.findById(id).orElseThrow(() -> new NotFoundException("Building not found with id: " + id));
 
-            building.setStatus("Y");
+            building.setIsActive(0);
             buildingRepository.save(building);
 
             result.add(buildingConverter.toBuildingDTO(building));
@@ -111,7 +111,7 @@ public class BuildingServiceImpl implements BuildingService {
         BuildingEntity building;
 
         if(buildingDTO.getId() != null) {
-            building = buildingRepository.findByIdAndStatus(buildingDTO.getId(), "N")
+            building = buildingRepository.findByIdAndIsActive(buildingDTO.getId(), 1)
                     .orElseThrow(() -> new NotFoundException("Building not found!"));
 
             buildingConverter.updateEntityFromDTO(buildingDTO, building);

@@ -13,7 +13,7 @@ public class UserSearchBuilderConverter {
                 .setFullName(SearchRequestUtil.getObject(userSearchRequest.getFullName(), String.class))
                 .setPhone(SearchRequestUtil.getObject(userSearchRequest.getPhone(), String.class))
                 .setEmail(SearchRequestUtil.getObject(userSearchRequest.getEmail(), String.class))
-                .setStatus(SearchRequestUtil.getObject(userSearchRequest.getStatus(), Integer.class))
+                .setIsActive(SearchRequestUtil.getObject(userSearchRequest.getIsActive(), Integer.class))
                 .setRoleCode(SearchRequestUtil.getObject(userSearchRequest.getRoleCode(), String.class))
                 .setRoleId(SearchRequestUtil.getObject(userSearchRequest.getRoleId(), Long.class))
                 .build();

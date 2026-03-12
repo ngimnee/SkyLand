@@ -6,7 +6,7 @@ import java.util.Map;
 public enum StatusOrder {
     PROCESSING("Đang xử lý"),
     COMPLETED("Hoàn thành"),
-    CANCELLED("Đã hủy");
+    CANCELLED("Hủy");
 
     private final String statusName;
     StatusOrder(String statusName) {

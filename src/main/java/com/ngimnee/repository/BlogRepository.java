@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface BlogRepository extends JpaRepository<BlogEntity, Long> {
-    @Query("SELECT b FROM BlogEntity b WHERE b.status = :status AND b.title LIKE %:title%")
+    @Query("SELECT b FROM BlogEntity b WHERE b.status = :status AND b.title LIKE %:title% ORDER BY b.createdDate DESC ")
     Page<BlogEntity> findByStatusAndTitle(@Param("status") String status, @Param("title") String title, Pageable pageable);
 
     Optional<BlogEntity> findById(Long id);

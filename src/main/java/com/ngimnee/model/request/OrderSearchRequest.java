@@ -14,4 +14,6 @@ public class OrderSearchRequest extends AbstractDTO {
     private String address;
     private String status;
     private Long staffId;
+    private Integer isActive = 1;
+    private String buildingName;
 }

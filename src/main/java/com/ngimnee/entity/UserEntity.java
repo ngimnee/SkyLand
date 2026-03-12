@@ -27,7 +27,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "fullname", nullable = false)
     private String fullName;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private Integer status;
 
     @Column(name = "phone")
@@ -36,11 +36,12 @@ public class UserEntity extends BaseEntity {
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
-    private List<RoleEntity> roles = new ArrayList<>();
+    @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    private Integer isActive = 1;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false)
+    private RoleEntity role;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<BuildingEntity> buildings = new ArrayList<>();
@@ -50,11 +51,4 @@ public class UserEntity extends BaseEntity {
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<OrderEntity> orders = new ArrayList<>();
-
-
-//    @OneToMany(mappedBy="staffs", fetch = FetchType.LAZY)
-//    private List<AssignmentBuildingEntity> assignmentBuildingEntities = new ArrayList<>();
-//
-//    @OneToMany(mappedBy="users", fetch = FetchType.LAZY)
-//    private List<UserRoleEntity> userRoleEntities = new ArrayList<>();
 }

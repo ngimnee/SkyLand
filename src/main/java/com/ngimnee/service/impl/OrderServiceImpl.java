@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseDTO listStaffs(Long orderId) {
         OrderEntity orderEntity = orderRepository.findById(orderId).get();
-        List<UserEntity> allStaffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> allStaffs = userRepository.findByStatusAndRole_Code(1, "STAFF");
         List<UserEntity> assignedStaffs = orderEntity.getUsers();
         List<StaffResponseDTO> staffs = new ArrayList<>();
 
@@ -128,6 +128,7 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrdersById(Long id) {
         OrderEntity orderEntity =  orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Order not found!"));
-        orderRepository.delete(orderEntity);
+        orderEntity.setIsActive(0);
+        orderRepository.save(orderEntity);
     }
 }

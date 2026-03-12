@@ -76,6 +76,7 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
         queryNormal(customerSearchBuilder, where);
         querySpecial(customerSearchBuilder, where);
         sql.append(where);
+        sql.append(" ORDER BY createddate DESC ");
 
         Query query = entityManager.createNativeQuery(sql.toString(), CustomerEntity.class);
         return query.getResultList();

@@ -9,13 +9,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
-
     private static final long serialVersionUID = -863164858986274318L;
 
     @Id
@@ -24,7 +23,7 @@ public class BaseEntity implements Serializable {
 
     @Column(name = "createddate")
     @CreatedDate
-    private Date createdDate;
+    private Timestamp createdDate;
 
     @Column(name = "createdby")
     @CreatedBy
@@ -32,7 +31,7 @@ public class BaseEntity implements Serializable {
 
     @Column(name = "modifieddate")
     @LastModifiedDate
-    private Date modifiedDate;
+    private Timestamp modifiedDate;
 
     @Column(name = "modifiedby")
     @LastModifiedBy

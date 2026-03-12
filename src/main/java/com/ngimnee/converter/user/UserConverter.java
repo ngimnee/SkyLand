@@ -21,9 +21,9 @@ public class UserConverter {
         UserDTO result = modelMapper.map(entity, UserDTO.class);
 
         // Nếu user có role, gán roleName để hiển thị
-        List<RoleEntity> roles = entity.getRoles();
-        if (roles != null && !roles.isEmpty()) {
-            result.setRoleName(roles.get(0).getName());
+        RoleEntity roles = entity.getRole();
+        if (roles != null) {
+            result.setRoleName(roles.getName());
         }
         return result;
     }

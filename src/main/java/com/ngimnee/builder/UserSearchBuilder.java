@@ -5,18 +5,18 @@ public class UserSearchBuilder {
     private String fullName;
     private String phone;
     private String email;
-    private Integer status;
     private String roleCode;
     private Long roleId;
+    private Integer isActive;
 
     public UserSearchBuilder(Builder builder) {
         this.userName = builder.userName;
         this.fullName = builder.fullName;
         this.phone = builder.phone;
         this.email = builder.email;
-        this.status = builder.status;
         this.roleCode = builder.roleCode;
         this.roleId = builder.roleId;
+        this.isActive = builder.isActive;
     }
 
     public String getUserName() {
@@ -35,10 +35,6 @@ public class UserSearchBuilder {
         return email;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
     public String getRoleCode() {
         return roleCode;
     }
@@ -47,14 +43,18 @@ public class UserSearchBuilder {
         return roleId;
     }
 
+    public Integer getIsActive() {
+        return isActive;
+    }
+
     public static class Builder {
         private String userName;
         private String fullName;
         private String phone;
         private String email;
-        private Integer status;
         private String roleCode;
         private Long roleId;
+        private Integer isActive;
 
         public Builder setUserName(String userName) {
             this.userName = userName;
@@ -76,11 +76,6 @@ public class UserSearchBuilder {
             return this;
         }
 
-        public Builder setStatus(Integer status) {
-            this.status = status;
-            return this;
-        }
-
         public Builder setRoleCode(String roleCode) {
             this.roleCode = roleCode;
             return this;
@@ -88,6 +83,11 @@ public class UserSearchBuilder {
 
         public Builder setRoleId(Long roleId) {
             this.roleId = roleId;
+            return this;
+        }
+
+        public Builder setIsActive(Integer isActive) {
+            this.isActive = isActive;
             return this;
         }
 

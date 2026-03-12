@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> , UserRepositoryCustom {
-    UserEntity findOneByUserNameAndStatus(String name, int status);
-    List<UserEntity> findByStatusAndRoles_Code(Integer status, String roleCode);
+    UserEntity findOneByUserNameAndIsActive(String name, int isActive);
+    List<UserEntity> findByStatusAndRole_Code(Integer status, String roleCode);
     UserEntity findOneByUserName(String userName);
-    List<UserEntity> findByRoles_CodeIn(List<String> roleCodes);
+    List<UserEntity> findByRole_CodeIn(List<String> roleCodes);
     List<UserEntity> findByIdIn(List<Long> id);
 }

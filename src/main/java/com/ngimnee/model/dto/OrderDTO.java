@@ -19,4 +19,5 @@ public class OrderDTO extends AbstractDTO<OrderDTO> {
     private Long customerId;
     private List<Long> buildingIds = new ArrayList<>();
     private List<Long> staffIds = new ArrayList<>();
+    private Integer isActive;
 }

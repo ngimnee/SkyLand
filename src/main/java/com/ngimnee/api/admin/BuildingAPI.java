@@ -27,6 +27,11 @@ public class BuildingAPI {
         return res;
     }
 
+    @GetMapping("/{id}")
+    public BuildingDTO getBuilding(@PathVariable Long id) {
+        return buildingService.findById(id);
+    }
+
     @PostMapping
     public ResponseEntity<BuildingDTO> addOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO) {
         return ResponseEntity.ok(buildingService.addOrUpdateBuilding(buildingDTO));

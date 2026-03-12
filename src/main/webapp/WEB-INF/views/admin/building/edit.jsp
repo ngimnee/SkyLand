@@ -200,12 +200,6 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3 align-items-center">
-                                    <label class="col-xl-2 col-form-label">Thời hạn thuê</label>
-                                    <div class="col-xl-10">
-                                        <form:input class="form-control" path="rentTime" />
-                                    </div>
-                                </div>
-                                <div class="row mb-3 align-items-center">
                                     <label class="col-xl-2 col-form-label">Thời gian trang trí</label>
                                     <div class="col-xl-10">
                                         <form:input class="form-control" path="decorationTime" />
@@ -234,6 +228,28 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3 align-items-center">
+                                    <label class="col-xl-2 col-form-label">Thời hạn thuê</label>
+                                    <div class="col-xl-10">
+                                        <form:input class="form-control" path="rentTime" />
+                                    </div>
+                                </div>
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-xl-2 col-form-label">
+                                        Hình thức<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-xl-10">
+                                        <div class="form-check form-check-inline">
+                                            <form:radiobutton path="status" value="THUE" cssClass="form-check-input" id="status_thue"/>
+                                            <label class="form-check-label" for="status_thue">Cho thuê</label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <form:radiobutton path="status" value="BAN" cssClass="form-check-input" id="status_ban"/>
+                                            <label class="form-check-label" for="status_ban">Bán</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 align-items-center">
                                     <label class="col-xl-2 col-form-label">
                                         Loại tòa nhà<span class="text-danger">*</span>
                                     </label>
@@ -247,40 +263,35 @@
                                         <form:input class="form-control" path="note" />
                                     </div>
                                 </div>
-<%--                                <div class="row mb-3 align-items-center">--%>
-<%--                                    <label class="col-xl-2 col-form-label">Hình đại diện</label>--%>
-<%--                                    <div class="col-xl-10">--%>
-<%--                                        <form:input class="form-control" path="avatar" id="uploadImage" accept="image/*" />--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
                                 <div class="row mb-3 align-items-center">
-                                    <label class="col-xl-2 col-form-label">Hình đại diện</label>
+                                    <label class="col-xl-2 col-form-label">Hình ảnh</label>
 
                                     <div class="col-xl-10">
-<%--                                        <input class="form-control" type="file" id="uploadImage" name="imageFile" />--%>
                                         <form:input class="form-control" path="image" />
                                     </div>
                                 </div>
+                                <div class="row mb-3 align-items-center">
+                                    <label class="col-xl-2 col-form-label">Map</label>
 
+                                    <div class="col-xl-10">
+                                        <form:input class="form-control" path="map" />
+                                    </div>
+                                </div>
 
-                                <div class="d-flex gap-2">
+                                <div class="d-flex gap-2" style="margin-left:270px;">
                                     <c:if test="${empty editBuilding.id}">
-                                        <button type="button" class="btn btn-primary flex-fill" id="btnAddOrUpdateBuilding">
+                                        <button type="button" class="btn btn-primary" id="btnAddOrUpdateBuilding">
                                             <i class="bi bi-building-add"></i> Thêm tòa nhà
                                         </button>
-                                        <button type="button" class="btn btn-danger flex-fill" id="btnCancel">
-                                            Hủy
-                                        </button>
                                     </c:if>
-
                                     <c:if test="${not empty editBuilding.id}">
-                                        <button type="button" class="btn btn-success flex-fill" id="btnAddOrUpdateBuilding">
+                                        <button type="button" class="btn btn-success" id="btnAddOrUpdateBuilding">
                                             <i class="bi bi-building-check"></i> Cập nhật tòa nhà
                                         </button>
-                                        <button type="button" class="btn btn-danger flex-fill" id="btnCancel">
+                                    </c:if>
+                                    <button type="button" class="btn btn-danger" id="btnCancel">
                                             Hủy
                                         </button>
-                                    </c:if>
                                 </div>
                                 <form:hidden path="id" id="buildingId"/>
                             </form:form>
@@ -345,9 +356,21 @@
                     contentType: "application/json",
                     dataType: "json",
                     success: function(respond) {
-                        window.location.href = "<c:url value='/admin/building?message=success' />";
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: 'Thêm / cập nhật tòa nhà thành công!',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.href = "${buildingURL}";
+                        });
                     },
                     error: function(respond) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Thao tác thất bại!'
+                        });
                         console.log("Failed");
                         window.location.href = "<c:url value='/admin/building?message=error' />";
                         console.log(respond);
@@ -372,9 +395,18 @@
             ];
 
             let isValid = true;
-
-            // Xóa hết lỗi cũ trước
             $('.is-invalid').removeClass('is-invalid');
+
+            // Kiểm tra hình thức (radio)
+            if ($('input[name="status"]:checked').length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Thiếu thông tin',
+                    text: 'Vui lòng chọn hình thức (Cho thuê / Bán)'
+                });
+                $('input[name="status"]').addClass('is-invalid');
+                isValid = false;
+            }
 
             // Kiểm tra từng trường
             requiredFields.forEach(f => {
@@ -385,12 +417,15 @@
                 }
             });
 
-            // Kiểm tra loại tòa nhà (checkbox)
+            // Kiểm tra loại tòa nhà
             if ($('input[name="typeCode"]:checked').length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Thiếu thông tin',
+                    text: 'Vui lòng chọn ít nhất một loại tòa nhà'
+                });
                 $('input[name="typeCode"]').addClass('is-invalid');
                 isValid = false;
-            } else {
-                $('input[name="typeCode"]').removeClass('is-invalid');
             }
 
             return isValid; // true nếu hợp lệ, false nếu có lỗi

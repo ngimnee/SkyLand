@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public enum TypeCode {
-    TANG_TRET("Tầng trệt"),
     NGUYEN_CAN("Nguyên căn"),
     NOI_THAT("Nội thất"),
     VILLA("Villa"),

@@ -42,7 +42,7 @@ public class UserController {
             userSearchRequest.setRoleCode(Collections.singletonList("USER"));
         }
         if (!request.getParameterMap().containsKey("status")) {
-            userSearchRequest.setStatus(1);
+            userSearchRequest.setIsActive(1);
         }
 
         UserSearchResponse model = new UserSearchResponse();

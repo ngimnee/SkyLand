@@ -50,7 +50,7 @@
                 </a>
 
                 <security:authorize access="hasRole('MANAGER')">
-                    <button id="btnDeleteBuilding" class="btn btn-outline-danger btn-sm" title="Xóa tòa nhà">
+                    <button id="btnDeleteBuilding" class="btn btn-outline-danger btn-sm" title="Xóa đã chọn">
                         <i class="bi bi-trash"></i>
                     </button>
                 </security:authorize>
@@ -68,6 +68,7 @@
 
                     <div class="modal-body">
                         <form:form id="listForm" modelAttribute="buildingSearch" action="${buildingURL}" method="GET">
+                            <form:hidden path="typeO"/>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label>Tên tòa nhà</label>
@@ -172,8 +173,29 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12 mb-3 type-checkboxes">
-                                    <form:checkboxes items="${typeCode}" path="typeCode"/>
+                                <div class="col-md-4 d-flex align-items-center">
+                                    <label class="col-form-label me-3">Hình thức:</label>
+                                    <div class="form-check form-check-inline">
+                                        <form:radiobutton path="status" value="THUE" class="form-check-input"/>
+                                        <label class="form-check-label">Cho thuê</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <form:radiobutton path="status" value="BAN" class="form-check-input"/>
+                                        <label class="form-check-label">Bán</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8 d-flex align-items-center">
+                                    <label class="col-form-label me-3">Loại:</label>
+                                    <div class="type-checkboxes">
+                                        <c:forEach items="${typeCode}" var="typeCode">
+                                            <div class="form-check form-check-inline">
+                                                <form:checkbox path="typeCode" value="${typeCode.key}" cssClass="form-check-input" id="type_${typeCode.key}"/>
+                                                <label class="form-check-label" for="type_${typeCode.key}">${typeCode.value}</label>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
                                 </div>
                             </div>
                         </form:form>
@@ -208,20 +230,35 @@
                             <display:column title="STT" headerClass="text-center" class="text-center">
                                 ${building_offset + building_rowNum}
                             </display:column>
-                            <display:column property="name" title="Tên tòa nhà" headerClass="text-center" class="text-center"/>
-                            <display:column property="address" title="Địa chỉ" headerClass="text-center" class="text-center"/>
+                            <display:column property="name" title="Tên tòa nhà" headerClass="text-center" class="text-justify"/>
+                            <display:column property="address" title="Địa chỉ" headerClass="text-center" class="text-justify"/>
                             <display:column property="floor" title="Tầng" headerClass="text-center" class="text-center"/>
-                            <display:column property="numberOfBasement" title="Số tầng hầm" headerClass="text-center" class="text-center"/>
-                            <display:column property="managerName" title="Tên quản lý" headerClass="text-center" class="text-center"/>
-                            <display:column property="managerPhone" title="SĐT" headerClass="text-center" class="text-center"/>
+                            <display:column title="Hình thức" headerClass="text-center" class="text-center">
+                                <c:choose>
+                                    <c:when test="${building.status == 'THUE'}">
+                                        <span class="badge bg-primary bg-opacity-25 text-primary fs-7 px-2">Cho thuê</span>
+                                    </c:when>
+                                    <c:when test="${building.status == 'BAN'}">
+                                        <span class="badge bg-success bg-opacity-25 text-success fs-7 px-2">Bán</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="badge bg-secondary bg-opacity-25 text-secondary fs-7 px-2">${building.status}</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </display:column>
                             <display:column property="floorArea" title="DT sàn" headerClass="text-center" class="text-center"/>
-                            <display:column property="emptyArea" title="DT trống" headerClass="text-center" class="text-center"/>
                             <display:column property="rentArea" title="DT thuê" headerClass="text-center" class="text-center"/>
                             <display:column property="brokerageFee" title="Môi giới" headerClass="text-center" class="text-center"/>
+                            <display:column property="managerName" title="Tên quản lý" headerClass="text-center" class="text-center"/>
+                            <display:column property="managerPhone" title="SĐT" headerClass="text-center" class="text-center"/>
 
                             <!-- Cột thao tác -->
-                            <display:column title="Thao tác" headerClass="text-center" class="text-center">
+                            <display:column title="Thao tác" headerClass="text-center" class="text-center" style="width:120px; white-space:nowrap;">
                                 <div class="d-flex justify-content-center gap-1">
+                                    <button type="button" class="btn btn-outline-info btn-sm" title="Xem chi tiết" onclick="viewBuilding(${building.id})">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+
                                     <security:authorize access="hasRole('MANAGER')">
                                         <button type="button" class="btn btn-outline-success btn-sm" title="Giao tòa nhà" onclick="assignmentBuilding(${building.id})">
                                             <i class="bi bi-arrow-left-right"></i>
@@ -233,7 +270,7 @@
                                     </a>
 
                                     <security:authorize access="hasRole('MANAGER')">
-                                        <button type="button" class="btn btn-outline-danger btn-sm" title="Xóa" onclick="deleteBuilding(${building.id})">
+                                        <button type="button" class="btn btn-outline-danger btn-sm" title="Xóa tòa nhà" onclick="deleteBuilding(${building.id})">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </security:authorize>
@@ -247,7 +284,7 @@
     </div>
 
 
-    <!-- Modal -->
+    <!-- Modal giao nhân viên -->
     <div class="modal fade" id="assignmentBuildingModal" tabindex="-1" aria-labelledby="assignmentBuildingModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -272,6 +309,156 @@
                     <button type="button" class="btn btn-primary" id="btnAssignmentBuilding">Giao tòa nhà</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <%--Modal xem chi tiết--%>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="buildingPanel" style="width:520px">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title">
+                <i class="bi bi-buildings text-primary me-2"></i>
+                Chi tiết tòa nhà
+            </h5>
+            <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body">
+            <h6 class="section-title">Thông tin cơ bản</h6>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-building"></i> Tên</span>
+                <span class="value" id="detail_name"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-geo-alt"></i> Địa chỉ</span>
+                <span class="value" id="detail_address"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-signpost"></i> Phường</span>
+                <span class="value" id="detail_ward"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-map"></i> Quận</span>
+                <span class="value" id="detail_district"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-geo"></i> Thành phố</span>
+                <span class="value" id="detail_city"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-compass"></i> Hướng</span>
+                <span class="value" id="detail_direction"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-bar-chart"></i> Hạng tòa nhà</span>
+                <span class="value" id="detail_level"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-check-circle"></i> Hình thức</span>
+                <span class="value" id="detail_status"></span>
+            </div>
+
+            <h6 class="section-title mt-4">Kết cấu</h6>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-layers"></i> Số tầng</span>
+                <span class="value" id="detail_floor"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-box"></i> Số tầng hầm</span>
+                <span class="value" id="detail_basement"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-aspect-ratio"></i> Diện tích sàn</span>
+                <span class="value" id="detail_floorArea"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-layout-text-window"></i> Kết cấu</span>
+                <span class="value" id="detail_structure"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-tags"></i> Loại</span>
+                <span class="value">
+                    <span class="value" id="detail_type"></span>
+                </span>
+            </div>
+
+            <h6 class="section-title mt-4">Giá thuê</h6>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-cash-stack"></i> Giá thuê</span>
+                <span class="value price" id="detail_rentPrice"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-card-text"></i> Mô tả giá</span>
+                <span class="value" id="detail_rentPriceDescription"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-arrows-expand"></i> Diện tích thuê</span>
+                <span class="value" id="detail_rentArea"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-percent"></i> Phí môi giới</span>
+                <span class="value" id="detail_brokerageFee"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-tools"></i> Phí dịch vụ</span>
+                <span class="value" id="detail_serviceFee"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-clock-history"></i> Phí ngoài giờ</span>
+                <span class="value" id="detail_overtimeFee"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-lightning"></i> Phí điện</span>
+                <span class="value" id="detail_electricityFee"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-car-front"></i> Phí xe hơi</span>
+                <span class="value" id="detail_carFee"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-bicycle"></i> Phí xe máy</span>
+                <span class="value" id="detail_motorbikeFee"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-safe"></i> Tiền đặt cọc</span>
+                <span class="value" id="detail_deposit"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-credit-card"></i> Phương thức thanh toán</span>
+                <span class="value" id="detail_payment"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-calendar"></i> Thời hạn thuê</span>
+                <span class="value" id="detail_rentTime"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-tools"></i> Thời gian trang trí</span>
+                <span class="value" id="detail_decorationTime"></span>
+            </div>
+
+
+            <h6 class="section-title mt-4">Quản lý</h6>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-person"></i> Quản lý</span>
+                <span class="value" id="detail_manager"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-telephone"></i> SĐT quản lý</span>
+                <span class="value" id="detail_phone"></span>
+            </div>
+
+            <h6 class="section-title mt-4">Khác</h6>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-chat-left-text"></i> Ghi chú</span>
+                <span class="value note" id="detail_note"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-clock"></i> Ngày tạo</span>
+                <span class="value" id="detail_createdDate"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-arrow-repeat"></i> Cập nhật</span>
+                <span class="value" id="detail_modifiedDate"></span>
             </div>
         </div>
     </div>
@@ -469,6 +656,75 @@
                 $('#typeOForm').submit();
             }
         });
+
+        $('input[name="typeO"]').change(function () {
+            let value = $(this).val();
+            $('#listForm input[name="typeO"]').val(value);
+        });
+
+    function viewBuilding(id){
+        $.get("${buildingAPI}/" + id, function(data){
+            const money = (value) => {
+                if(!value) return "";
+                return new Intl.NumberFormat('vi-VN').format(value) + " VNĐ";
+            };
+
+            const formatDate = (date) => {
+                if(!date) return "";
+                const d = new Date(date);
+                return d.toLocaleString("vi-VN");
+            };
+
+            const container = document.getElementById("detail_type");
+            container.innerHTML = "";
+
+            if(data.typeCode){
+                let types = Array.isArray(data.typeCode) ? data.typeCode : data.typeCode.split(",");
+                types.forEach(type => {
+                    const badge = document.createElement("span");
+                    badge.className = "badge bg-primary bg-opacity-10 text-primary fs-6 me-1 mb-1";
+                    badge.textContent = type.trim();
+                    container.appendChild(badge);
+                });
+            }
+
+            $("#detail_name").text(data.name);
+            $("#detail_address").text(data.street);
+            $("#detail_ward").text(data.ward);
+            $("#detail_district").text(data.district);
+            $("#detail_city").text(data.city);
+            $("#detail_direction").text(data.direction);
+            $("#detail_level").text(data.level);
+            $("#detail_floor").text(data.floor);
+            $("#detail_basement").text(data.numberOfBasement);
+            $("#detail_floorArea").text(data.floorArea ? data.floorArea + " m²" : "");
+            $("#detail_structure").text(data.structure);
+            $("#detail_rentPrice").text(money(data.rentPrice));
+            $("#detail_rentPriceDescription").text(data.rentPriceDescription);
+            $("#detail_rentArea").text(data.rentArea);
+            $("#detail_brokerageFee").text(data.brokerageFee ? data.brokerageFee + "%" : "");
+            $("#detail_serviceFee").text(data.serviceFee);
+            $("#detail_overtimeFee").text(data.overtimeFee);
+            $("#detail_electricityFee").text(data.electricityFee);
+            $("#detail_carFee").text(data.carFee);
+            $("#detail_motorbikeFee").text(data.motorbikeFee);
+            $("#detail_deposit").text(data.deposit);
+            $("#detail_payment").text(data.payment);
+            $("#detail_rentTime").text(data.rentTime);
+            $("#detail_decorationTime").text(data.decorationTime);
+            $("#detail_manager").text(data.managerName);
+            $("#detail_phone").text(data.managerPhone);
+            $("#detail_status").text(data.status);
+            $("#detail_note").text(data.note);
+            $("#detail_createdDate").text(formatDate(data.createdDate));
+            $("#detail_modifiedDate").text(formatDate(data.modifiedDate));
+
+            const panel = new bootstrap.Offcanvas(
+                document.getElementById("buildingPanel")
+            );
+            panel.show();
+        });
+    }
     </script>
 </body>
 </html>

@@ -33,7 +33,7 @@ public class BuildingDTO extends AbstractDTO{
     private String direction;
     private String note;
     private String rentArea;
-    private String status = "N";
+    private String status;
     private String managerName;
     private String managerPhone;
     private Long rentPrice;
@@ -45,6 +45,8 @@ public class BuildingDTO extends AbstractDTO{
     private String avatar;
     private Long orderId;
     private String orderCode;
+    private Integer isActive = 1;
+    private String map;
 
     private Map<String,String> buildingDTOs = new HashMap<>();
 }

@@ -21,13 +21,14 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     @Override
     public List<OrderEntity> findOrders(OrderSearchBuilder orderSearchBuilder, Pageable pageable) {
         StringBuilder sql = new StringBuilder("SELECT * FROM orders ");
-        StringBuilder where =  new StringBuilder(" WHERE 1 = 1 ");
+        StringBuilder where =  new StringBuilder(" WHERE 1 = 1 AND orders.is_active = 1 ");
 
         joinTable(orderSearchBuilder, sql);
         queryNormal(orderSearchBuilder, where);
         querySpecial(orderSearchBuilder, where);
         groupByQuery(orderSearchBuilder, where);
         sql.append(where);
+        sql.append(" ORDER BY orders.createddate DESC ");
 
         Query query = entityManager.createNativeQuery(sql.toString(), OrderEntity.class);
         return query.getResultList();
@@ -55,7 +56,6 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                     if(valueObject != null){
                         String value = valueObject.toString();
                         if(StringUtils.check(value)){
-//                            where.append(" AND ( ");
                             if (NumberUtils.isLong(value) || NumberUtils.isInteger(value)) {
                                 where.append(" AND orders." + fieldName + " = " + value);
                             }
@@ -66,7 +66,6 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,28 +76,6 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
         if(NumberUtils.isNumber(staffId)){
             where.append(" AND ao.staffid = " + staffId);
         }
-
-//        try {
-//            Field[] fields = OrderSearchBuilder.class.getDeclaredFields();
-//
-//            for (Field field : fields) {
-//                field.setAccessible(true);
-//                String fieldName = field.getName();
-//
-//                if(!fieldName.equals("staffId")) {
-//                    Object valueObject = field.get(orderSearchBuilder);
-//                    if(valueObject != null){
-//                        String value = valueObject.toString();
-//                        if(StringUtils.check(value)) {
-//                            where.append(" OR b.name LIKE '%" + value + "%' ");
-//                        }
-//                        where.append(" ) ");
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     public static void groupByQuery(OrderSearchBuilder orderSearchBuilder, StringBuilder where)

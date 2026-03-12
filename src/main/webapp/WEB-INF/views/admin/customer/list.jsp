@@ -45,11 +45,11 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button class="btn btn-outline-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#searchCustomerModal">
+                    <button class="btn btn-outline-primary btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#searchCustomerModal">
                         <i class="fas fa-search me-1"></i> Tìm kiếm
                     </button>
 
-                    <button class="btn btn-success shadow-sm" onclick="addCustomer()">
+                    <button class="btn btn-success btn-sm rounded-2" onclick="addCustomer()">
                         <i class="fas fa-plus me-1"></i> Thêm khách hàng
                     </button>
                 </div>
@@ -69,18 +69,18 @@
                                 pagesize="${customerList.maxPageItems}"
                                 partialList="true"
                                 size="${customerList.totalItems}"
-                                defaultsort="2" defaultorder="ascending">
+                                defaultsort="1" defaultorder="ascending">
 
                         <display:column title="STT" headerClass="text-center" class="text-center">
                             ${customer_offset + customer_rowNum}
                         </display:column>
                         <!-- Cột dữ liệu -->
-                        <display:column title="Ngày" headerClass="text-center" class="text-center">
+                        <display:column title="Ngày tạo" headerClass="text-center" class="text-center" style="width:170px; white-space:nowrap;">
                             <c:if test="${empty customer.modifiedDate}">
-                                <fmt:formatDate value="${customer.createdDate}" pattern="dd/MM/yyyy"/>
+                                <fmt:formatDate value="${customer.createdDate}" pattern="dd/MM/yyyy HH:mm"/>
                             </c:if>
                             <c:if test="${not empty customer.modifiedDate}">
-                                <fmt:formatDate value="${customer.modifiedDate}" pattern="dd/MM/yyyy"/>
+                                <fmt:formatDate value="${customer.modifiedDate}" pattern="dd/MM/yyyy HH:mm"/>
                             </c:if>
                         </display:column>
                         <display:column property="fullName" title="Họ và tên" headerClass="text-center" class="text-center"/>
@@ -91,7 +91,7 @@
                         <display:column property="status" title="Tình trạng" headerClass="text-center" class="text-center"/>
 
                         <!-- Cột thao tác -->
-                        <display:column title="Thao tác" headerClass="text-center" class="text-center">
+                        <display:column title="Thao tác" headerClass="text-center" class="text-center" style="width:120px; white-space:nowrap;">
                             <div class="d-flex justify-content-center gap-1">
                                 <security:authorize access="hasRole('MANAGER')">
                                     <button type="button" class="btn btn-outline-success btn-sm" title="Giao khách hàng" onclick="assignmentCustomer(${customer.id})">
@@ -411,7 +411,7 @@
         }
 
         function editCustomer(id) {
-            $('#customerModalTitle').text("Cập nhật khách hàng");
+            $('#customerModalTitle').text("Cập nhật thông tin khách hàng");
 
             $.ajax({
                 type: "GET",

@@ -25,12 +25,12 @@
         </div>
 
         <form:form id="listForm" modelAttribute="orderSearch" action="${orderURL}" method="GET">
-            <div class="row mb-4">
+            <div class="row mt-0 mb-2">
                 <div class="col-md-12 d-flex justify-content-end">
-                    <div class="input-group shadow-sm" style="max-width:420px;">
-                        <form:input path="code" class="form-control" placeholder="🔍 Nhập mã đơn hoặc tên tòa nhà..." />
-                        <button type="submit" class="btn btn-primary px-4" id="btnSearchOrder">
-                            <i class="fas fa-search"></i> Tìm
+                    <div class="search-box-sm">
+                        <form:input path="code" class="search-input-sm" placeholder="Nhập mã đơn hàng..." />
+                        <button type="submit" class="search-btn-sm" id="btnSearchOrder">
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </div>
@@ -50,23 +50,18 @@
                                 pagesize="${orderList.maxPageItems}"
                                 partialList="true"
                                 size="${orderList.totalItems}"
-                                defaultsort="2" defaultorder="ascending">
+                                defaultsort="1" defaultorder="ascending">
 
                         <display:column title="STT" headerClass="text-center" class="text-center">
-                            ${order_offset + order_rowNum}
+                            ${order_rowNum}
                         </display:column>
 
-                        <display:column title="Ngày" headerClass="text-center" class="text-center">
-                            <c:if test="${empty order.modifiedDate}">
-                                <fmt:formatDate value="${order.createdDate}" pattern="dd/MM/yyyy"/>
-                            </c:if>
-                            <c:if test="${not empty order.modifiedDate}">
-                                <fmt:formatDate value="${order.modifiedDate}" pattern="dd/MM/yyyy"/>
-                            </c:if>
+                        <display:column title="Ngày tạo" headerClass="text-center" class="text-center" style="width:170px; white-space:nowrap;">
+                            <fmt:formatDate value="${order.createdDate}" pattern="dd/MM/yyyy HH:mm:ss"/>
                         </display:column>
                         <display:column property="code" title="Mã đơn hàng" headerClass="text-center" class="text-center"/>
-                        <display:column property="buildingName" title="Tên tòa nhà" headerClass="text-center" class="text-center"/>
-                        <display:column property="name" title="Khách hàng" headerClass="text-center" class="text-center"/>
+                        <display:column property="buildingName" title="Tên tòa nhà" headerClass="text-center" class="text-justify"/>
+                        <display:column property="name" title="Khách hàng" headerClass="text-center" class="text-justify"/>
                         <display:column property="phone" title="SĐT" headerClass="text-center" class="text-center"/>
                         <display:column property="email" title="Email" headerClass="text-center" class="text-center"/>
                         <display:column title="Đã cọc" headerClass="text-center" class="text-center">
@@ -91,7 +86,7 @@
                         </display:column>
 
                         <!-- Cột thao tác -->
-                        <display:column title="Thao tác" headerClass="text-center" class="text-center">
+                        <display:column title="Thao tác" headerClass="text-center" class="text-center" style="width:120px; white-space:nowrap;">
                             <div class="d-flex justify-content-center gap-1">
                                 <security:authorize access="hasRole('MANAGER')">
                                     <button type="button" class="btn btn-outline-success btn-sm" title="Giao đơn hàng" onclick="assignmentOrder(${order.id})">

@@ -110,6 +110,9 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "is_active", columnDefinition = "TINYINT(1) DEFAULT 1")
+    private Integer isActive = 1;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "assignmentbuilding",
             joinColumns = @JoinColumn(name = "buildingid", nullable = false),

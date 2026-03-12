@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
     private UserSearchBuilderConverter userSearchBuilderConverter;
 
     @Override
-    public UserDTO findOneByUserNameAndStatus(String name, int status) {
-        return userConverter.convertToDTO(userRepository.findOneByUserNameAndStatus(name, status));
+    public UserDTO findOneByUserNameAndIsActive(String name, int isActive) {
+        return userConverter.convertToDTO(userRepository.findOneByUserNameAndIsActive(name, isActive));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<Long, String> getStaffs() {
         Map<Long, String> listStaffs = new HashMap<>();
-        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> staffs = userRepository.findByStatusAndRole_Code(1, "STAFF");
         for (UserEntity it : staffs) {
             listStaffs.put(it.getId(), it.getFullName());
         }
@@ -81,18 +81,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserById(long id) {
         UserEntity entity = userRepository.findById(id).get();
-        List<RoleEntity> roles = entity.getRoles();
         UserDTO dto = userConverter.convertToDTO(entity);
-        roles.forEach(item -> {
-            dto.setRoleCode(item.getCode());
-        });
+        if(entity.getRole() != null){
+            dto.setRoleCode(entity.getRole().getCode());
+        }
         return dto;
     }
 
     @Override
     public List<UserDTO> findUsersByRole() {
         List<String> roles = List.of("STAFF", "MANAGER");
-        List<UserEntity> entities = userRepository.findByRoles_CodeIn(roles);
+        List<UserEntity> entities = userRepository.findByRole_CodeIn(roles);
         return userConverter.toDTOList(entities);
     }
 
@@ -114,24 +113,20 @@ public class UserServiceImpl implements UserService {
         else {
             userEntity = userConverter.toEntity(userDTO);
             userEntity.setPassword(encryptPassword(userDTO.getPassword()));
-            userEntity.setStatus(1);
+            userEntity.setIsActive(1);
         }
 
-        List<RoleEntity> roles = new ArrayList<>();
+        RoleEntity userRole = null;
         if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
-            RoleEntity userRole = roleRepository.findOneByCode("USER");
-            if (userRole != null) {
-                roles.add(userRole);
-            }
+            userRole = roleRepository.findOneByCode("USER");
         } else {
             if (StringUtils.isNotBlank(userDTO.getRoleCode())) {
-                RoleEntity role = roleRepository.findOneByCode(userDTO.getRoleCode());
-                if (role != null) {
-                    roles.add(role);
-                }
+                userRole = roleRepository.findOneByCode(userDTO.getRoleCode());
             }
         }
-        userEntity.setRoles(roles);
+        if (userRole != null) {
+            userEntity.setRole(userRole);
+        }
         userRepository.save(userEntity);
     }
 
@@ -142,14 +137,12 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("User not found.");
         }
 
-        List<RoleEntity> roles = new ArrayList<>();
         if (StringUtils.isNotBlank(userDTO.getRoleCode())) {
             RoleEntity role = roleRepository.findOneByCode(userDTO.getRoleCode());
             if (role != null) {
-                roles.add(role);
+                userEntity.setRole(role);
             }
         }
-        userEntity.setRoles(roles);
         userRepository.save(userEntity);
     }
 
@@ -187,12 +180,12 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long[] ids) {
         List<UserEntity> users = userRepository.findAllById(Arrays.asList(ids));
         for (UserEntity user : users) {
-            user.setStatus(0);
+            user.setIsActive(0);
         }
         userRepository.saveAll(users);
         for (Long item : ids) {
             UserEntity userEntity = userRepository.findById(item).get();
-            userEntity.setStatus(0);
+            userEntity.setIsActive(0);
             userRepository.save(userEntity);
         }
     }

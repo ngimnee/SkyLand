@@ -41,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseDTO listStaffs(Long customerId) {
         CustomerEntity customerEntity = customerRepository.findById(customerId).get();
-        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> staffs = userRepository.findByStatusAndRole_Code(1, "STAFF");
         List<UserEntity> staffAssignment = customerEntity.getUsers();
 
         List<StaffResponseDTO>  staffResponseDTOS = new ArrayList<>();

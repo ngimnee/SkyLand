@@ -1,6 +1,106 @@
 @charset "UTF-8";
 
-/* --- TỰ BUILD --- */
+.table td:last-child,
+.table th:last-child {
+    position: sticky;
+    right: 0;
+    background: #fff;
+    z-index: 5;
+    min-width: 120px;
+}
+
+.table thead th:last-child {
+    z-index: 6;
+}
+
+.table td:last-child {
+    box-shadow: -2px 0 6px rgba(0,0,0,0.08);
+}
+#buildingPanel{
+    background:#f8fafc;
+}
+#buildingPanel .offcanvas-header{
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+}
+#buildingPanel .offcanvas-title{
+    font-weight:600;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+}
+#buildingPanel .offcanvas-body{
+    padding:20px;
+}
+#buildingPanel .detail-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    margin-bottom:10px;
+    border-radius:10px;
+    background:white;
+    border:1px solid #e5e7eb;
+    transition:all .25s ease;
+}
+#buildingPanel .detail-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,0.08);
+}
+#buildingPanel .label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+    color:#64748b;
+    font-weight:500;
+}
+#buildingPanel .label i{
+    font-size:16px;
+    width:20px;
+    text-align:center;
+    color:#334155;
+}
+#buildingPanel .value{
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+    text-align:right;
+}
+#buildingPanel .price-item{
+    background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+    border:1px solid #a7f3d0;
+}
+#buildingPanel .price{
+    font-size:18px;
+    font-weight:700;
+    color:#059669;
+}
+#buildingPanel .badge-type{
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:20px;
+}
+#buildingPanel .note{
+    max-width:260px;
+    text-align:right;
+    color:#475569;
+    white-space:pre-line;
+}
+#buildingPanel .empty-note{
+    font-style:italic;
+    color:#94a3b8;
+}
+@media (max-width:768px){
+    #buildingPanel .detail-item{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:6px;
+    }
+    #buildingPanel .value{
+        text-align:left;
+    }
+}
 .navbar-brand img {
     position: relative;
     top: 2px;  /* chỉnh số nhỏ để hạ logo xuống */
@@ -64,7 +164,42 @@
 .pagination{
     margin-top:10px;
 }
-/* --- END --- */
+.search-box-sm{
+    display:flex;
+    align-items:center;
+    background:#f8f9fa;
+    border-radius:25px;
+    padding:3px;
+    width:320px;
+    border:1px solid #dee2e6;
+}
+
+.search-input-sm{
+    border:none;
+    outline:none;
+    background:transparent;
+    flex:1;
+    padding:6px 10px;
+    font-size:13px;
+}
+
+.search-btn-sm{
+    border:none;
+    background:#0d6efd;
+    color:white;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.search-btn-sm:hover{
+    background:#0b5ed7;
+}
 
 :root {
   --bs-blue: #0d6efd;

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserService {
-    UserDTO findOneByUserNameAndStatus(String name, int status);
+    UserDTO findOneByUserNameAndIsActive(String name, int isActive);
     List<UserSearchResponse> getUsers(UserSearchRequest userSearchRequest, Pageable pageable);
     UserDTO findOneByUserName(String userName);
     UserDTO findUserById(long id);
