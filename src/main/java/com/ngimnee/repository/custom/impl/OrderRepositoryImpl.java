@@ -30,6 +30,8 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
         sql.append(where);
         sql.append(" ORDER BY orders.createddate DESC ");
 
+        System.out.println(sql.toString());
+
         Query query = entityManager.createNativeQuery(sql.toString(), OrderEntity.class);
         return query.getResultList();
     }

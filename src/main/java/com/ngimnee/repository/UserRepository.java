@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> , UserRepositoryCustom {
     UserEntity findOneByUserNameAndIsActive(String name, int isActive);
-    List<UserEntity> findByStatusAndRole_Code(Integer status, String roleCode);
+    List<UserEntity> findByIsActiveAndRole_Code(Integer isActive, String roleCode);
     UserEntity findOneByUserName(String userName);
     List<UserEntity> findByRole_CodeIn(List<String> roleCodes);
     List<UserEntity> findByIdIn(List<Long> id);

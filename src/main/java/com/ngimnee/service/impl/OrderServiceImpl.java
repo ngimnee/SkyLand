@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseDTO listStaffs(Long orderId) {
         OrderEntity orderEntity = orderRepository.findById(orderId).get();
-        List<UserEntity> allStaffs = userRepository.findByStatusAndRole_Code(1, "STAFF");
+        List<UserEntity> allStaffs = userRepository.findByIsActiveAndRole_Code(1, "STAFF");
         List<UserEntity> assignedStaffs = orderEntity.getUsers();
         List<StaffResponseDTO> staffs = new ArrayList<>();
 

@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<Long, String> getStaffs() {
         Map<Long, String> listStaffs = new HashMap<>();
-        List<UserEntity> staffs = userRepository.findByStatusAndRole_Code(1, "STAFF");
+        List<UserEntity> staffs = userRepository.findByIsActiveAndRole_Code(1, "STAFF");
         for (UserEntity it : staffs) {
             listStaffs.put(it.getId(), it.getFullName());
         }

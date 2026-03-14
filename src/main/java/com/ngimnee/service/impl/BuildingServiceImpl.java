@@ -52,7 +52,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public ResponseDTO listStaff(Long buildingId) {
         BuildingEntity building = buildingRepository.findById(buildingId).get();
-        List<UserEntity> staffs = userRepository.findByStatusAndRole_Code(1, "STAFF");
+        List<UserEntity> staffs = userRepository.findByIsActiveAndRole_Code(1, "STAFF");
         List<UserEntity> staffAssignment = building.getUsers();
         List<StaffResponseDTO> staffResponseDTOs = new ArrayList<>();
         ResponseDTO responseDTO = new ResponseDTO();

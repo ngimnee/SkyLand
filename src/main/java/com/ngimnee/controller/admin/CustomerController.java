@@ -1,12 +1,9 @@
 package com.ngimnee.controller.admin;
 
-import com.ngimnee.model.dto.CustomerDTO;
-import com.ngimnee.model.dto.TransactionDTO;
 import com.ngimnee.model.request.CustomerSearchRequest;
 import com.ngimnee.model.response.CustomerSearchResponse;
 import com.ngimnee.security.utils.SecurityUtils;
 import com.ngimnee.service.CustomerService;
-import com.ngimnee.service.TransactionService;
 import com.ngimnee.service.UserService;
 import com.ngimnee.utils.DisplayTagUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;

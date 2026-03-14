@@ -17,6 +17,7 @@ public class OrderSearchBuilderConverter {
                 .setAddress(SearchRequestUtil.getObject(orderSearchRequest.getAddress(), String.class))
                 .setStatus(SearchRequestUtil.getObject(orderSearchRequest.getStatus(), String.class))
                 .setBuildingName(SearchRequestUtil.getObject(orderSearchRequest.getBuildingName(), String.class))
+                .setStaffId(SearchRequestUtil.getObject(orderSearchRequest.getStaffId(), Long.class))
                 .build();
 
         return orderSearchBuilder;
