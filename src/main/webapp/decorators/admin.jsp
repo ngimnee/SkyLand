@@ -32,6 +32,9 @@
     <script>
         window.jQuery || document.write('<script src="/admin/assets/jquery/jquery-3.6.4.min.js"><\/script>');
     </script>
+
+    <!-- jQuery Validation -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 </head>
 <body class="sb-nav-fixed">
     <!-- Header -->

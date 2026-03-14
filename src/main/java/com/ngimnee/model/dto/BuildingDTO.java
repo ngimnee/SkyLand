@@ -47,6 +47,6 @@ public class BuildingDTO extends AbstractDTO{
     private String orderCode;
     private Integer isActive = 1;
     private String map;
-
+    private String legal;
     private Map<String,String> buildingDTOs = new HashMap<>();
 }

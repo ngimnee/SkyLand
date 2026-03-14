@@ -1,5 +1,28 @@
 @charset "UTF-8";
 
+.card{
+    border-radius:12px;
+}
+.form-control,
+.form-select{
+    height:42px;
+}
+.form-label{
+    font-weight:600;
+    margin-bottom:5px;
+}
+.btn{
+    border-radius:8px;
+}
+label.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+    display: block;
+}
+.swal-top-offset {
+    margin-top: 100px;
+}
 .table td:last-child,
 .table th:last-child {
     position: sticky;

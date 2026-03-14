@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
 <c:url var="orderURL" value='/admin/order'/>
-<c:url var="editOrderURL" value='/admin/order/edit'/>
 <c:url var="orderAPI" value='/api/order'/>
 
 <html>
@@ -40,8 +39,9 @@
         <!-- Bảng danh sách -->
         <div class="card mb-4">
             <div class="card-body">
-                <form:form id="orderListForm">
-                    <display:table name="orderList.listResult"
+                <div class="table-responsive">
+                    <form:form id="orderListForm">
+                        <display:table name="orderList.listResult"
                                 requestURI="${orderURL}"
                                 id="order"
                                 class="table table-striped table-bordered align-middle text-start"
@@ -61,11 +61,11 @@
                         </display:column>
                         <display:column property="code" title="Mã đơn hàng" headerClass="text-center" class="text-center"/>
                         <display:column property="buildingName" title="Tên tòa nhà" headerClass="text-center" class="text-justify"/>
-                        <display:column property="name" title="Khách hàng" headerClass="text-center" class="text-justify"/>
+                        <display:column property="name" title="Khách hàng" headerClass="text-center" class="text-justify" style="white-space:nowrap;"/>
                         <display:column property="phone" title="SĐT" headerClass="text-center" class="text-center"/>
                         <display:column property="email" title="Email" headerClass="text-center" class="text-center"/>
-                        <display:column title="Đã cọc" headerClass="text-center" class="text-center">
-                            <fmt:formatNumber value="${order.amount}" type="number"/> đ
+                        <display:column title="Đã cọc" headerClass="text-center" class="text-center" style="white-space:nowrap;">
+                            <fmt:formatNumber value="${order.amount}" type="number"/> VNĐ
                         </display:column>
 <%--                        <display:column property="amount" title="Thanh toán" headerClass="text-center" />--%>
                         <display:column title="Trạng thái" headerClass="text-center" class="text-center">
@@ -84,6 +84,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </display:column>
+                        <display:column property="paymentMethod" title="PT thanh toán" headerClass="text-center" class="text-center"/>
 
                         <!-- Cột thao tác -->
                         <display:column title="Thao tác" headerClass="text-center" class="text-center" style="width:120px; white-space:nowrap;">
@@ -107,6 +108,7 @@
                         </display:column>
                     </display:table>
                 </form:form>
+                </div>
             </div>
         </div>
     </div>

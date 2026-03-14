@@ -1,6 +1,8 @@
 package com.ngimnee.model.dto;
 
+import com.ngimnee.config.PasswordConfig;
 import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,4 +21,6 @@ public class UserDTO extends AbstractDTO {
     private List<String> orderCodes;
     private Map<String,String> roleDTOs = new HashMap<>();
     private Integer isActive;
+
+    private String defaultPassword;
 }

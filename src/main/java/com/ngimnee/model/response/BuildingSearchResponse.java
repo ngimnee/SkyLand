@@ -19,4 +19,5 @@ public class BuildingSearchResponse extends AbstractDTO {
     private String serviceFee;
     private Double brokerageFee;
     private String status;
+    private String legal;
 }

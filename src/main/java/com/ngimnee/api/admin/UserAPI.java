@@ -70,7 +70,7 @@ public class UserAPI {
         }
     }
 
-    @PutMapping("/password/{id}/reset")
+    @PutMapping("/reset-password/{id}")
     public ResponseEntity<UserDTO> resetPassword(@PathVariable("id") long id) {
         return ResponseEntity.ok(userService.resetPassword(id));
     }

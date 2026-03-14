@@ -27,4 +27,5 @@ public class BuildingSearchRequest extends AbstractDTO {
     private String status;
     private String typeO;
     private Integer isActive = 1;
+    private String legal;
 }

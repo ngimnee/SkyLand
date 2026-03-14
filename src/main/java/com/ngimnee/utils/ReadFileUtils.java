@@ -10,11 +10,8 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
 public class ReadFileUtils extends HttpServlet {
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String imageUrl = request.getRequestURI();
         int repIndex = imageUrl.indexOf("/repository");
         String relativeImagePath = null;
@@ -24,7 +21,7 @@ public class ReadFileUtils extends HttpServlet {
         }
         ServletOutputStream outStream;
         outStream = response.getOutputStream();
-        FileInputStream fin = new FileInputStream("C://home/office" + relativeImagePath);
+        FileInputStream fin = new FileInputStream("E://Upload" + relativeImagePath);
         BufferedInputStream bin = new BufferedInputStream(fin);
         BufferedOutputStream bout = new BufferedOutputStream(outStream);
         int ch =0;

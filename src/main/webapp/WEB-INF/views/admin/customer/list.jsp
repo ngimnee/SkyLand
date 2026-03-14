@@ -59,8 +59,9 @@
         <!-- Bảng danh sách tài khoản -->
         <div class="card mb-4">
             <div class="card-body">
-                <form:form id="customerListForm">
-                    <display:table name="customerList.listResult"
+                <div class="table-responsive">
+                    <form:form id="customerListForm">
+                        <display:table name="customerList.listResult"
                                 requestURI="${customerURL}"
                                 id="customer"
                                 class="table table-striped table-bordered align-middle text-start"
@@ -83,7 +84,7 @@
                                 <fmt:formatDate value="${customer.modifiedDate}" pattern="dd/MM/yyyy HH:mm"/>
                             </c:if>
                         </display:column>
-                        <display:column property="fullName" title="Họ và tên" headerClass="text-center" class="text-center"/>
+                        <display:column property="fullName" title="Họ và tên" headerClass="text-center" class="text-center" style="white-space: nowrap;"/>
                         <display:column property="phone" title="SĐT" headerClass="text-center" class="text-center"/>
                         <display:column property="email" title="Email" headerClass="text-center" class="text-center"/>
                         <display:column property="companyName" title="Công ty" headerClass="text-center" class="text-center"/>
@@ -115,7 +116,8 @@
                             </div>
                         </display:column>
                     </display:table>
-                </form:form>
+                    </form:form>
+                </div>
             </div>
         </div>
     </div>

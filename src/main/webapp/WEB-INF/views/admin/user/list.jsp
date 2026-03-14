@@ -3,6 +3,8 @@
 <c:url var="userAPI" value='/api/user'/>
 <c:url var="userURL" value='/admin/user'/>
 <c:url var="editUserURL" value="/admin/user/edit"/>
+<c:url var="resetPasswordAPI" value="/api/user/reset-password"/>
+
 <html>
 <head>
     <title>Tài Khoản</title>
@@ -43,8 +45,9 @@
         <!-- Bảng danh sách -->
         <div class="card mb-4">
             <div class="card-body">
-                <form:form id="userListForm" modelAttribute="model">
-                    <display:table name="model.listResult"
+                <div class="table-responsive">
+                    <form:form id="userListForm" modelAttribute="model">
+                        <display:table name="model.listResult"
                                    requestURI="${userURL}"
                                    id="user"
                                    class="table table-striped table-bordered align-middle text-start"
@@ -66,9 +69,9 @@
                         </display:column>
 
                         <display:column property="userName" title="Tài khoản" headerClass="text-center" class="text-center"/>
-                        <display:column property="fullName" title="Họ tên" headerClass="text-center" class="text-justify"/>
+                        <display:column property="fullName" title="Họ tên" headerClass="text-center" class="text-justify" style="white-space: nowrap;"/>
                         <display:column property="phone" title="SĐT" headerClass="text-center" class="text-center"/>
-                        <display:column property="email" title="Email" headerClass="text-center" class="text-center"/>
+                        <display:column property="email" title="Email" headerClass="text-center" class="text-justify"/>
                         <display:column title="Vai trò" headerClass="text-center" class="text-center" style="width:150px; white-space:nowrap;">
                             <c:choose>
                                 <c:when test="${user.roleName == 'Quản lý'}">
@@ -94,6 +97,12 @@
                         <!-- Cột thao tác -->
                         <display:column title="Thao tác" headerClass="text-center" class="text-center" style="width:120px; white-space:nowrap;">
                             <div class="d-flex justify-content-center gap-2">
+                                <security:authorize access="hasRole('MANAGER')">
+                                    <button type="button" class="btn btn-outline-warning btn-sm" title="Reset mật khẩu" onclick="resetPassword(${user.id})">
+                                        <i class="bi bi-key"></i>
+                                    </button>
+                                </security:authorize>
+
                                 <a href="${editUserURL}?id=${user.id}" class="btn btn-outline-primary btn-sm" title="Chỉnh sửa">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
@@ -107,6 +116,7 @@
                         </display:column>
                     </display:table>
                 </form:form>
+                </div>
             </div>
         </div>
     </div>
@@ -227,6 +237,57 @@
             e.preventDefault();
             deleteUsers();
         });
+
+        function resetPassword(id) {
+            Swal.fire({
+                title: 'Reset mật khẩu?',
+                text: 'Mật khẩu sẽ được đặt lại về mặc định!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Reset',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '${resetPasswordAPI}/' + id,
+                        type: 'PUT',
+                        success: function (response) {
+                            const password = response.defaultPassword;
+                            Swal.fire({
+                                title: 'Reset thành công!',
+                                position: 'top',
+                                showConfirmButton: false,
+                                customClass: {
+                                    popup: 'swal-top-offset'
+                                },
+                                html: `
+                                    <div style="display:flex;justify-content:center;margin-top:15px">
+                                        <div style="display:flex; align-items:center; border:1px solid #dee2e6; border-radius:6px; overflow:hidden; background:white;">
+                                            <input id="pwdText" value="${password}" readonly style=" border:none; outline:none; padding:4px 10px; font-size:15px; width:120px; height:26px; text-align:center;">
+                                            <button id="copyBtn" style="border:none; border-left:1px solid #dee2e6; background:white; padding:4px 10px; cursor:pointer;" title="Copy">
+                                                <i class="bi bi-copy"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                `,
+                                didOpen: () => {
+                                    document.getElementById("copyBtn").onclick = function () {
+                                        navigator.clipboard.writeText(password);
+                                        this.innerHTML = '<i class="bi bi-check-lg text-success"></i>';
+                                        setTimeout(() => {
+                                            this.innerHTML = '<i class="bi bi-copy"></i>';
+                                        }, 1500);
+                                    };
+                                }
+                            });
+                        },
+                        error: function () {
+                            Swal.fire('Lỗi!', 'Không thể reset mật khẩu!', 'error');
+                        }
+                    });
+                }
+            });
+        }
     </script>
 </body>
 </html>

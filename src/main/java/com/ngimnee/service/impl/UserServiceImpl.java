@@ -1,6 +1,7 @@
 package com.ngimnee.service.impl;
 
 import com.ngimnee.builder.UserSearchBuilder;
+import com.ngimnee.config.PasswordConfig;
 import com.ngimnee.constant.SystemConstant;
 import com.ngimnee.converter.user.UserConverter;
 import com.ngimnee.converter.user.UserSearchBuilderConverter;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordConfig passwordConfig;
     @Autowired
     private UserConverter userConverter;
     @Autowired
@@ -149,22 +152,32 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updatePassword(long id, PasswordDTO passwordDTO) throws MyException {
-        UserEntity user = userRepository.findById(id).get();
-        if (passwordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())
-                && passwordDTO.getNewPassword().equals(passwordDTO.getConfirmPassword())) {
-            user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
-            userRepository.save(user);
-        } else {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new MyException("User not found"));
+
+        if (!passwordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())) {
+            throw new MyException(SystemConstant.OLD_PASSWORD_INCORRECT);
+        }
+        if (!passwordDTO.getNewPassword().equals(passwordDTO.getConfirmPassword())) {
             throw new MyException(SystemConstant.CHANGE_PASSWORD_FAIL);
         }
+        if (passwordEncoder.matches(passwordDTO.getNewPassword(), user.getPassword())) {
+            throw new MyException(SystemConstant.PASSWORD_SAME_OLD);
+        }
+        user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public UserDTO resetPassword(long id) {
         UserEntity userEntity = userRepository.findById(id).get();
-        userEntity.setPassword(passwordEncoder.encode(SystemConstant.PASSWORD_DEFAULT));
-        return userConverter.convertToDTO(userRepository.save(userEntity));
+        String defaultPassword = passwordConfig.getPasswordDefault();
+        userEntity.setPassword(passwordEncoder.encode(defaultPassword));
+
+        UserDTO userDTO = userConverter.convertToDTO(userRepository.save(userEntity));
+        userDTO.setDefaultPassword(defaultPassword);
+        return userDTO;
     }
 
     @Override

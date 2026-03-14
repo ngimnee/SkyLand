@@ -49,20 +49,32 @@
                     <div id="editForm">
                         <div class="card-body">
                             <form:form id="form-edit" modelAttribute="editBuilding">
-                                <div class="row mb-3 align-items-center">
-                                    <label class="col-xl-1 col-form-label ps-4">
-                                        Tên tòa nhà<span class="text-danger">*</span>
-                                    </label>
-                                    <div class="col-xl-9">
-                                        <form:input class="form-control" path="name" required="true" />
+                                 <div class="row mb-3">
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">
+                                                Tên tòa nhà<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-xl-9">
+                                                <form:input class="form-control" path="name" required="true" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Pháp lý</label>
+                                            <div class="col-xl-9">
+                                                <form:input class="form-control" path="legal"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
-                                    <!-- City -->
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Tỉnh/Thành phố<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -74,10 +86,9 @@
                                         </div>
                                     </div>
 
-                                    <!-- District -->
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Quận/Huyện<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -91,10 +102,9 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <!-- Ward -->
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Phường<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -103,10 +113,9 @@
                                         </div>
                                     </div>
 
-                                    <!-- Street -->
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Đường<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -119,7 +128,7 @@
                                 <div class="row mb-3">
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Kết cấu</label>
+                                            <label class="col-xl-3 col-form-label">Kết cấu</label>
                                             <div class="col-xl-9">
                                                <form:input class="form-control" path="structure" />
                                             </div>
@@ -128,7 +137,7 @@
 
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Số tầng hầm<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -141,7 +150,7 @@
                                 <div class="row mb-3">
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Tầng</label>
+                                            <label class="col-xl-3 col-form-label">Tầng</label>
                                             <div class="col-xl-9">
                                                <form:input class="form-control" path="floor" />
                                             </div>
@@ -150,7 +159,7 @@
 
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Diện tích sàn<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -163,7 +172,7 @@
                                 <div class="row mb-3">
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Hướng</label>
+                                            <label class="col-xl-3 col-form-label">Hướng</label>
                                             <div class="col-xl-9">
                                                <form:input type="text" class="form-control" path="direction" />
                                             </div>
@@ -172,7 +181,7 @@
 
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Hạng</label>
+                                            <label class="col-xl-3 col-form-label">Hạng</label>
                                             <div class="col-xl-9">
                                                 <form:input class="form-control" path="level" />
                                             </div>
@@ -183,8 +192,8 @@
                                 <div class="row mb-3">
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
-                                                Diện tích thuê<span class="text-danger">*</span>
+                                            <label class="col-xl-3 col-form-label">
+                                                Diện tích<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
                                                <form:input class="form-control" path="rentArea" required="true" />
@@ -194,7 +203,7 @@
 
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Giá thuê<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -207,96 +216,36 @@
                                 <div class="row mb-3">
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Mô tả giá</label>
+                                            <label class="col-xl-3 col-form-label">Thời hạn thuê</label>
+                                            <div class="col-xl-9">
+                                               <form:input class="form-control" path="rentTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Mô tả giá</label>
                                             <div class="col-xl-9">
                                                <form:input class="form-control" path="rentPriceDescription" />
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
+                                <div class="row mb-3">
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Phí dịch vụ</label>
+                                            <label class="col-xl-3 col-form-label">Phí dịch vụ</label>
                                             <div class="col-xl-9">
                                                 <form:input class="form-control" path="serviceFee" />
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-xl-6">
-                                        <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Phí ô tô</label>
-                                            <div class="col-xl-9">
-                                               <form:input class="form-control" path="carFee" />
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Phí mô tô</label>
-                                            <div class="col-xl-9">
-                                                <form:input class="form-control" path="motorbikeFee" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-xl-6">
-                                        <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Phí ngoài giờ</label>
-                                            <div class="col-xl-9">
-                                               <form:input class="form-control" path="overtimeFee" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-6">
-                                        <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Tiền điện</label>
-                                            <div class="col-xl-9">
-                                                <form:input class="form-control" path="electricityFee" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-xl-6">
-                                        <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Đặt cọc</label>
-                                            <div class="col-xl-9">
-                                               <form:input class="form-control" path="deposit" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-6">
-                                        <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Thanh toán</label>
-                                            <div class="col-xl-9">
-                                                <form:input class="form-control" path="payment" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-xl-6">
-                                        <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Thời gian trang trí</label>
-                                            <div class="col-xl-9">
-                                               <form:input class="form-control" path="decorationTime" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-6">
-                                        <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">Phí môi giới</label>
+                                            <label class="col-xl-3 col-form-label">Phí môi giới</label>
                                             <div class="col-xl-9">
                                                 <form:input class="form-control" path="brokerageFee" />
                                             </div>
@@ -307,7 +256,80 @@
                                 <div class="row mb-3">
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">Phí ô tô</label>
+                                            <div class="col-xl-9">
+                                               <form:input class="form-control" path="carFee" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Phí mô tô</label>
+                                            <div class="col-xl-9">
+                                                <form:input class="form-control" path="motorbikeFee" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Phí ngoài giờ</label>
+                                            <div class="col-xl-9">
+                                               <form:input class="form-control" path="overtimeFee" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Tiền điện</label>
+                                            <div class="col-xl-9">
+                                                <form:input class="form-control" path="electricityFee" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Đặt cọc</label>
+                                            <div class="col-xl-9">
+                                               <form:input class="form-control" path="deposit" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Thanh toán</label>
+                                            <div class="col-xl-9">
+                                                <form:input class="form-control" path="payment" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">Thời gian trang trí</label>
+                                            <div class="col-xl-9">
+                                               <form:input class="form-control" path="decorationTime" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-xl-6">
+                                        <div class="row align-items-center">
+                                            <label class="col-xl-3 col-form-label">
                                                 Tên quản lý<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -318,7 +340,7 @@
 
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 SĐT quản lý<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -329,17 +351,9 @@
                                 </div>
 
                                 <div class="row mb-3">
-<%--                                    <div class="col-xl-6">--%>
-<%--                                        <div class="row align-items-center">--%>
-<%--                                            <label class="col-xl-3 col-form-label ps-4">Thời hạn thuê</label>--%>
-<%--                                            <div class="col-xl-9">--%>
-<%--                                               <form:input class="form-control" path="rentTime" />--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                  Loại tòa nhà<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9 d-flex flex-wrap gap-3">
@@ -350,7 +364,7 @@
 
                                     <div class="col-xl-6">
                                         <div class="row align-items-center">
-                                            <label class="col-xl-3 col-form-label ps-4">
+                                            <label class="col-xl-3 col-form-label">
                                                 Hình thức<span class="text-danger">*</span>
                                             </label>
                                             <div class="col-xl-9">
@@ -387,7 +401,7 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex gap-2" style="margin-left:270px;">
+                                <div class="d-flex justify-content-center gap-2" style="margin-right:100px;">
                                     <c:if test="${empty editBuilding.id}">
                                         <button type="button" class="btn btn-primary" id="btnAddOrUpdateBuilding">
                                             <i class="bi bi-building-add"></i> Thêm tòa nhà
@@ -398,9 +412,9 @@
                                             <i class="bi bi-building-check"></i> Cập nhật tòa nhà
                                         </button>
                                     </c:if>
-                                    <button type="button" class="btn btn-danger" id="btnCancel">
-                                            Hủy
-                                        </button>
+                                    <button type="button" class="btn btn-danger px-4" id="btnCancel">
+                                        Hủy
+                                    </button>
                                 </div>
                                 <form:hidden path="id" id="buildingId"/>
                             </form:form>

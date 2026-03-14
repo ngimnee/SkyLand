@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url value='/api/user/profile' var="profileURL"/>
-<c:url value='/api/user/change-password' var="changePasswordURL"/>
+<c:url value='/admin/profile/{username}' var="profileURL"/>
+<c:url value='/admin/profile/change-password' var="changePasswordURL"/>
 <c:url value='/logout' var="logoutURL" />
 
 <!DOCTYPE html PUBLIC>
@@ -17,6 +17,7 @@
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></form>
     <!-- Navbar-->
+
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>

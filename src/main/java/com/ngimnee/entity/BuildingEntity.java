@@ -29,6 +29,9 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "legal")
+    private String legal;
+
     @Column(name = "structure")
     private String structure;
 

@@ -346,16 +346,16 @@
                 <span class="value" id="detail_city"></span>
             </div>
             <div class="detail-item">
-                <span class="label"><i class="bi bi-compass"></i> Hướng</span>
-                <span class="value" id="detail_direction"></span>
+                <span class="label"><i class="bi bi-check-circle"></i> Hình thức</span>
+                <span class="value" id="detail_status"></span>
+            </div>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-file-earmark-text"></i> Pháp lý</span>
+                <span class="value" id="detail_legal"></span>
             </div>
             <div class="detail-item">
                 <span class="label"><i class="bi bi-bar-chart"></i> Hạng tòa nhà</span>
                 <span class="value" id="detail_level"></span>
-            </div>
-            <div class="detail-item">
-                <span class="label"><i class="bi bi-check-circle"></i> Hình thức</span>
-                <span class="value" id="detail_status"></span>
             </div>
 
             <h6 class="section-title mt-4">Kết cấu</h6>
@@ -448,6 +448,10 @@
             </div>
 
             <h6 class="section-title mt-4">Khác</h6>
+            <div class="detail-item">
+                <span class="label"><i class="bi bi-compass"></i> Hướng</span>
+                <span class="value" id="detail_direction"></span>
+            </div>
             <div class="detail-item">
                 <span class="label"><i class="bi bi-chat-left-text"></i> Ghi chú</span>
                 <span class="value note" id="detail_note"></span>
@@ -688,11 +692,16 @@
                 });
             }
 
+            var statusEl = $("#detail_status");
+            var statusText = data.status === "BAN" ? "Bán" : "Cho Thuê";
+            statusEl.text(statusText).removeClass("text-success text-primary").addClass(data.status === "BAN" ? "text-success" : "text-primary");
+
             $("#detail_name").text(data.name);
             $("#detail_address").text(data.street);
             $("#detail_ward").text(data.ward);
             $("#detail_district").text(data.district);
             $("#detail_city").text(data.city);
+            $("#detail_legal").text(data.legal);
             $("#detail_direction").text(data.direction);
             $("#detail_level").text(data.level);
             $("#detail_floor").text(data.floor);
@@ -714,7 +723,6 @@
             $("#detail_decorationTime").text(data.decorationTime);
             $("#detail_manager").text(data.managerName);
             $("#detail_phone").text(data.managerPhone);
-            $("#detail_status").text(data.status);
             $("#detail_note").text(data.note);
             $("#detail_createdDate").text(formatDate(data.createdDate));
             $("#detail_modifiedDate").text(formatDate(data.modifiedDate));

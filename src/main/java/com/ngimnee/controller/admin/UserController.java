@@ -85,7 +85,7 @@ public class UserController {
         } else {
             user.setRoleDTOs(allRoles);
         }
-
+//        request.removeAttribute(SystemConstant.MODEL);
         mav.addObject(SystemConstant.MODEL, user);
         initMessageResponse(mav, request);
         return mav;
@@ -125,9 +125,9 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping(value = "/admin/profile/password", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/profile/change-password", method = RequestMethod.GET)
     public ModelAndView updatePassword(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("admin/user/password");
+        ModelAndView mav = new ModelAndView("admin/user/change-password");
         UserDTO model = userService.findOneByUserName(SecurityUtils.getPrincipal().getUsername());
         mav.addObject(SystemConstant.MODEL, model);
         initMessageResponse(mav, request);

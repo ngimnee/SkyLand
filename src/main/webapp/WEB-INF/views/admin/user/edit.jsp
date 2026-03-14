@@ -15,163 +15,149 @@
 </head>
 <body>
     <div class="container-fluid px-4">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mb-2">
             <h3 class="fw-bold mb-0">
                 <i class="bi bi-person-badge me-2 text-primary"></i>Tài khoản
             </h3>
         </div>
-        <nav class="mt-1">
-            <ol class="breadcrumb mb-0 small">
-                <li class="breadcrumb-item text-muted">Quản lý</li>
-                <c:choose>
-                    <c:when test="${empty model.id}"><li class="breadcrumb-item active">Thêm tài khoản</li></c:when>
-                    <c:otherwise><li class="breadcrumb-item active">Cập nhật thông tin tài khoản</li></c:otherwise>
-                </c:choose>
+
+        <nav>
+            <ol class="breadcrumb mb-3 small">
+            <li class="breadcrumb-item text-muted">Quản lý</li>
+
+            <c:choose>
+                <c:when test="${empty model.id}"><li class="breadcrumb-item active">Thêm tài khoản</li></c:when>
+                <c:otherwise><li class="breadcrumb-item active">Cập nhật tài khoản</li></c:otherwise>
+            </c:choose>
             </ol>
         </nav>
 
-        <div class="row">
+        <div class="card mb-4">
             <div class="col-xl-12">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <c:choose>
-                                <c:when test="${empty model.id}">
-                                    <i class="bi bi-person-plus me-2"></i>Tạo tài khoản mới
-                                </c:when>
-                                <c:otherwise>
-                                    <i class="bi bi-person-check me-2"></i>Chỉnh sửa tài khoản
-                                </c:otherwise>
-                            </c:choose>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <c:choose>
+                            <c:when test="${empty model.id}">
+                                <i class="bi bi-person-plus me-2"></i>Tạo tài khoản mới
+                            </c:when>
+                            <c:otherwise>
+                                <i class="bi bi-person-check me-2"></i>Chỉnh sửa tài khoản
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <a href="${userURL}">
+                        <i class="bi bi-x-circle fs-5 text-danger"></i>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <form:form id="formEdit" modelAttribute="model" method="POST">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="bi bi-person"></i> Username<span class="text-danger">*</span>
+                                </label>
+                                <form:input path="userName" class="form-control" placeholder="Nhập username..." readonly="${not empty model.id}"/>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="bi bi-person-badge"></i> Họ tên<span class="text-danger">*</span>
+                                </label>
+                                <form:input path="fullName" class="form-control" placeholder="Nhập họ tên..." />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="bi bi-telephone"></i> Số điện thoại<span class="text-danger">*</span>
+                                </label>
+                                <form:input path="phone" class="form-control" placeholder="0909xxxxxx"/>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="bi bi-envelope"></i> Email
+                                </label>
+                                <form:input path="email" class="form-control" placeholder="example@gmail.com"/>
+                            </div>
                         </div>
-                        <a href="${userURL}">
-                            <i class="bi bi-x-circle"></i>
-                        </a>
-                    </div>
 
-                    <div class="card-body">
-                        <form:form id="formEdit" modelAttribute="model" method="POST">
-                            <!-- CSRF Token -->
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <c:if test="${empty model.id}">
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="bi bi-lock"></i> Mật khẩu<span class="text-danger">*</span>
+                                    </label>
+                                    <form:password path="password" value="" class="form-control" placeholder="Nhập mật khẩu..."/>
+                                </div>
 
-                            <!-- USERNAME -->
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Username <span class="text-danger">*</span></label>
-                                <div class="col-sm-9">
-                                    <form:input path="userName" class="form-control"
-                                               placeholder="Nhập username..." readonly="${not empty model.id}"/>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="bi bi-lock-fill"></i> Xác nhận mật khẩu<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="password" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu..."/>
                                 </div>
                             </div>
+                        </c:if>
 
-                            <!-- FULLNAME -->
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Họ tên <span class="text-danger">*</span></label>
-                                <div class="col-sm-9">
-                                    <form:input path="fullName" class="form-control" placeholder="Nhập họ tên..." />
-                                </div>
-                            </div>
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="bi bi-shield-lock"></i> Vai trò<span class="text-danger">*</span>
+                                </label>
 
-                            <!-- PHONE -->
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Số điện thoại <span class="text-danger">*</span></label>
-                                <div class="col-sm-9">
-                                    <form:input path="phone" class="form-control" placeholder="0909123456..." />
-                                </div>
-                            </div>
+                                <security:authorize access="hasRole('STAFF')">
+                                    <input type="text" class="form-control" value="USER" readonly>
+                                    <small class="text-info">Nhân viên chỉ được tạo USER</small>
+                                    <form:hidden path="roleCode" value="USER"/>
+                                </security:authorize>
 
-                            <!-- EMAIL -->
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Email</label>
-                                <div class="col-sm-9">
-                                    <form:input path="email" class="form-control" placeholder="example@gmail.com" />
-                                </div>
-                            </div>
-
-                            <!-- PASSWORD - Chỉ khi thêm mới -->
-                            <c:if test="${empty model.id}">
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Mật khẩu <span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <form:password path="password" class="form-control" placeholder="Nhập mật khẩu..." />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Xác nhận <span class="text-danger">*</span></label>
-                                    <div class="col-sm-9">
-                                        <input type="password" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu..." />
-                                    </div>
-                                </div>
-                            </c:if>
-
-                            <!-- PASSWORD khi sửa -->
-                            <c:if test="${not empty model.id}">
-                                <div class="row mb-3">
-                                    <label class="col-sm-3 col-form-label">Mật khẩu</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" value="********" readonly>
-                                        <small class="text-muted">Dùng chức năng "Đổi mật khẩu" để thay đổi.</small>
-                                    </div>
-                                </div>
-                                <form:hidden path="password"/>
-                            </c:if>
-
-                            <!-- ROLE -->
-                            <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Vai trò <span class="text-danger">*</span></label>
-                                <div class="col-sm-9">
-                                    <security:authorize access="hasRole('STAFF')">
-                                        <input type="text" class="form-control" value="USER" readonly>
-                                        <small class="text-info">Nhân viên chỉ được tạo tài khoản USER</small>
-                                        <form:hidden path="roleCode" value="USER"/>
-                                    </security:authorize>
-
-                                    <security:authorize access="hasRole('MANAGER')">
-                                        <form:select path="roleCode" class="form-select">
-                                            <form:option value="">-- Chọn vai trò --</form:option>
-                                            <c:forEach var="role" items="${model.roleDTOs}">
-                                                <form:option value="${role.key}">${role.value}</form:option>
-                                            </c:forEach>
-                                        </form:select>
-                                    </security:authorize>
-                                </div>
-                            </div>
-
-                            <!-- IS ACTIVE -->
-                            <security:authorize access="hasRole('MANAGER')">
-                                <div class="row mb-3">
-                                <label class="col-sm-3 col-form-label">Trạng thái</label>
-                                <div class="col-sm-9">
-                                    <form:select path="isActive" class="form-select">
-                                        <form:option value="1">Hoạt động</form:option>
-                                        <form:option value="0">Khóa</form:option>
+                                <security:authorize access="hasRole('MANAGER')">
+                                    <form:select path="roleCode" class="form-select">
+                                    <form:option value="">-- Chọn vai trò --</form:option>
+                                        <c:forEach var="role" items="${model.roleDTOs}">
+                                            <form:option value="${role.key}">${role.value}</form:option>
+                                        </c:forEach>
                                     </form:select>
-                                </div>
+                                </security:authorize>
                             </div>
+
+                            <security:authorize access="hasRole('MANAGER')">
+                                <div class="col-md-6">
+                                    <c:if test="${not empty model.id}">
+                                        <label class="form-label">
+                                            <i class="bi bi-toggle-on"></i> Trạng thái
+                                        </label>
+
+                                        <form:select path="isActive" class="form-select">
+                                            <form:option value="1">Hoạt động</form:option>
+                                            <form:option value="0">Khóa</form:option>
+                                        </form:select>
+                                    </c:if>
+                                </div>
                             </security:authorize>
-                            <form:hidden path="id" id="userId"/>
+                        </div>
+                        <form:hidden path="id" id="userId"/>
 
-
-                            <!-- BUTTONS -->
-                            <div class="row mt-4">
-                                <div class="col-sm-9 offset-sm-3">
-                                    <button type="button" class="btn btn-primary me-2" id="btnSave">
-                                        <i class="fas fa-save"></i>
-                                        <c:choose><c:when test="${empty model.id}">Thêm mới</c:when><c:otherwise>Cập nhật</c:otherwise></c:choose>
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" id="btnCancel">
-                                        <i class="fas fa-times"></i> Hủy
-                                    </button>
-                                </div>
+                        <!-- BUTTONS -->
+                        <div class="row mt-4">
+                            <div class="col-sm-9 offset-sm-3">
+                                <button type="button" class="btn btn-primary me-2" id="btnSave">
+                                    <i class="fas fa-save"></i>
+                                    <c:choose><c:when test="${empty model.id}">Thêm mới</c:when><c:otherwise>Cập nhật</c:otherwise></c:choose>
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="btnCancel">
+                                    <i class="fas fa-times"></i> Hủy
+                                </button>
                             </div>
-                        </form:form>
-                    </div>
+                        </div>
+                    </form:form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function () {
             $('#btnSave').click(function () {
@@ -197,7 +183,7 @@
                             title: 'Thành công!',
                             text: id ? 'Cập nhật tài khoản thành công!' : 'Thêm tài khoản thành công!',
                             timer: 2000,
-                            showConfirmButton: false
+                            showConfirmButton: true
                         }).then(() => {
                             window.location.href = '${userURL}?message=success';
                         });
@@ -218,6 +204,13 @@
             function validateForm() {
                 let valid = true;
                 $('.is-invalid').removeClass('is-invalid');
+
+                const phone = $('[name="phone"]').val();
+                if (phone && !/^[0-9]{9,11}$/.test(phone)) {
+                    $('[name="phone"]').addClass('is-invalid');
+                    Swal.fire('Lỗi!', 'Số điện thoại không hợp lệ!', 'error');
+                    valid = false;
+                }
 
                 const required = ['userName', 'fullName', 'phone'];
                 if (!$('#userId').val()) {
@@ -245,7 +238,6 @@
                         valid = false;
                     }
                 }
-
                 return valid;
             }
         });
