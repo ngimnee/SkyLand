@@ -1,5 +1,59 @@
 @charset "UTF-8";
 
+#deactivateAccount{
+    margin:0;
+    padding:10px 15px;
+    color:#dc3545;
+    cursor:pointer;
+    position:relative;
+}
+
+#deactivateAccount::before{
+    content:"•";
+    margin-right:6px;
+}
+
+#deactivateAccount:hover{
+    text-decoration:underline;
+    text-decoration-color:#dc3545;
+}
+.profile-avatar {
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #f1f1f1;
+}
+
+.profile-card {
+    text-align:center;
+}
+
+.profile-info p{
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+.badge-status{
+    padding:6px 10px;
+    font-size:12px;
+}
+.profile-avatar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #fff;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+input[readonly]{
+    background:#e9ecef;
+    cursor:not-allowed;
+}
+.profile-avatar:hover{
+    transform:scale(1.05);
+}
 .card{
     border-radius:12px;
 }

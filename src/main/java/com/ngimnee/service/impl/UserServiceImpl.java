@@ -185,6 +185,10 @@ public class UserServiceImpl implements UserService {
     public UserDTO updateProfileOfUser(String username, UserDTO updateUser) {
         UserEntity oldUser = userRepository.findOneByUserName(username);
         oldUser.setFullName(updateUser.getFullName());
+        oldUser.setPhone(updateUser.getPhone());
+        oldUser.setEmail(updateUser.getEmail());
+        oldUser.setGender(updateUser.getGender());
+        oldUser.setBirthday(updateUser.getBirthday());
         return userConverter.convertToDTO(userRepository.save(oldUser));
     }
 

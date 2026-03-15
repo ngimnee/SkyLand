@@ -60,8 +60,7 @@ public class UserAPI {
     }
 
     @PutMapping("/change-password/{id}")
-    public ResponseEntity<String> changePasswordUser(@PathVariable("id") long id,
-                                                     @RequestBody PasswordDTO passwordDTO) {
+    public ResponseEntity<String> changePasswordUser(@PathVariable("id") long id, @RequestBody PasswordDTO passwordDTO) {
         try {
             userService.updatePassword(id, passwordDTO);
             return ResponseEntity.ok(SystemConstant.UPDATE_SUCCESS);

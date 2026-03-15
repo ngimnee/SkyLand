@@ -1,9 +1,9 @@
 package com.ngimnee.model.dto;
 
-import com.ngimnee.config.PasswordConfig;
+import com.ngimnee.enums.Gender;
 import lombok.Data;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +21,12 @@ public class UserDTO extends AbstractDTO {
     private List<String> orderCodes;
     private Map<String,String> roleDTOs = new HashMap<>();
     private Integer isActive;
-
+    private Date birthday;
+    private Integer gender;
     private String defaultPassword;
+
+    public String getGenderName() {
+        Gender g = Gender.fromCode(gender);
+        return g != null ? g.getLabel() : "";
+    }
 }

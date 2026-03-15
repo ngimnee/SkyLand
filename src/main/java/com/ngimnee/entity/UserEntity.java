@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,13 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "status")
     private Integer status;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "birthday")
+    private Date birthday;
+
+    @Column(name = "gender")
+    private Integer gender;
 
     @Column(name = "phone")
     private String phone;

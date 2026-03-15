@@ -104,6 +104,25 @@
                         <div class="row g-3 mt-1">
                             <div class="col-md-6">
                                 <label class="form-label">
+                                    <i class="bi bi-calendar-date"></i> Ngày sinh
+                                </label>
+                                <form:input path="birthday" type="date" class="form-control"/>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="bi bi-gender-ambiguous"></i> Giới tính
+                                </label>
+                                <form:select path="gender" class="form-select">
+                                    <form:option value="">-- Chọn giới tính --</form:option>
+                                    <form:options items="${genders}" itemValue="code" itemLabel="label"/>
+                                </form:select>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-6">
+                                <label class="form-label">
                                     <i class="bi bi-shield-lock"></i> Vai trò<span class="text-danger">*</span>
                                 </label>
 

@@ -81,7 +81,7 @@
                                     <i class="bi bi-check-circle"></i> Đổi mật khẩu
                                 </button>
 
-                                <button type="button" class="btn btn-outline-secondary px-4" id="btnCancel">
+                                <button type="button" class="btn btn-outline-danger px-4" id="btnCancel">
                                     <i class="bi bi-x-circle"></i> Hủy
                                 </button>
                             </div>

@@ -43,7 +43,7 @@
                             <span><i class="bi-building-check me-1"></i> Cập nhật tòa nhà</span>
                         </c:if>
                         <a href="${buildingURL}">
-                            <i class="bi bi-x-circle"></i>
+                            <i class="bi bi-x-circle text-danger"></i>
                         </a>
                     </div>
                     <div id="editForm">

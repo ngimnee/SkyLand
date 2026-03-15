@@ -91,6 +91,14 @@
                                 </c:when>
                             </c:choose>
                         </display:column>
+                        <display:column title="Ngày sinh" headerClass="text-center" class="text-center" style="width:130px;">
+                            <c:if test="${not empty user.birthday}">
+                                <fmt:formatDate value="${user.birthday}" pattern="dd/MM/yyyy"/>
+                            </c:if>
+                        </display:column>
+                        <display:column title="Giới tính" headerClass="text-center" class="text-center" style="min-width:100px; max-width:100px; white-space:nowrap;">
+                            ${user.genderName}
+                        </display:column>
                         <display:column title="Cập nhật lần cuối" headerClass="text-center" class="text-center" style="width:160px; min-width:160px; max-width:160px;">
                             <fmt:formatDate value="${user.modifiedDate}" pattern="dd/MM/yyyy HH:mm:ss"/>
                         </display:column>

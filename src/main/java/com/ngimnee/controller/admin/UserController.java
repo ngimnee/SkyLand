@@ -1,6 +1,7 @@
 package com.ngimnee.controller.admin;
 
 import com.ngimnee.constant.SystemConstant;
+import com.ngimnee.enums.Gender;
 import com.ngimnee.model.dto.UserDTO;
 import com.ngimnee.model.request.UserSearchRequest;
 import com.ngimnee.model.response.UserSearchResponse;
@@ -12,6 +13,8 @@ import com.ngimnee.utils.MessageUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -86,6 +89,7 @@ public class UserController {
             user.setRoleDTOs(allRoles);
         }
 //        request.removeAttribute(SystemConstant.MODEL);
+        mav.addObject("genders", Gender.values());
         mav.addObject(SystemConstant.MODEL, user);
         initMessageResponse(mav, request);
         return mav;
@@ -115,11 +119,13 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping(value = "/admin/profile/{username}", method = RequestMethod.GET)
-    public ModelAndView updateProfile(@PathVariable("username") String username, HttpServletRequest request) {
+    @RequestMapping(value = "/admin/profile", method = RequestMethod.GET)
+    public ModelAndView updateProfile(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/user/profile");
-        UserDTO model = userService.findOneByUserName(username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO model = userService.findOneByUserName(authentication.getName());
         model.setRoleDTOs(roleService.getRoles());
+        mav.addObject("genders", Gender.values());
         mav.addObject(SystemConstant.MODEL, model);
         initMessageResponse(mav, request);
         return mav;
