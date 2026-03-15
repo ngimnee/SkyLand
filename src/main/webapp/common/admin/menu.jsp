@@ -50,7 +50,7 @@
                     Quản Lý Tài Khoản
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <div class="collapse ${fn:contains(pageContext.request.requestURI,'/admin/user') ? 'show' : ''}" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="${userURL}">Danh sách tài khoản</a>
                         <a class="nav-link" href="${editUserURL}">Thêm tài khoản</a>
@@ -66,7 +66,7 @@
                     Quản Lý Tin Tức
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse" id="collapseBlogs" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <div class="collapse ${fn:contains(pageContext.request.requestURI,'/admin/blog') ? 'show' : ''}" id="collapseBlogs" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="${blogURL}">Xem tin tức</a>
                         <a class="nav-link" href="#">Thêm tin tức</a>

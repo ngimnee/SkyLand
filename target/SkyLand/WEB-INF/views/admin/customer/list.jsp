@@ -32,13 +32,13 @@
                     <span class="fw-bold">Trạng thái:</span>
                     <form action="${customerURL}" method="GET" class="mb-0">
                         <div class="d-flex gap-1" role="group">
-                            <input type="radio" class="btn-check" name="isActive" id="statusAll" value="" onchange="this.form.submit()"${empty param.isActive ? 'checked' : ''}>
+                            <input type="radio" class="btn-check" name="isActive" id="statusAll" value="" onchange="this.form.submit()"${customerSearch.isActive == null ? 'checked' : ''}>
                             <label class="btn btn-outline-secondary btn-sm rounded-pill px-3" for="statusAll">Tất cả</label>
 
-                            <input type="radio" class="btn-check" name="isActive" id="statusActive" value="1" onchange="this.form.submit()"${param.isActive == '1' ? 'checked' : ''}>
+                            <input type="radio" class="btn-check" name="isActive" id="statusActive" value="1" onchange="this.form.submit()"${customerSearch.isActive == 1 ? 'checked' : ''}>
                             <label class="btn btn-outline-success btn-sm rounded-pill px-3" for="statusActive">Hoạt động</label>
 
-                            <input type="radio" class="btn-check" name="isActive" id="statusInactive" value="0" onchange="this.form.submit()"${param.isActive == '0' ? 'checked' : ''}>
+                            <input type="radio" class="btn-check" name="isActive" id="statusInactive" value="0" onchange="this.form.submit()"${customerSearch.isActive == 0 ? 'checked' : ''}>
                             <label class="btn btn-outline-danger btn-sm rounded-pill px-3" for="statusInactive">Đã tắt</label>
                         </div>
                     </form>
@@ -104,7 +104,7 @@
                                     <i class="bi bi-headset"></i>
                                 </a>
 
-                                <button type="button" class="btn btn-info btn-sm" onclick="editCustomer(${customer.id})" title="Cập nhật thông tin">
+                                <button type="button" class="btn btn-outline-info btn-sm" onclick="editCustomer(${customer.id})" title="Cập nhật thông tin">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
 

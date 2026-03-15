@@ -47,8 +47,8 @@
                         <div class="profile-info text-start">
                             <p><i class="bi bi-telephone text-success me-2"></i>${model.phone}</p>
                             <p><i class="bi bi-envelope text-primary me-2"></i>${model.email}</p>
-                            <p><i class="bi bi-gender-ambiguous text-info me-2"></i>${model.genderName}</p>
                             <p><i class="bi bi-cake text-danger me-2"></i><fmt:formatDate value="${model.birthday}" pattern="dd/MM/yyyy"/></p>
+                            <p><i class="bi bi-gender-ambiguous text-info me-2"></i>${model.genderName}</p>
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-3 col-form-label">Họ và tên</label>
                                 <div class="col-md-9">
-                                    <form:input path="fullName" id="fullName" cssClass="form-control"/>
+                                    <form:input path="fullName" id="fullName" cssClass="form-control readonly-input" readonly="true"/>
                                 </div>
                             </div>
 
@@ -96,13 +96,6 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
-                                <label class="col-md-3 col-form-label">Sinh nhật</label>
-                                <div class="col-md-9">
-                                    <form:input path="birthday" id="birthday" type="date" cssClass="form-control"/>
-                                </div>
-                            </div>
-
                             <div class="row mb-3">
                                 <label class="col-md-3 col-form-label">Giới tính</label>
                                 <div class="col-md-9">
@@ -110,6 +103,13 @@
                                         <form:option value="">-- Chọn giới tính --</form:option>
                                         <form:options items="${genders}" itemValue="code" itemLabel="label"/>
                                     </form:select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <label class="col-md-3 col-form-label">Sinh nhật</label>
+                                <div class="col-md-9">
+                                    <form:input path="birthday" id="birthday" type="date" cssClass="form-control"/>
                                 </div>
                             </div>
 
@@ -136,7 +136,6 @@
             event.preventDefault();
             var dataArray = {};
 
-            dataArray["fullName"] = $('#fullName').val();
             dataArray["phone"] = $('#phone').val();
             dataArray["email"] = $('#email').val();
             dataArray["gender"] = $('#gender').val();
@@ -146,7 +145,6 @@
                 updateInfo(dataArray, $('#usernameHidden').val());
             }
         });
-
 
         function updateInfo(data, username) {
             $.ajax({
