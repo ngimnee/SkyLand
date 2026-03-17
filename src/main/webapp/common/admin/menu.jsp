@@ -19,12 +19,10 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading divider-text"> Bảng thống kê </div>
-                <security:authorize access="hasRole('MANAGER')">
-                    <a class="nav-link" href="${homeURL}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Bảng thống kê
-                    </a>
-                </security:authorize>
+                <a class="nav-link" href="${homeURL}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    Bảng thống kê
+                </a>
 
                 <div class="sb-sidenav-menu-heading divider-text"> Bảng điều khiển </div>
                 <a class="nav-link" href="${buildingURL}">

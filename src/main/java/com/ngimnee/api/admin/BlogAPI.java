@@ -5,20 +5,23 @@ import com.ngimnee.model.response.BlogResponse;
 import com.ngimnee.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
-@RequestMapping("/blog")
+@RequestMapping("/api/blog")
 @RequiredArgsConstructor
 public class BlogAPI {
     private final BlogService blogService;
 
     @GetMapping
-    public Page<BlogResponse> getBlogs(@RequestParam("title") String title,
-                                       @RequestParam(value = "pageSize", defaultValue = "12") int pageSize,
-                                       @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber) {
-        Page<BlogResponse> result = blogService.getBlog(title, pageSize, pageNumber);
+    public Page<BlogResponse> getBlogs(@RequestParam("fromDate") Date fromDate,
+                                       @RequestParam("toDate") Date toDate,
+                                       Pageable pageable) {
+        Page<BlogResponse> result = blogService.getBlog(fromDate, toDate, pageable);
         return result;
     }
 

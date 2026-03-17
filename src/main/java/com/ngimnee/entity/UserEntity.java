@@ -59,4 +59,7 @@ public class UserEntity extends BaseEntity {
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<OrderEntity> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<BlogEntity> blogs = new ArrayList<>();
 }

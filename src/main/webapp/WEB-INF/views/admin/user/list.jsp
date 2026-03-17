@@ -174,6 +174,20 @@
         </div>
     </div>
 
+    <!-- Toast thông báo -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+    <div id="permissionToast" class="toast align-items-center text-white bg-danger border-0"
+         role="alert" data-bs-delay="3000">
+        <div class="d-flex">
+            <div class="toast-body">
+                ${param.messageResponse}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
 
     <script>
         // Nút tìm kiếm
@@ -296,6 +310,15 @@
                 }
             });
         }
+
+        $(document).ready(function () {
+            const message = "${param.messageResponse}";
+            if (message && message !== "") {
+                const toastEl = document.getElementById('permissionToast');
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        });
     </script>
 </body>
 </html>
