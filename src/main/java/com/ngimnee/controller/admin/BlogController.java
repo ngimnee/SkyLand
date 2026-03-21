@@ -1,6 +1,7 @@
 package com.ngimnee.controller.admin;
 
 import com.ngimnee.constant.SystemConstant;
+import com.ngimnee.model.dto.BlogDTO;
 import com.ngimnee.model.request.BlogSearchRequest;
 import com.ngimnee.model.request.BuildingSearchRequest;
 import com.ngimnee.model.response.BlogResponse;
@@ -25,7 +26,7 @@ public class BlogController {
     private BlogService blogService;
 
     @GetMapping("/admin/blog")
-    public ModelAndView blogPage(@ModelAttribute BlogSearchRequest blogSearchRequest, HttpServletRequest request) {
+    public ModelAndView blogPage(@ModelAttribute("blogSearchRequest") BlogSearchRequest blogSearchRequest, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/blog/list");
 
         BlogResponse model = new BlogResponse();
@@ -46,9 +47,10 @@ public class BlogController {
     }
 
     @GetMapping("/admin/blog/edit/{id}")
-    public ModelAndView blogEditPage(@PathVariable("id") Long id,
-                                     HttpServletRequest request) {
+    public ModelAndView blogEditPage(@PathVariable("id") Long id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("admin/blog/edit");
+        BlogDTO blogDTO = blogService.findById(id);
+        mav.addObject("editBlog", blogDTO);
         return mav;
     }
 }

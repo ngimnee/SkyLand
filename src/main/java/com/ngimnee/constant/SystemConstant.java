@@ -17,4 +17,6 @@ public class SystemConstant {
     public static final String CHANGE_PASSWORD_FAIL = "change_password_fail";
     public static final String PASSWORD_SAME_OLD = "password_same_old";
     public static final String OLD_PASSWORD_INCORRECT = "old_password_incorrect";
+    public static final String UPLOAD_DIR = "uploads/";
+    public static final String UPLOAD_URL = "/uploads/";
 }

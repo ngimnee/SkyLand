@@ -2,7 +2,6 @@ package com.ngimnee.converter.blog;
 
 import com.ngimnee.entity.BlogEntity;
 import com.ngimnee.model.dto.BlogDTO;
-import com.ngimnee.model.response.BlogResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,10 +10,6 @@ import org.springframework.stereotype.Component;
 public class BlogConverter {
     @Autowired
     private ModelMapper modelMapper;
-
-    public BlogResponse toBlogSearchResponse(BlogEntity blogEntity) {
-        return modelMapper.map(blogEntity, BlogResponse.class);
-    }
 
     public BlogEntity toBlogEntity(BlogDTO blogDTO) {
         return modelMapper.map(blogDTO, BlogEntity.class);
@@ -25,7 +20,7 @@ public class BlogConverter {
     }
 
     public void updateEntityFromDTO(BlogDTO blogDTO, BlogEntity blogEntity) {
-        modelMapper.getConfiguration().setPropertyCondition(context -> true);
+        modelMapper.getConfiguration().setPropertyCondition(context -> context.getSource() != null);
         modelMapper.map(blogDTO, blogEntity);
     }
 }

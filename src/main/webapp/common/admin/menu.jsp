@@ -59,17 +59,11 @@
                 </div>
 
 
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseBlogs">
+                <a class="nav-link" href="${blogURL}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-newspaper"></i></div>
                     Quản Lý Tin Tức
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-                <div class="collapse ${fn:contains(pageContext.request.requestURI,'/admin/blog') ? 'show' : ''}" id="collapseBlogs" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="${blogURL}">Xem tin tức</a>
-                        <a class="nav-link" href="#">Thêm tin tức</a>
-                    </nav>
-                </div>
+
 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesSupport">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-info"></i></div>
@@ -79,6 +73,7 @@
                 <div class="collapse" id="pagesSupport" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" href="https://www.facebook.com/profile.php?id=61581626553867" target="_blank">Fanpage</a>
+                        <a class="nav-link" href="https://chatgpt.com" target="_blank">AI Chatbot</a>
                     </nav>
                 </div>
             </div>

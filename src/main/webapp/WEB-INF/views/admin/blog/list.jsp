@@ -80,7 +80,7 @@
                         <display:column property="content" title="Nội dung" headerClass="text-center"/>
                         <display:column title="Thao tác" class="text-center" headerClass="text-center">
                             <div class="d-flex justify-content-center gap-2">
-                                <a href="${editBlogURL}?id=${blog.id}" class="btn btn-outline-primary btn-sm">
+                                <a href="${editBlogURL}/${blog.id}" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-pencil"></i>
                                 </a>
 

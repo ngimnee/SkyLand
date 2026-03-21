@@ -1,6 +1,7 @@
 package com.ngimnee.api.admin;
 
 import com.ngimnee.entity.BlogEntity;
+import com.ngimnee.model.dto.BlogDTO;
 import com.ngimnee.model.response.BlogResponse;
 import com.ngimnee.service.BlogService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -23,6 +25,12 @@ public class BlogAPI {
                                        Pageable pageable) {
         Page<BlogResponse> result = blogService.getBlog(fromDate, toDate, pageable);
         return result;
+    }
+
+    @PostMapping()
+    public ResponseEntity<BlogDTO> addOrUpdate(@RequestPart("blog") BlogDTO blogDTO,
+                                               @RequestPart(value = "avatar") MultipartFile avatar) {
+        return ResponseEntity.ok(blogService.addOrUpdateBlog(blogDTO, avatar));
     }
 
     @DeleteMapping("/{id}")
